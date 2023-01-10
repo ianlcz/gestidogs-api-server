@@ -13,7 +13,7 @@
 You can install the project by cloning this repository:
 
 ```bash
-git clone https://github.com/FindMeAnEvent/fmae-api-server.git
+git clone https://github.com/ianlcz/gestidogs-api-server.git
 ```
 
 ### Install dependencies
@@ -21,6 +21,14 @@ git clone https://github.com/FindMeAnEvent/fmae-api-server.git
 First of all, if you have just cloned the repository you have to install the project dependencies with the command `npm install` in the **root** folder.
 
 ## Usage
+
+### Write the .env files
+
+You must copy the `.env.example` file in the root folder of the application and replace `<GESTIDOGS_MONGO_URI>` with your own :
+
+```
+GESTIDOGS_MONGO_URI=<GESTIDOGS_MONGO_URI>
+```
 
 ### Running
 
