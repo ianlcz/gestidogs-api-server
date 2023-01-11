@@ -101,4 +101,13 @@ export class UsersService {
 
     return { token: this.jwtService.sign(payload), user };
   }
+
+  async getInfos(token: any): Promise<User> {
+    const user = await this.userModel.findOne({
+      emailAddress: token.emailAddress,
+    });
+    user.password = undefined;
+
+    return user;
+  }
 }
