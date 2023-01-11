@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Role } from '../user.schema';
 
 export class CreateUserDto {
@@ -12,15 +12,11 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  emailAddress: string;
 
   @IsNotEmpty()
   @MinLength(8)
   password: string;
-
-  @IsNotEmpty()
-  @IsDate()
-  birthDate: Date;
 
   avatarUrl: string;
   registeredAt: Date;

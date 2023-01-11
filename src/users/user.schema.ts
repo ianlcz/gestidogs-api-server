@@ -13,7 +13,7 @@ export enum Role {
 export class User {
   _id: Types.ObjectId;
 
-  @Prop({ type: String, uppercase: true, required: true })
+  @Prop({ type: String, required: true })
   lastname: string;
 
   @Prop({ type: String, required: true })
@@ -22,7 +22,7 @@ export class User {
   @Prop({ type: String, enum: Role, required: true, default: Role.CLIENT })
   role: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, unique: true, required: true })
   emailAddress: string;
 
   @Prop({ type: String, required: true })
@@ -30,9 +30,6 @@ export class User {
 
   @Prop()
   avatarUrl: string;
-
-  @Prop({ type: Date, required: true })
-  birthDate: Date;
 
   @Prop({ type: Date, required: true, default: new Date() })
   registeredAt: Date;
