@@ -26,7 +26,9 @@ export class UsersController {
   }
 
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async register(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<{ token: string; user: User }> {
     return await this.usersService.register(createUserDto);
   }
 

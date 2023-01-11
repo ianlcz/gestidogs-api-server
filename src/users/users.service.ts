@@ -42,7 +42,9 @@ export class UsersService {
     }
   }
 
-  async register(createUserDto: CreateUserDto): Promise<User> {
+  async register(
+    createUserDto: CreateUserDto,
+  ): Promise<{ token: string; user: User }> {
     try {
       // Hash User password and set User registration date
       createUserDto.password = bcrypt.hashSync(createUserDto.password, 12);
@@ -50,13 +52,17 @@ export class UsersService {
 
       // Instanciate User Model with createUserDto
       const userToRegister = new this.userModel(createUserDto);
+      const payload = {
+        emailAddress: userToRegister.emailAddress,
+        sub: userToRegister._id,
+      };
 
       // Save User data on MongoDB
       await userToRegister.save();
       // Hide User password
       userToRegister.password = undefined;
 
-      return userToRegister;
+      return { token: this.jwtService.sign(payload), user: userToRegister };
     } catch (error) {
       throw new HttpException(
         {
