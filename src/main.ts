@@ -11,12 +11,15 @@ async function bootstrap() {
     .setTitle('GestiDogs')
     .setDescription('Backend of a dog training center management application')
     .setVersion('0.1')
-    .addTag('users')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+      operationsSorter: 'method',
+    },
+  });
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 

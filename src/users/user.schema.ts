@@ -35,7 +35,6 @@ export class User {
   emailAddress: string;
 
   @Prop({ type: String, required: true })
-  @ApiProperty()
   password: string;
 
   @Prop()
