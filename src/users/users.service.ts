@@ -19,7 +19,80 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async setLastConnectionDate(emailAddress: string) {
+  async findAll(): Promise<User[]> {
+    const users = await this.userModel.find();
+    users.map((user) => (user.password = undefined));
+
+    return users;
+  }
+
+  async findOne(userId: string): Promise<User> {
+    try {
+      const user = await this.userModel.findById(userId);
+      user.password = undefined;
+
+      return user;
+    } catch (error) {
+      throw new HttpException(
+        { status: HttpStatus.NOT_FOUND, error },
+        HttpStatus.NOT_FOUND,
+        { cause: error },
+      );
+    }
+  }
+
+  async updateOne(userId: string, userChanges: object): Promise<User> {
+    try {
+      const modifyUser = await this.userModel.findOneAndUpdate(
+        { _id: userId },
+        {
+          $set: { ...userChanges },
+          $inc: { __v: 1 },
+        },
+        { returnOriginal: false },
+      );
+      modifyUser.password = undefined;
+
+      return modifyUser;
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_MODIFIED,
+          error,
+        },
+        HttpStatus.NOT_MODIFIED,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async deleteAll(): Promise<void> {
+    await this.userModel.deleteMany();
+  }
+
+  async deleteOne(userId: string): Promise<User> {
+    try {
+      const deleteUser = await this.userModel.findOneAndDelete({ _id: userId });
+      deleteUser.password = undefined;
+
+      return deleteUser;
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error,
+        },
+        HttpStatus.NOT_FOUND,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async setLastConnectionDate(emailAddress: string): Promise<User> {
     try {
       return await this.userModel.findOneAndUpdate(
         { emailAddress },

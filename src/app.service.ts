@@ -3,13 +3,16 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   initApp(): {
-    appName: string;
-    developpers: { name: string; githubProfile: string }[];
+    app: { name: string; github: string };
+    developpers: { name: string; github: string }[];
   } {
     return {
-      appName: 'Gestidogs - API Server',
+      app: {
+        name: 'Gestidogs - API Server',
+        github: 'https://github.com/ianlcz/gestidogs-api-server',
+      },
       developpers: [
-        { name: 'Yann LE COZ', githubProfile: 'https://github.com/ianlcz' },
+        { name: 'Yann LE COZ', github: 'https://github.com/ianlcz' },
       ],
     };
   }
