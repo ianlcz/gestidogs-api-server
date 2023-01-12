@@ -5,7 +5,7 @@
 - **Bordeaux Ynov Campus IT department :**
   - [Mathieu CHAMBAUD](https://github.com/FrekiManagarm) - Master2 Expert in Web Development
   - [Dorian FRANÇAIS](https://github.com/DorianFRANCAIS) - Master2 Expert in Web Development
-  - [Corentin GARNIER](https://github.com/Maysto) - Master2 Expert in Web Development
+  - [Corentin GARNIER](https://github.com/CorentinGarnier) - Master2 Expert in Web Development
   - [Yann LE COZ](https://github.com/ianlcz) - Master2 Expert in Web Development
 
 ## Installation
