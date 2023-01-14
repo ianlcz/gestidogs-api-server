@@ -289,6 +289,77 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/establishments": {
+        "post": {
+          "operationId": "EstablishmentsController_create",
+          "summary": "Create an establishment",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateEstablishmentDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Establishment successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Establishment"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "User role must be **Admin** to create an establishment"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "EstablishmentsController_findAll",
+          "summary": "Find all establishments",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of establishments",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Establishment"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -377,7 +448,8 @@ window.onload = function() {
               "default": "Client"
             },
             "emailAddress": {
-              "type": "string"
+              "type": "string",
+              "uniqueItems": true
             },
             "avatarUrl": {
               "type": "string"
@@ -424,6 +496,68 @@ window.onload = function() {
             "firstname",
             "emailAddress",
             "password"
+          ]
+        },
+        "CreateEstablishmentDto": {
+          "type": "object",
+          "properties": {
+            "ownerId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "emailAddress": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "ownerId",
+            "name",
+            "address"
+          ]
+        },
+        "Establishment": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "ownerId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "emailAddress": {
+              "type": "string"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "ownerId",
+            "name",
+            "address"
           ]
         }
       }

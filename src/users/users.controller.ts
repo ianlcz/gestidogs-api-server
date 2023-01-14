@@ -36,11 +36,11 @@ export class UsersController {
   @Post('register')
   @ApiOperation({ summary: 'Register a user' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'User successfully registered',
   })
   @ApiResponse({
-    status: 422,
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Unprocessable Entity',
   })
   async register(

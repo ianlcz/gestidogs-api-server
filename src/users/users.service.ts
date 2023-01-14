@@ -122,6 +122,7 @@ export class UsersService {
       // Hash User password and set User registration date
       createUserDto.password = bcrypt.hashSync(createUserDto.password, 12);
       createUserDto.registeredAt = new Date();
+      createUserDto.lastConnectionAt = new Date();
 
       // Instanciate User Model with createUserDto
       const userToRegister = new this.userModel(createUserDto);

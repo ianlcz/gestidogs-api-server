@@ -3,11 +3,11 @@ import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Role } from '../user.schema';
 
 export class CreateUserDto {
-  @ApiProperty()
+  @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   lastname: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   firstname: string;
 
@@ -17,12 +17,12 @@ export class CreateUserDto {
   })
   role: Role;
 
-  @ApiProperty()
+  @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   @IsEmail()
   emailAddress: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   @MinLength(8)
   password: string;
