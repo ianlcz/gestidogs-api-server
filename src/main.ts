@@ -37,9 +37,6 @@ async function bootstrap() {
       `${await app.getUrl()}/swagger/swagger-ui-bundle.js`,
       function (response) {
         response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js'));
-        console.log(
-          `Swagger UI bundle file written to: '/swagger-static/swagger-ui-bundle.js'`,
-        );
       },
     );
 
@@ -47,9 +44,6 @@ async function bootstrap() {
       `${await app.getUrl()}/swagger/swagger-ui-init.js`,
       function (response) {
         response.pipe(createWriteStream('swagger-static/swagger-ui-init.js'));
-        console.log(
-          `Swagger UI init file written to: '/swagger-static/swagger-ui-init.js'`,
-        );
       },
     );
 
@@ -58,9 +52,6 @@ async function bootstrap() {
       function (response) {
         response.pipe(
           createWriteStream('swagger-static/swagger-ui-standalone-preset.js'),
-        );
-        console.log(
-          `Swagger UI standalone preset file written to: '/swagger-static/swagger-ui-standalone-preset.js'`,
         );
       },
     );

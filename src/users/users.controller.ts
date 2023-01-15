@@ -36,11 +36,11 @@ export class UsersController {
   @Post('register')
   @ApiOperation({ summary: 'Register a user' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'User successfully registered',
   })
   @ApiResponse({
-    status: 422,
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Unprocessable Entity',
   })
   async register(
@@ -83,7 +83,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/')
+  @Get()
   @ApiOperation({ summary: 'Find all users' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -102,7 +102,7 @@ export class UsersController {
     description: 'The found user',
     type: User,
   })
-  @ApiResponse({ status: 400, description: 'Not Found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
   async findOne(@Param('userId') userId: string): Promise<User> {
     return await this.usersService.findOne(userId);
   }
@@ -127,7 +127,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('/')
+  @Delete()
   @ApiOperation({ summary: 'Remove all users' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -138,7 +138,7 @@ export class UsersController {
 
     response.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'Users' Collection`,
+      message: `Delete all documents in 'users' Collection`,
     });
   }
 

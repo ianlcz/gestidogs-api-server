@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { UsersModule } from './users/users.module';
 import { join } from 'path';
+import { EstablishmentsModule } from './establishments/establishments.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { join } from 'path';
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
     }),
     UsersModule,
+    EstablishmentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
