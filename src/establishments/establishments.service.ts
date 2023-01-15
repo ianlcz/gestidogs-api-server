@@ -1,14 +1,7 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Role } from 'src/users/user.schema';
-import { UsersService } from 'src/users/users.service';
-import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
+import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment, EstablishmentDocument } from './establishment.schema';
 
 @Injectable()
@@ -16,25 +9,14 @@ export class EstablishmentsService {
   constructor(
     @InjectModel(Establishment.name)
     private establishmentModel: Model<EstablishmentDocument>,
-    private usersService: UsersService,
   ) {}
 
-  async create(
-    createEstablishmentDto: CreateEstablishmentDto,
-  ): Promise<Establishment> {
+  async create(establishmentDto: EstablishmentDto): Promise<Establishment> {
     try {
       // Instanciate Establishment Model with createEstablishmentDto
       const establishmentToCreate = new this.establishmentModel(
-        createEstablishmentDto,
+        establishmentDto,
       );
-
-      // Only User with Admin role can create an Establishment
-      const establishmentOwner = await this.usersService.findOne(
-        establishmentToCreate.ownerId.toString(),
-      );
-      if (establishmentOwner.role !== Role.ADMIN) {
-        throw new UnauthorizedException();
-      }
 
       // Save Establishment data on MongoDB and return them
       return await establishmentToCreate.save();
@@ -53,8 +35,77 @@ export class EstablishmentsService {
   }
 
   async findAll(): Promise<Establishment[]> {
+    return await this.establishmentModel.find();
+  }
+
+  async findOne(establishmentId: string): Promise<Establishment> {
     try {
-      return await this.establishmentModel.find();
+      return await this.establishmentModel.findById(establishmentId);
+    } catch (error) {
+      throw new HttpException(
+        { status: HttpStatus.NOT_FOUND, error },
+        HttpStatus.NOT_FOUND,
+        { cause: error },
+      );
+    }
+  }
+
+  async findByOwner(ownerId: string): Promise<Establishment[]> {
+    return await this.establishmentModel.find({ ownerId });
+  }
+
+  async updateOne(
+    establishmentId: string,
+    establishmentChanges: object,
+  ): Promise<Establishment> {
+    try {
+      return await this.establishmentModel.findOneAndUpdate(
+        {
+          _id: establishmentId,
+        },
+        { $set: { ...establishmentChanges }, $inc: { __v: 1 } },
+        { returnOriginal: false },
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_MODIFIED,
+          error,
+        },
+        HttpStatus.NOT_MODIFIED,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async deleteAll(): Promise<void> {
+    await this.establishmentModel.deleteMany();
+  }
+
+  async deleteOne(establishmentId: string): Promise<Establishment> {
+    try {
+      return await this.establishmentModel.findOneAndDelete({
+        _id: establishmentId,
+      });
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error,
+        },
+        HttpStatus.NOT_FOUND,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async deleteByOwner(ownerId: string): Promise<void> {
+    try {
+      await this.establishmentModel.deleteMany({ ownerId });
     } catch (error) {
       throw new HttpException(
         {

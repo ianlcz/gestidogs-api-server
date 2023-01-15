@@ -192,7 +192,7 @@ window.onload = function() {
                 }
               }
             },
-            "400": {
+            "404": {
               "description": "Not Found"
             }
           },
@@ -300,7 +300,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateEstablishmentDto"
+                  "$ref": "#/components/schemas/EstablishmentDto"
                 }
               }
             }
@@ -315,9 +315,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "401": {
-              "description": "User role must be **Admin** to create an establishment"
             },
             "422": {
               "description": "Unprocessable Entity"
@@ -349,6 +346,216 @@ window.onload = function() {
                   }
                 }
               }
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "EstablishmentsController_deleteAll",
+          "summary": "Remove all establishments",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Remove all establishments"
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/establishments/{establishmentId}": {
+        "get": {
+          "operationId": "EstablishmentsController_findOne",
+          "summary": "Find an establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found establishment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Establishment"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "EstablishmentsController_updateOne",
+          "summary": "Update an establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstablishmentDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The modified establishment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Establishment"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "EstablishmentsController_deleteOne",
+          "summary": "Delete an establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted establishment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Establishment"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/establishments/owner/{ownerId}": {
+        "get": {
+          "operationId": "EstablishmentsController_findByOwner",
+          "summary": "Find establishments by owner",
+          "parameters": [
+            {
+              "name": "ownerId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of owner-managed establishments",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Establishment"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "EstablishmentsController_deleteByOwner",
+          "summary": "Delete establishments by owner",
+          "parameters": [
+            {
+              "name": "ownerId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Establishments successfully deleted"
+            },
+            "404": {
+              "description": "Not found"
             }
           },
           "tags": [
@@ -498,7 +705,7 @@ window.onload = function() {
             "password"
           ]
         },
-        "CreateEstablishmentDto": {
+        "EstablishmentDto": {
           "type": "object",
           "properties": {
             "ownerId": {
