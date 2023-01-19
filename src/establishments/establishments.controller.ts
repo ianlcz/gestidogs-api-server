@@ -19,7 +19,7 @@ import {
 
 import { Response } from 'express';
 
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment } from './establishment.schema';
