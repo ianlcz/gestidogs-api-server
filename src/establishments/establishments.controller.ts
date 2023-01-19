@@ -16,20 +16,22 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+
 import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment } from './establishment.schema';
 import { EstablishmentsService } from './establishments.service';
 
-@Controller('establishments')
-@ApiBearerAuth()
+@ApiBearerAuth('BearerToken')
 @ApiTags('establishments')
+@Controller('establishments')
 export class EstablishmentsController {
   constructor(private readonly establishmentsService: EstablishmentsService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post()
   @ApiOperation({ summary: 'Create an establishment' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -40,6 +42,7 @@ export class EstablishmentsController {
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Unprocessable Entity',
   })
+  @Post()
   async create(
     @Body() establishmentDto: EstablishmentDto,
   ): Promise<Establishment> {
@@ -47,19 +50,18 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
   @ApiOperation({ summary: 'Find all establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of establishments',
     type: [Establishment],
   })
+  @Get()
   async findAll(): Promise<Establishment[]> {
     return await this.establishmentsService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':establishmentId')
   @ApiOperation({ summary: 'Find an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -67,6 +69,7 @@ export class EstablishmentsController {
     type: Establishment,
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @Get(':establishmentId')
   async findOne(
     @Param('establishmentId') establishmentId: string,
   ): Promise<Establishment> {
@@ -74,13 +77,13 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/owner/:ownerId')
   @ApiOperation({ summary: 'Find establishments by owner' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of owner-managed establishments',
     type: [Establishment],
   })
+  @Get('/owner/:ownerId')
   async findByOwner(
     @Param('ownerId') ownerId: string,
   ): Promise<Establishment[]> {
@@ -88,7 +91,6 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':establishmentId')
   @ApiOperation({ summary: 'Update an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -99,6 +101,7 @@ export class EstablishmentsController {
     status: HttpStatus.NOT_MODIFIED,
     description: 'Not Modified',
   })
+  @Put(':establishmentId')
   async updateOne(
     @Param('establishmentId') establishmentId: string,
     @Body() establishmentDto: EstablishmentDto,
@@ -110,12 +113,12 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete()
   @ApiOperation({ summary: 'Remove all establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Remove all establishments',
   })
+  @Delete()
   async deleteAll(@Res() response: Response) {
     await this.establishmentsService.deleteAll();
 
@@ -126,7 +129,6 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':establishmentId')
   @ApiOperation({ summary: 'Delete an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -137,6 +139,7 @@ export class EstablishmentsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
+  @Delete(':establishmentId')
   async deleteOne(
     @Param('establishmentId') establishmentId: string,
   ): Promise<Establishment> {
@@ -144,7 +147,6 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('/owner/:ownerId')
   @ApiOperation({ summary: 'Delete establishments by owner' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -154,6 +156,7 @@ export class EstablishmentsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
+  @Delete('/owner/:ownerId')
   async deleteByOwner(
     @Param('ownerId') ownerId: string,
     @Res() response: Response,

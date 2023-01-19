@@ -51,7 +51,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -87,7 +87,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -114,7 +114,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -144,7 +144,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -162,7 +162,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -201,7 +201,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -248,7 +248,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -285,7 +285,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -325,7 +325,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -353,7 +353,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -371,7 +371,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -410,7 +410,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -457,7 +457,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -494,7 +494,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -533,7 +533,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         },
@@ -563,7 +563,7 @@ window.onload = function() {
           ],
           "security": [
             {
-              "bearer": []
+              "BearerToken": []
             }
           ]
         }
@@ -572,17 +572,19 @@ window.onload = function() {
     "info": {
       "title": "GestiDogs",
       "description": "Backend of a dog training center management application",
-      "version": "0.1",
+      "version": "0.0.1",
       "contact": {}
     },
     "tags": [],
     "servers": [],
     "components": {
       "securitySchemes": {
-        "bearer": {
+        "BearerToken": {
           "scheme": "bearer",
           "bearerFormat": "JWT",
-          "type": "http"
+          "description": "Default JWT Authorization",
+          "type": "http",
+          "in": "header"
         }
       },
       "schemas": {
