@@ -2,12 +2,16 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
+
+import { join } from 'path';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { LoggerMiddleware } from './middleware/logger.middleware';
+
 import { UsersModule } from './users/users.module';
-import { join } from 'path';
 import { EstablishmentsModule } from './establishments/establishments.module';
+
+import { LoggerMiddleware } from './middleware/logger.middleware';
 
 @Module({
   imports: [

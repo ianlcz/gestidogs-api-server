@@ -12,8 +12,17 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('GestiDogs')
     .setDescription('Backend of a dog training center management application')
-    .setVersion('0.1')
-    .addBearerAuth()
+    .setVersion('0.0.1')
+    .addBearerAuth(
+      {
+        description: 'Default JWT Authorization',
+        type: 'http',
+        in: 'header',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'BearerToken',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document, {
