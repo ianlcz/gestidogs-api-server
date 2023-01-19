@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
-import { Role } from 'src/enums/role.enum';
+import { Role } from '../enums/role.enum';
 
 export type UserDocument = HydratedDocument<User>;
 
