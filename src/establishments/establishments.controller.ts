@@ -25,8 +25,8 @@ import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment } from './establishment.schema';
 import { EstablishmentsService } from './establishments.service';
 
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/enums/role.enum';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('establishments')

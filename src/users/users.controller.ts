@@ -30,8 +30,8 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { User } from './user.schema';
 import { UsersService } from './users.service';
 
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/enums/role.enum';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('users')
