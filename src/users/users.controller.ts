@@ -96,6 +96,11 @@ export class UsersController {
     description: 'List of users',
     type: [User],
   })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can find all users',
+  })
   @Get()
   async findAll(): Promise<User[]> {
     return await this.usersService.findAll();
@@ -108,6 +113,11 @@ export class UsersController {
     status: HttpStatus.OK,
     description: 'The found user',
     type: User,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can find a user',
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
   @Get(':userId')
@@ -141,6 +151,11 @@ export class UsersController {
     status: HttpStatus.OK,
     description: 'Remove all users',
   })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can remove all users',
+  })
   @Delete()
   async deleteAll(@Res() response: Response) {
     await this.usersService.deleteAll();
@@ -158,6 +173,11 @@ export class UsersController {
     status: HttpStatus.OK,
     description: 'The deleted user',
     type: User,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can delete a user',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

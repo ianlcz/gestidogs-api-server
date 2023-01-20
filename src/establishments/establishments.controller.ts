@@ -43,6 +43,11 @@ export class EstablishmentsController {
     type: Establishment,
   })
   @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can create a new establishment',
+  })
+  @ApiResponse({
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Unprocessable Entity',
   })
@@ -60,6 +65,11 @@ export class EstablishmentsController {
     status: HttpStatus.OK,
     description: 'List of establishments',
     type: [Establishment],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can find all establishments',
   })
   @Get()
   async findAll(): Promise<Establishment[]> {
@@ -104,6 +114,11 @@ export class EstablishmentsController {
     type: Establishment,
   })
   @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can modify an establishment',
+  })
+  @ApiResponse({
     status: HttpStatus.NOT_MODIFIED,
     description: 'Not Modified',
   })
@@ -125,6 +140,11 @@ export class EstablishmentsController {
     status: HttpStatus.OK,
     description: 'Remove all establishments',
   })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can remove all establishments',
+  })
   @Delete()
   async deleteAll(@Res() response: Response) {
     await this.establishmentsService.deleteAll();
@@ -144,6 +164,11 @@ export class EstablishmentsController {
     type: Establishment,
   })
   @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can delete an establishment',
+  })
+  @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
@@ -160,6 +185,11 @@ export class EstablishmentsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Establishments successfully deleted',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can delete establishments based on their owner',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

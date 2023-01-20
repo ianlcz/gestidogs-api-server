@@ -137,6 +137,9 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all users"
             }
           },
           "tags": [
@@ -155,6 +158,9 @@ window.onload = function() {
           "responses": {
             "200": {
               "description": "Remove all users"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all users"
             }
           },
           "tags": [
@@ -191,6 +197,9 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find a user"
             },
             "404": {
               "description": "Not Found"
@@ -276,6 +285,9 @@ window.onload = function() {
                 }
               }
             },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can delete a user"
+            },
             "404": {
               "description": "Not found"
             }
@@ -316,6 +328,9 @@ window.onload = function() {
                 }
               }
             },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can create a new establishment"
+            },
             "422": {
               "description": "Unprocessable Entity"
             }
@@ -346,6 +361,9 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all establishments"
             }
           },
           "tags": [
@@ -364,6 +382,9 @@ window.onload = function() {
           "responses": {
             "200": {
               "description": "Remove all establishments"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all establishments"
             }
           },
           "tags": [
@@ -450,6 +471,9 @@ window.onload = function() {
             },
             "304": {
               "description": "Not Modified"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can modify an establishment"
             }
           },
           "tags": [
@@ -484,6 +508,9 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can delete an establishment"
             },
             "404": {
               "description": "Not found"
@@ -553,6 +580,9 @@ window.onload = function() {
           "responses": {
             "200": {
               "description": "Establishments successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can delete establishments based on their owner"
             },
             "404": {
               "description": "Not found"
