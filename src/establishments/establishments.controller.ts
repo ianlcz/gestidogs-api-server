@@ -25,6 +25,9 @@ import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment } from './establishment.schema';
 import { EstablishmentsService } from './establishments.service';
 
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
+
 @ApiBearerAuth('BearerToken')
 @ApiTags('establishments')
 @Controller('establishments')
@@ -32,6 +35,7 @@ export class EstablishmentsController {
   constructor(private readonly establishmentsService: EstablishmentsService) {}
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Create an establishment' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -50,6 +54,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Find all establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -91,6 +96,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN, Role.MANAGER)
   @ApiOperation({ summary: 'Update an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -113,6 +119,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Remove all establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -129,6 +136,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Delete an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -147,6 +155,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Delete establishments by owner' })
   @ApiResponse({
     status: HttpStatus.OK,

@@ -1,7 +1,16 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+
+import { UsersService } from '../users/users.service';
+
+import { Role } from '../enums/role.enum';
 
 import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment, EstablishmentDocument } from './establishment.schema';
@@ -10,18 +19,27 @@ import { Establishment, EstablishmentDocument } from './establishment.schema';
 export class EstablishmentsService {
   constructor(
     @InjectModel(Establishment.name)
-    private establishmentModel: Model<EstablishmentDocument>,
+    private readonly establishmentModel: Model<EstablishmentDocument>,
+    private readonly usersService: UsersService,
   ) {}
 
   async create(establishmentDto: EstablishmentDto): Promise<Establishment> {
     try {
-      // Instanciate Establishment Model with createEstablishmentDto
-      const establishmentToCreate = new this.establishmentModel(
-        establishmentDto,
+      const owner = await this.usersService.findOne(
+        establishmentDto.ownerId.toString(),
       );
 
-      // Save Establishment data on MongoDB and return them
-      return await establishmentToCreate.save();
+      if (owner && owner.role === Role.MANAGER) {
+        // Instanciate Establishment Model with createEstablishmentDto
+        const establishmentToCreate = new this.establishmentModel(
+          establishmentDto,
+        );
+
+        // Save Establishment data on MongoDB and return them
+        return await establishmentToCreate.save();
+      } else {
+        throw new UnauthorizedException();
+      }
     } catch (error) {
       throw new HttpException(
         {

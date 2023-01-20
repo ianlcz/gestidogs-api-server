@@ -30,6 +30,9 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { User } from './user.schema';
 import { UsersService } from './users.service';
 
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
+
 @ApiBearerAuth('BearerToken')
 @ApiTags('users')
 @Controller('users')
@@ -86,6 +89,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Find all users' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -98,6 +102,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN, Role.MANAGER)
   @ApiOperation({ summary: 'Find a user' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -130,6 +135,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Remove all users' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -146,6 +152,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({
     status: HttpStatus.OK,

@@ -69,7 +69,5 @@ async function bootstrap() {
       response.pipe(createWriteStream('swagger-static/swagger-ui.css'));
     });
   }
-
-  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
