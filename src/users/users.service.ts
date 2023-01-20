@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
 import { Model } from 'mongoose';
+import { request } from 'express';
 import * as bcrypt from 'bcryptjs';
 
 import { CreateUserDto } from './dto/createUser.dto';
@@ -19,7 +20,7 @@ import { User, UserDocument } from './user.schema';
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -139,6 +140,8 @@ export class UsersService {
       // Hide User password
       userToRegister.password = undefined;
 
+      request.user = userToRegister;
+
       return { token: this.jwtService.sign(payload), user: userToRegister };
     } catch (error) {
       throw new HttpException(
@@ -160,6 +163,10 @@ export class UsersService {
     });
 
     if (user && bcrypt.compareSync(credentials.password, user.password)) {
+      user.password = undefined;
+
+      request.user = user;
+
       return user;
     }
 

@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -13,6 +14,8 @@ import { EstablishmentsModule } from './establishments/establishments.module';
 
 import { LoggerMiddleware } from './middleware/logger.middleware';
 
+import { RolesGuard } from './guards/roles.guard';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env' }),
@@ -25,7 +28,13 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     EstablishmentsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
