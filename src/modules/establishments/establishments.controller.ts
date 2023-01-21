@@ -19,14 +19,14 @@ import {
 
 import { Response } from 'express';
 
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment } from './establishment.schema';
 import { EstablishmentsService } from './establishments.service';
 
-import { Roles } from '../decorators/roles.decorator';
-import { Role } from '../enums/role.enum';
+import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('establishments')

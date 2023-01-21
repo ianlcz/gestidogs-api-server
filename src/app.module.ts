@@ -9,8 +9,9 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { UsersModule } from './users/users.module';
-import { EstablishmentsModule } from './establishments/establishments.module';
+import { UsersModule } from './modules/users/users.module';
+import { EstablishmentsModule } from './modules/establishments/establishments.module';
+import { DogsModule } from './modules/dogs/dogs.module';
 
 import { LoggerMiddleware } from './middleware/logger.middleware';
 
@@ -26,6 +27,7 @@ import { RolesGuard } from './guards/roles.guard';
     }),
     UsersModule,
     EstablishmentsModule,
+    DogsModule,
   ],
   controllers: [AppController],
   providers: [

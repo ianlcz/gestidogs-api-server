@@ -12,7 +12,7 @@ export class Establishment {
 
   @Prop({ type: Types.ObjectId, required: true })
   @ApiProperty({ type: String, required: true })
-  ownerId: { type: Types.ObjectId; ref: 'Users' };
+  ownerId: { type: Types.ObjectId; ref: 'User' };
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })

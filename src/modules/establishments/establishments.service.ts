@@ -10,7 +10,7 @@ import { Model } from 'mongoose';
 
 import { UsersService } from '../users/users.service';
 
-import { Role } from '../enums/role.enum';
+import { Role } from '../../enums/role.enum';
 
 import { EstablishmentDto } from './dto/establishment.dto';
 import { Establishment, EstablishmentDocument } from './establishment.schema';

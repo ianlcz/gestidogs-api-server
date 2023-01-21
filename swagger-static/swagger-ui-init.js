@@ -597,6 +597,49 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/dogs": {
+        "post": {
+          "operationId": "DogsController_create",
+          "summary": "Create a dog",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DogDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Establishment successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Dog"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can create a new dog"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -797,6 +840,54 @@ window.onload = function() {
             "ownerId",
             "name",
             "address"
+          ]
+        },
+        "DogDto": {
+          "type": "object",
+          "properties": {
+            "ownerId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "breed": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "ownerId",
+            "name",
+            "breed"
+          ]
+        },
+        "Dog": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "ownerId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "breed": {
+              "type": "string"
+            },
+            "birthDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "ownerId",
+            "name",
+            "breed"
           ]
         }
       }
