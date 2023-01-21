@@ -20,11 +20,12 @@ export class User {
   @ApiProperty({ type: String, required: true })
   firstname: string;
 
+  @Prop()
+  @ApiPropertyOptional({ type: String })
+  avatarUrl: string;
+
   @Prop({ type: String, enum: Role, required: true, default: Role.CLIENT })
-  @ApiPropertyOptional({
-    enum: ['Admin', 'Educator', 'Client'],
-    default: Role.CLIENT,
-  })
+  @ApiPropertyOptional({ enum: Role, default: Role.CLIENT })
   role: Role;
 
   @Prop({ type: String, unique: true, required: true })
@@ -34,12 +35,12 @@ export class User {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop()
-  @ApiPropertyOptional({ type: String })
-  avatarUrl: string;
+  @Prop({ type: [String], required: true, default: [] })
+  @ApiProperty({ type: [String], required: true, default: [] })
+  dogs: [Types.ObjectId];
 
   @Prop({ type: Date, default: new Date() })
-  @ApiPropertyOptional({ type: Date })
+  @ApiProperty({ type: Date })
   registeredAt: Date;
 
   @Prop()

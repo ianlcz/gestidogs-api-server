@@ -96,11 +96,36 @@ export class UsersService {
     }
   }
 
-  async setLastConnectionDate(emailAddress: string): Promise<User> {
+  async setLastConnectionDate(emailAddress: string): Promise<void> {
     try {
-      return await this.userModel.findOneAndUpdate(
+      await this.userModel.findOneAndUpdate(
         { emailAddress },
         { lastConnectionAt: new Date() },
+        {
+          returnOriginal: false,
+        },
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_MODIFIED,
+          error,
+        },
+        HttpStatus.NOT_MODIFIED,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async setDog(userId: string, dogId: string): Promise<void> {
+    try {
+      const { dogs } = await this.findOne(userId);
+
+      await this.userModel.findOneAndUpdate(
+        { _id: userId },
+        { dogs: [...dogs, dogId] },
         {
           returnOriginal: false,
         },

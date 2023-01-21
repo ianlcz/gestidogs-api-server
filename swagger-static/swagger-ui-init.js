@@ -670,10 +670,14 @@ window.onload = function() {
             "firstname": {
               "type": "string"
             },
+            "avatarUrl": {
+              "type": "string"
+            },
             "role": {
               "type": "string",
               "enum": [
                 "Admin",
+                "Manager",
                 "Educator",
                 "Client"
               ],
@@ -720,10 +724,14 @@ window.onload = function() {
             "firstname": {
               "type": "string"
             },
+            "avatarUrl": {
+              "type": "string"
+            },
             "role": {
               "type": "string",
               "enum": [
                 "Admin",
+                "Manager",
                 "Educator",
                 "Client"
               ],
@@ -733,8 +741,12 @@ window.onload = function() {
               "type": "string",
               "uniqueItems": true
             },
-            "avatarUrl": {
-              "type": "string"
+            "dogs": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "registeredAt": {
               "format": "date-time",
@@ -751,7 +763,9 @@ window.onload = function() {
           "required": [
             "lastname",
             "firstname",
-            "emailAddress"
+            "emailAddress",
+            "dogs",
+            "registeredAt"
           ]
         },
         "UpdateUserDto": {
