@@ -183,7 +183,7 @@ export class UsersService {
   }
 
   async validateUser(credentials: AuthLoginDto): Promise<User | null> {
-    const user = await this.userModel.findOne({
+    const user: User = await this.userModel.findOne({
       emailAddress: credentials.emailAddress,
     });
 
@@ -208,8 +208,9 @@ export class UsersService {
 
     const user = await this.validateUser(authLoginDto);
     const payload = {
-      emailAddress: user.emailAddress,
       sub: user._id,
+      emailAddress: user.emailAddress,
+      role: user.role,
     };
 
     user.password = undefined;

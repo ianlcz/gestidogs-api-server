@@ -28,7 +28,7 @@ export class User {
   @ApiPropertyOptional({ enum: Role, default: Role.CLIENT })
   role: Role;
 
-  @Prop({ type: String, unique: true, required: true })
+  @Prop({ type: String, lowercase: true, unique: true, required: true })
   @ApiProperty({ type: String, uniqueItems: true, required: true })
   emailAddress: string;
 

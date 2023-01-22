@@ -615,7 +615,7 @@ window.onload = function() {
           },
           "responses": {
             "201": {
-              "description": "Establishment successfully created",
+              "description": "Dog successfully created",
               "content": {
                 "application/json": {
                   "schema": {
@@ -629,6 +629,121 @@ window.onload = function() {
             },
             "422": {
               "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "DogsController_findAll",
+          "summary": "Find all dogs",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of dogs",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Dog"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all dogs"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/dogs/{dogId}": {
+        "get": {
+          "operationId": "DogsController_findOne",
+          "summary": "Find a dog",
+          "parameters": [
+            {
+              "name": "dogId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found dog",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Dog"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized if the **Client** is not the owner of the dog"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/dogs/owner/{ownerId}": {
+        "get": {
+          "operationId": "DogsController_findByOwner",
+          "summary": "Find dogs by owner",
+          "parameters": [
+            {
+              "name": "ownerId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of dogs by their owner",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Dog"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find dogs by their owner"
             }
           },
           "tags": [
