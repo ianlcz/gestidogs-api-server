@@ -16,10 +16,15 @@ import { AuthLoginDto } from './dto/authLogin.dto';
 
 import { User, UserDocument } from './user.schema';
 
+import { EstablishmentsService } from '../establishments/establishments.service';
+import { DogsService } from '../dogs/dogs.service';
+
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private readonly establishmentsService: EstablishmentsService,
+    private readonly dogsService: DogsService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -61,10 +66,10 @@ export class UsersService {
     } catch (error) {
       throw new HttpException(
         {
-          status: HttpStatus.NOT_MODIFIED,
+          status: HttpStatus.BAD_REQUEST,
           error,
         },
-        HttpStatus.NOT_MODIFIED,
+        HttpStatus.BAD_REQUEST,
         {
           cause: error,
         },
@@ -74,12 +79,19 @@ export class UsersService {
 
   async deleteAll(): Promise<void> {
     await this.userModel.deleteMany();
+    await this.establishmentsService.deleteAll();
+    await this.dogsService.deleteAll();
   }
 
   async deleteOne(userId: string): Promise<User> {
     try {
       const deleteUser = await this.userModel.findOneAndDelete({ _id: userId });
       deleteUser.password = undefined;
+
+      deleteUser.dogs.map(
+        async (dog) => await this.dogsService.deleteOne(dog._id.toString()),
+      );
+      await this.establishmentsService.deleteByOwner(userId);
 
       return deleteUser;
     } catch (error) {
@@ -126,6 +138,31 @@ export class UsersService {
       await this.userModel.findOneAndUpdate(
         { _id: userId },
         { dogs: [...dogs, dogId] },
+        {
+          returnOriginal: false,
+        },
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_MODIFIED,
+          error,
+        },
+        HttpStatus.NOT_MODIFIED,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async deleteDog(userId: string, dogId: string): Promise<void> {
+    try {
+      const { dogs } = await this.findOne(userId);
+
+      await this.userModel.findOneAndUpdate(
+        { _id: userId },
+        { dogs: dogs.filter((dog) => dog.toString() !== dogId) },
         {
           returnOriginal: false,
         },

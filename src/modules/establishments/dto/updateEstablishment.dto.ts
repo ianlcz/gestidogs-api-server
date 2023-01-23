@@ -1,22 +1,18 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsNotEmpty } from 'class-validator';
 import { Types } from 'mongoose';
 
-export class EstablishmentDto {
+export class UpdateEstablishmentDto {
   @ApiProperty({ type: String, required: true })
-  @IsNotEmpty()
   ownerId: Types.ObjectId;
 
   @ApiProperty({ type: String, required: true })
-  @IsNotEmpty()
   name: string;
 
   @ApiPropertyOptional({ type: String })
   description: string;
 
   @ApiProperty({ type: String, required: true })
-  @IsNotEmpty()
   address: string;
 
   @ApiPropertyOptional({ type: String })

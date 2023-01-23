@@ -248,8 +248,8 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": "Bad Request"
             }
           },
           "tags": [
@@ -312,7 +312,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EstablishmentDto"
+                  "$ref": "#/components/schemas/CreateEstablishmentDto"
                 }
               }
             }
@@ -453,7 +453,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EstablishmentDto"
+                  "$ref": "#/components/schemas/UpdateEstablishmentDto"
                 }
               }
             }
@@ -469,8 +469,8 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": "Bad Request"
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can modify an establishment"
@@ -608,7 +608,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DogDto"
+                  "$ref": "#/components/schemas/CreateDogDto"
                 }
               }
             }
@@ -670,6 +670,27 @@ window.onload = function() {
               "BearerToken": []
             }
           ]
+        },
+        "delete": {
+          "operationId": "DogsController_deleteAll",
+          "summary": "Remove all dogs",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Remove all dogs"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all dogs"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
         }
       },
       "/dogs/{dogId}": {
@@ -699,6 +720,96 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized if the **Client** is not the owner of the dog"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "DogsController_ApiUnsupportedMediaTypeResponse",
+          "summary": "Update a dog",
+          "parameters": [
+            {
+              "name": "dogId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateDogDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The modified dog",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Dog"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            },
+            "401": {
+              "description": "Unauthorized if the **Client** is not the owner of the dog"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "DogsController_deleteOne",
+          "summary": "Delete a dog",
+          "parameters": [
+            {
+              "name": "dogId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted dog",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Dog"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Manager** can delete a dog"
             },
             "404": {
               "description": "Not found"
@@ -744,6 +855,39 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can find dogs by their owner"
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "DogsController_deleteByOwner",
+          "summary": "Delete dogs by owner",
+          "parameters": [
+            {
+              "name": "ownerId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Dogs successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete dogs based on their owner"
+            },
+            "404": {
+              "description": "Not found"
             }
           },
           "tags": [
@@ -909,7 +1053,7 @@ window.onload = function() {
             "password"
           ]
         },
-        "EstablishmentDto": {
+        "CreateEstablishmentDto": {
           "type": "object",
           "properties": {
             "ownerId": {
@@ -971,7 +1115,35 @@ window.onload = function() {
             "address"
           ]
         },
-        "DogDto": {
+        "UpdateEstablishmentDto": {
+          "type": "object",
+          "properties": {
+            "ownerId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "emailAddress": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "ownerId",
+            "name",
+            "address"
+          ]
+        },
+        "CreateDogDto": {
           "type": "object",
           "properties": {
             "ownerId": {
@@ -1011,6 +1183,25 @@ window.onload = function() {
             },
             "__v": {
               "type": "number"
+            }
+          },
+          "required": [
+            "ownerId",
+            "name",
+            "breed"
+          ]
+        },
+        "UpdateDogDto": {
+          "type": "object",
+          "properties": {
+            "ownerId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "breed": {
+              "type": "string"
             }
           },
           "required": [

@@ -133,8 +133,8 @@ export class UsersController {
     type: User,
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
   })
   @Put(':userId')
   async updateOne(

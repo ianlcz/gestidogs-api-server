@@ -1,11 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
   Post,
+  Put,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -15,11 +18,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
+import { CreateDogDto } from './dto/createDog.dto';
+import { UpdateDogDto } from './dto/updateDog.dto';
 import { Dog } from './dog.schema';
 import { DogsService } from './dogs.service';
-import { DogDto } from './dto/dog.dto';
 
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
@@ -50,8 +54,8 @@ export class DogsController {
     description: 'Unprocessable Entity',
   })
   @Post()
-  async create(@Body() dogDto: DogDto): Promise<Dog> {
-    return await this.dogsService.create(dogDto);
+  async create(@Body() createDogDto: CreateDogDto): Promise<Dog> {
+    return await this.dogsService.create(createDogDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -108,5 +112,102 @@ export class DogsController {
   @Get('/owner/:ownerId')
   async findByOwner(@Param('ownerId') ownerId: string): Promise<Dog[]> {
     return await this.dogsService.findByOwner(ownerId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Update a dog' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The modified dog',
+    type: Dog,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Unauthorized if the **Client** is not the owner of the dog',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_MODIFIED,
+    description: 'Not Modified',
+  })
+  @Put('/:dogId')
+  async ApiUnsupportedMediaTypeResponse(
+    @Param('dogId') dogId: string,
+    @Body() updateDogDto: UpdateDogDto,
+    @Req() req: Request,
+  ): Promise<Dog> {
+    return await this.dogsService.updateOne(dogId, updateDogDto, req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Remove all dogs' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Remove all dogs',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can remove all dogs',
+  })
+  @Delete()
+  async deleteAll(@Res() response: Response): Promise<void> {
+    await this.dogsService.deleteAll();
+
+    response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: `Delete all documents in 'dogs' Collection`,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Delete a dog' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The deleted dog',
+    type: Dog,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Manager** can delete a dog',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Not found',
+  })
+  @Delete(':dogId')
+  async deleteOne(@Param('dogId') dogId: string): Promise<Dog> {
+    return await this.dogsService.deleteOne(dogId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Delete dogs by owner' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Dogs successfully deleted',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can delete dogs based on their owner',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Not found',
+  })
+  @Delete('/owner/:ownerId')
+  async deleteByOwner(
+    @Param('ownerId') ownerId: string,
+    @Res() response: Response,
+  ): Promise<void> {
+    await this.dogsService.deleteByOwner(ownerId);
+
+    response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'Delete dogs successfully',
+    });
   }
 }

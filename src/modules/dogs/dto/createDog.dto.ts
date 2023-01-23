@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { Types } from 'mongoose';
 
-export class DogDto {
+export class CreateDogDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   ownerId: Types.ObjectId;
