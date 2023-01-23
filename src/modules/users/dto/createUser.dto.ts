@@ -1,8 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { Types } from 'mongoose';
 
-import { Role } from '../../enums/role.enum';
+import { Role } from '../../../enums/role.enum';
 
 export class CreateUserDto {
   @ApiProperty({ type: String, required: true })
@@ -14,9 +15,11 @@ export class CreateUserDto {
   firstname: string;
 
   @ApiPropertyOptional({
-    enum: ['Admin', 'Educator', 'Client'],
-    default: Role.CLIENT,
+    type: String,
   })
+  avatarUrl: string;
+
+  @ApiPropertyOptional({ enum: Role, default: Role.CLIENT })
   role: Role;
 
   @ApiProperty({ type: String, required: true })
@@ -29,7 +32,7 @@ export class CreateUserDto {
   @MinLength(8)
   password: string;
 
-  avatarUrl: string;
+  dogs: [Types.ObjectId];
   registeredAt: Date;
   lastConnectionAt: Date;
 }

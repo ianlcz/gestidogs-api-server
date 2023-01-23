@@ -25,13 +25,13 @@ import { AuthLoginDto } from './dto/authLogin.dto';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 import { User } from './user.schema';
 import { UsersService } from './users.service';
 
-import { Roles } from '../decorators/roles.decorator';
-import { Role } from '../enums/role.enum';
+import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('users')
@@ -133,8 +133,8 @@ export class UsersController {
     type: User,
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
   })
   @Put(':userId')
   async updateOne(

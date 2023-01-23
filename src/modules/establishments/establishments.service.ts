@@ -1,6 +1,8 @@
 import {
+  forwardRef,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -10,9 +12,9 @@ import { Model } from 'mongoose';
 
 import { UsersService } from '../users/users.service';
 
-import { Role } from '../enums/role.enum';
+import { Role } from '../../enums/role.enum';
 
-import { EstablishmentDto } from './dto/establishment.dto';
+import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
 import { Establishment, EstablishmentDocument } from './establishment.schema';
 
 @Injectable()
@@ -20,19 +22,22 @@ export class EstablishmentsService {
   constructor(
     @InjectModel(Establishment.name)
     private readonly establishmentModel: Model<EstablishmentDocument>,
+    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
   ) {}
 
-  async create(establishmentDto: EstablishmentDto): Promise<Establishment> {
+  async create(
+    createEstablishmentDto: CreateEstablishmentDto,
+  ): Promise<Establishment> {
     try {
       const owner = await this.usersService.findOne(
-        establishmentDto.ownerId.toString(),
+        createEstablishmentDto.ownerId.toString(),
       );
 
-      if (owner && owner.role === Role.MANAGER) {
+      if (owner && (owner.role === Role.ADMIN || owner.role === Role.MANAGER)) {
         // Instanciate Establishment Model with createEstablishmentDto
         const establishmentToCreate = new this.establishmentModel(
-          establishmentDto,
+          createEstablishmentDto,
         );
 
         // Save Establishment data on MongoDB and return them
@@ -41,16 +46,20 @@ export class EstablishmentsService {
         throw new UnauthorizedException();
       }
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error,
-        },
-        HttpStatus.UNPROCESSABLE_ENTITY,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.UNPROCESSABLE_ENTITY,
+            error,
+          },
+          HttpStatus.UNPROCESSABLE_ENTITY,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -80,19 +89,20 @@ export class EstablishmentsService {
   ): Promise<Establishment> {
     try {
       return await this.establishmentModel.findOneAndUpdate(
+        { _id: establishmentId },
         {
-          _id: establishmentId,
+          $set: { ...establishmentChanges },
+          $inc: { __v: 1 },
         },
-        { $set: { ...establishmentChanges }, $inc: { __v: 1 } },
         { returnOriginal: false },
       );
     } catch (error) {
       throw new HttpException(
         {
-          status: HttpStatus.NOT_MODIFIED,
+          status: HttpStatus.BAD_REQUEST,
           error,
         },
-        HttpStatus.NOT_MODIFIED,
+        HttpStatus.BAD_REQUEST,
         {
           cause: error,
         },

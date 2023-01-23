@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
+import { User } from '../modules/users/user.schema';
+
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
-
-import { User } from '../users/user.schema';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -25,9 +25,9 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    const { user }: { user: User } = context.switchToHttp().getRequest();
+    const { user } = context.switchToHttp().getRequest<{ user: User }>();
 
-    if (requiredRoles.some((role: Role) => role == user.role)) {
+    if (requiredRoles.some((role: Role) => role === user.role)) {
       return true;
     } else {
       throw new UnauthorizedException();

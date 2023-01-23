@@ -19,14 +19,15 @@ import {
 
 import { Response } from 'express';
 
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
-import { EstablishmentDto } from './dto/establishment.dto';
+import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
+import { UpdateEstablishmentDto } from './dto/updateEstablishment.dto';
 import { Establishment } from './establishment.schema';
 import { EstablishmentsService } from './establishments.service';
 
-import { Roles } from '../decorators/roles.decorator';
-import { Role } from '../enums/role.enum';
+import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('establishments')
@@ -53,9 +54,9 @@ export class EstablishmentsController {
   })
   @Post()
   async create(
-    @Body() establishmentDto: EstablishmentDto,
+    @Body() createEstablishmentDto: CreateEstablishmentDto,
   ): Promise<Establishment> {
-    return await this.establishmentsService.create(establishmentDto);
+    return await this.establishmentsService.create(createEstablishmentDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -119,17 +120,17 @@ export class EstablishmentsController {
       'Unauthorized because only **Administrators** and **Managers** can modify an establishment',
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
   })
   @Put(':establishmentId')
   async updateOne(
     @Param('establishmentId') establishmentId: string,
-    @Body() establishmentDto: EstablishmentDto,
-  ) {
+    @Body() updateEstablishmentDto: UpdateEstablishmentDto,
+  ): Promise<Establishment> {
     return await this.establishmentsService.updateOne(
       establishmentId,
-      establishmentDto,
+      updateEstablishmentDto,
     );
   }
 
@@ -146,7 +147,7 @@ export class EstablishmentsController {
       'Unauthorized because only **Administrators** can remove all establishments',
   })
   @Delete()
-  async deleteAll(@Res() response: Response) {
+  async deleteAll(@Res() response: Response): Promise<void> {
     await this.establishmentsService.deleteAll();
 
     response.status(HttpStatus.OK).json({
@@ -199,7 +200,7 @@ export class EstablishmentsController {
   async deleteByOwner(
     @Param('ownerId') ownerId: string,
     @Res() response: Response,
-  ) {
+  ): Promise<void> {
     await this.establishmentsService.deleteByOwner(ownerId);
 
     response.status(HttpStatus.OK).json({
