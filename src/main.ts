@@ -33,7 +33,9 @@ async function bootstrap() {
   });
 
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({ transform: true, forbidUnknownValues: false }),
+  );
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 

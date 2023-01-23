@@ -91,7 +91,6 @@ export class DogsService {
     return await this.dogModel.find({ ownerId });
   }
 
-  // TODO: Update not working
   async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {
     try {
       const dog = await this.dogModel.findById(dogId);

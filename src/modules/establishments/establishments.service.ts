@@ -34,7 +34,7 @@ export class EstablishmentsService {
         createEstablishmentDto.ownerId.toString(),
       );
 
-      if (owner && owner.role === Role.MANAGER) {
+      if (owner && (owner.role === Role.ADMIN || owner.role === Role.MANAGER)) {
         // Instanciate Establishment Model with createEstablishmentDto
         const establishmentToCreate = new this.establishmentModel(
           createEstablishmentDto,
@@ -46,16 +46,20 @@ export class EstablishmentsService {
         throw new UnauthorizedException();
       }
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error,
-        },
-        HttpStatus.UNPROCESSABLE_ENTITY,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.UNPROCESSABLE_ENTITY,
+            error,
+          },
+          HttpStatus.UNPROCESSABLE_ENTITY,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -79,7 +83,6 @@ export class EstablishmentsService {
     return await this.establishmentModel.find({ ownerId });
   }
 
-  // TODO: Update not working
   async updateOne(
     establishmentId: string,
     establishmentChanges: object,

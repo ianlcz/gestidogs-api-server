@@ -1,18 +1,18 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Types } from 'mongoose';
 
 export class UpdateEstablishmentDto {
-  @ApiProperty({ type: String, required: true })
+  @ApiPropertyOptional({ type: String })
   ownerId: Types.ObjectId;
 
-  @ApiProperty({ type: String, required: true })
+  @ApiPropertyOptional({ type: String })
   name: string;
 
   @ApiPropertyOptional({ type: String })
   description: string;
 
-  @ApiProperty({ type: String, required: true })
+  @ApiPropertyOptional({ type: String })
   address: string;
 
   @ApiPropertyOptional({ type: String })

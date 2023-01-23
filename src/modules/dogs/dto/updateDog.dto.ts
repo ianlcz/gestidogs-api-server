@@ -3,13 +3,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 
 export class UpdateDogDto {
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: String })
   ownerId: Types.ObjectId;
 
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: String })
   name: string;
 
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: String })
   breed: string;
 
   birthDate: Date;

@@ -22,7 +22,7 @@ export class CreateEstablishmentDto {
   @ApiPropertyOptional({ type: String })
   phoneNumber: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String, required: true })
   @IsEmail()
   emailAddress: string;
 }

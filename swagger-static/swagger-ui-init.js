@@ -1078,7 +1078,8 @@ window.onload = function() {
           "required": [
             "ownerId",
             "name",
-            "address"
+            "address",
+            "emailAddress"
           ]
         },
         "Establishment": {
@@ -1136,12 +1137,7 @@ window.onload = function() {
             "emailAddress": {
               "type": "string"
             }
-          },
-          "required": [
-            "ownerId",
-            "name",
-            "address"
-          ]
+          }
         },
         "CreateDogDto": {
           "type": "object",
