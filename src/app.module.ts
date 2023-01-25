@@ -16,6 +16,7 @@ import { DogsModule } from './modules/dogs/dogs.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 
 import { RolesGuard } from './guards/roles.guard';
+import { ActivityTypesModule } from './modules/activity-types/activity-types.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { RolesGuard } from './guards/roles.guard';
     UsersModule,
     EstablishmentsModule,
     DogsModule,
+    ActivityTypesModule,
   ],
   controllers: [AppController],
   providers: [
