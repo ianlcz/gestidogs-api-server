@@ -1,3 +1,4 @@
+import { Prop } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { IsNotEmpty } from 'class-validator';
@@ -8,6 +9,10 @@ export class CreateDogDto {
   @IsNotEmpty()
   ownerId: Types.ObjectId;
 
+  @Prop({ type: String, required: true })
+  @ApiProperty({ type: String, required: true })
+  nationalId: string;
+
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   name: string;
@@ -17,4 +22,12 @@ export class CreateDogDto {
   breed: string;
 
   birthDate: Date;
+
+  @Prop({ type: Number })
+  @ApiProperty({ type: Number })
+  weight: number;
+
+  @Prop({ type: Number })
+  @ApiProperty({ type: Number })
+  height: number;
 }

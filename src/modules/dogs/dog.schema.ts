@@ -16,6 +16,10 @@ export class Dog {
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
+  nationalId: string;
+
+  @Prop({ type: String, required: true })
+  @ApiProperty({ type: String, required: true })
   name: string;
 
   @Prop({ type: String, required: true })
@@ -25,6 +29,14 @@ export class Dog {
   @Prop()
   @ApiPropertyOptional({ type: Date })
   birthDate: Date;
+
+  @Prop({ type: Number })
+  @ApiProperty({ type: Number })
+  weight: number;
+
+  @Prop({ type: Number })
+  @ApiProperty({ type: Number })
+  height: number;
 
   @Prop()
   @ApiPropertyOptional({ type: Number })
