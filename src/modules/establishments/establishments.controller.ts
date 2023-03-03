@@ -36,7 +36,7 @@ export class EstablishmentsController {
   constructor(private readonly establishmentsService: EstablishmentsService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Create an establishment' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -46,7 +46,7 @@ export class EstablishmentsController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** can create a new establishment',
+      'Unauthorized because only **Administrators** and **Managers** can create a new establishment',
   })
   @ApiResponse({
     status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -60,7 +60,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -107,7 +107,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN, Role.MANAGER)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Update an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -135,7 +135,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -157,7 +157,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -181,7 +181,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete establishments by owner' })
   @ApiResponse({
     status: HttpStatus.OK,

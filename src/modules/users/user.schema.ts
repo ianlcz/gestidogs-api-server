@@ -35,8 +35,16 @@ export class User {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: [String], required: true, default: [] })
-  @ApiProperty({ type: [String], required: true, default: [] })
+  @Prop({ type: Date, default: new Date() })
+  @ApiPropertyOptional({ type: Date })
+  birthDate: Date;
+
+  @Prop({ type: [String], default: [] })
+  @ApiPropertyOptional({ type: [String], default: [] })
+  activities: [Types.ObjectId];
+
+  @Prop({ type: [String], default: [] })
+  @ApiPropertyOptional({ type: [String], default: [] })
   dogs: [Types.ObjectId];
 
   @Prop({ type: Date, default: new Date() })
