@@ -89,7 +89,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all users' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -107,7 +107,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN, Role.MANAGER)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Find a user' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -145,7 +145,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all users' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -167,7 +167,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({
     status: HttpStatus.OK,

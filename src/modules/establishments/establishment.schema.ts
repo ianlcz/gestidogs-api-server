@@ -34,6 +34,16 @@ export class Establishment {
   @ApiPropertyOptional({ type: String })
   emailAddress: string;
 
+  @Prop({
+    type: Array<[{ beginDate: Date; endDate: Date }]>,
+    default: [],
+  })
+  @ApiPropertyOptional({
+    type: Array<[{ beginDate: Date; endDate: Date }]>,
+    default: [],
+  })
+  schedules: [{ beginDate: Date; endDate: Date }][];
+
   @Prop()
   @ApiPropertyOptional({ type: Number })
   __v: number;

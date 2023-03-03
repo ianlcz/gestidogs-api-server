@@ -34,7 +34,10 @@ export class EstablishmentsService {
         createEstablishmentDto.ownerId.toString(),
       );
 
-      if (owner && (owner.role === Role.ADMIN || owner.role === Role.MANAGER)) {
+      if (
+        owner &&
+        (owner.role === Role.ADMINISTRATOR || owner.role === Role.MANAGER)
+      ) {
         // Instanciate Establishment Model with createEstablishmentDto
         const establishmentToCreate = new this.establishmentModel(
           createEstablishmentDto,

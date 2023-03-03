@@ -32,6 +32,8 @@ export class CreateUserDto {
   @MinLength(8)
   password: string;
 
+  birthDate: Date;
+  activities: [Types.ObjectId];
   dogs: [Types.ObjectId];
   registeredAt: Date;
   lastConnectionAt: Date;

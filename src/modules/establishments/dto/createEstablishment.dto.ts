@@ -25,4 +25,10 @@ export class CreateEstablishmentDto {
   @ApiProperty({ type: String, required: true })
   @IsEmail()
   emailAddress: string;
+
+  @ApiPropertyOptional({
+    type: Array<[{ beginDate: Date; endDate: Date }]>,
+    default: [],
+  })
+  schedules: [{ beginDate: Date; endDate: Date }][];
 }

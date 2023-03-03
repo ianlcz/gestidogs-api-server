@@ -20,4 +20,9 @@ export class UpdateEstablishmentDto {
 
   @ApiPropertyOptional({ type: String })
   emailAddress: string;
+
+  @ApiPropertyOptional({
+    type: Array<[{ beginDate: Date; endDate: Date }]>,
+  })
+  schedules: [{ beginDate: Date; endDate: Date }][];
 }

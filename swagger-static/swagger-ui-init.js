@@ -329,7 +329,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** can create a new establishment"
+              "description": "Unauthorized because only **Administrators** and **Managers** can create a new establishment"
             },
             "422": {
               "description": "Unprocessable Entity"
@@ -735,7 +735,7 @@ window.onload = function() {
           ]
         },
         "put": {
-          "operationId": "DogsController_ApiUnsupportedMediaTypeResponse",
+          "operationId": "DogsController_updateOne",
           "summary": "Update a dog",
           "parameters": [
             {
@@ -809,7 +809,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** and **Manager** can delete a dog"
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a dog"
             },
             "404": {
               "description": "Not found"
@@ -899,6 +899,227 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/activities": {
+        "post": {
+          "operationId": "ActivitiesController_create",
+          "summary": "Create an activity",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateActivityDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Activity successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Activity"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can create an activity"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "activities"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "ActivitiesController_findAll",
+          "summary": "Find all activities",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of activities",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Activity"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all activities"
+            }
+          },
+          "tags": [
+            "activities"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ActivitiesController_deleteAll",
+          "summary": "Remove all activities",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Remove all activities"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all activities"
+            }
+          },
+          "tags": [
+            "activities"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/activities/{activityId}": {
+        "get": {
+          "operationId": "ActivitiesController_findOne",
+          "summary": "Find an activity",
+          "parameters": [
+            {
+              "name": "activityId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found activity",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Activity"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "activities"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "ActivitiesController_updateOne",
+          "summary": "Update an activity",
+          "parameters": [
+            {
+              "name": "activityId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateActivityDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The modified activity",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Activity"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            }
+          },
+          "tags": [
+            "activities"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ActivitiesController_deleteOne",
+          "summary": "Delete an activity",
+          "parameters": [
+            {
+              "name": "activityId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted activity",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Activity"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete an activity"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "activities"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -935,7 +1156,7 @@ window.onload = function() {
             "role": {
               "type": "string",
               "enum": [
-                "Admin",
+                "Administrator",
                 "Manager",
                 "Educator",
                 "Client"
@@ -989,7 +1210,7 @@ window.onload = function() {
             "role": {
               "type": "string",
               "enum": [
-                "Admin",
+                "Administrator",
                 "Manager",
                 "Educator",
                 "Client"
@@ -999,6 +1220,17 @@ window.onload = function() {
             "emailAddress": {
               "type": "string",
               "uniqueItems": true
+            },
+            "birthDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "activities": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "dogs": {
               "default": [],
@@ -1023,7 +1255,6 @@ window.onload = function() {
             "lastname",
             "firstname",
             "emailAddress",
-            "dogs",
             "registeredAt"
           ]
         },
@@ -1073,6 +1304,13 @@ window.onload = function() {
             },
             "emailAddress": {
               "type": "string"
+            },
+            "schedules": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": [
@@ -1106,6 +1344,13 @@ window.onload = function() {
             "emailAddress": {
               "type": "string"
             },
+            "schedules": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "__v": {
               "type": "number"
             }
@@ -1136,6 +1381,12 @@ window.onload = function() {
             },
             "emailAddress": {
               "type": "string"
+            },
+            "schedules": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         },
@@ -1205,6 +1456,93 @@ window.onload = function() {
             "name",
             "breed"
           ]
+        },
+        "CreateActivityDto": {
+          "type": "object",
+          "properties": {
+            "establishmentId": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "number"
+            },
+            "maximumCapacity": {
+              "type": "number"
+            },
+            "price": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "establishmentId",
+            "title",
+            "duration",
+            "price"
+          ]
+        },
+        "Activity": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "establishmentId": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "number"
+            },
+            "maximumCapacity": {
+              "type": "number"
+            },
+            "price": {
+              "type": "number"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "establishmentId",
+            "title",
+            "duration",
+            "price"
+          ]
+        },
+        "UpdateActivityDto": {
+          "type": "object",
+          "properties": {
+            "establishmentId": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "number"
+            },
+            "maximumCapacity": {
+              "type": "number"
+            },
+            "price": {
+              "type": "number"
+            }
+          }
         }
       }
     }

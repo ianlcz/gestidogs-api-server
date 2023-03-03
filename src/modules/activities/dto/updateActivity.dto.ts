@@ -2,7 +2,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Types } from 'mongoose';
 
-export class UpdateActivityTypeDto {
+export class UpdateActivityDto {
   @ApiPropertyOptional({ type: String })
   establishmentId: Types.ObjectId;
 

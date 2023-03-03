@@ -3,10 +3,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
-export type ActivityTypeDocument = HydratedDocument<ActivityType>;
+export type ActivityDocument = HydratedDocument<Activity>;
 
 @Schema()
-export class ActivityType {
+export class Activity {
   @ApiPropertyOptional({ type: String })
   _id: Types.ObjectId;
 
@@ -39,4 +39,4 @@ export class ActivityType {
   __v: number;
 }
 
-export const ActivityTypeSchema = SchemaFactory.createForClass(ActivityType);
+export const ActivitySchema = SchemaFactory.createForClass(Activity);

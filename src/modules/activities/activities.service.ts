@@ -8,19 +8,17 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
-import { ActivityType, ActivityTypeDocument } from './activity-type.schema';
-import { CreateActivityTypeDto } from './dto/createActivityType.dto';
+import { Activity, ActivityDocument } from './activity.schema';
+import { CreateActivityDto } from './dto/createActivity.dto';
 
 @Injectable()
-export class ActivityTypesService {
+export class ActivitiesService {
   constructor(
-    @InjectModel(ActivityType.name)
-    private readonly activityTypeModel: Model<ActivityTypeDocument>,
+    @InjectModel(Activity.name)
+    private readonly activityTypeModel: Model<ActivityDocument>,
   ) {}
 
-  async create(
-    createActivityTypeDto: CreateActivityTypeDto,
-  ): Promise<ActivityType> {
+  async create(createActivityTypeDto: CreateActivityDto): Promise<Activity> {
     try {
       // Instanciate Dog Model with createDogDto
       const activityTypeToCreate = new this.activityTypeModel(
@@ -38,11 +36,11 @@ export class ActivityTypesService {
     }
   }
 
-  async findAll(): Promise<ActivityType[]> {
+  async findAll(): Promise<Activity[]> {
     return await this.activityTypeModel.find();
   }
 
-  async findOne(activityTypeId: string): Promise<ActivityType> {
+  async findOne(activityTypeId: string): Promise<Activity> {
     try {
       return await this.activityTypeModel.findById(activityTypeId);
     } catch (error) {
@@ -66,7 +64,7 @@ export class ActivityTypesService {
   async updateOne(
     activityTypeId: string,
     activityTypeChanges: object,
-  ): Promise<ActivityType> {
+  ): Promise<Activity> {
     try {
       return await this.activityTypeModel.findByIdAndUpdate(
         {
@@ -97,7 +95,7 @@ export class ActivityTypesService {
     await this.activityTypeModel.deleteMany();
   }
 
-  async deleteOne(activityTypeId: string): Promise<ActivityType> {
+  async deleteOne(activityTypeId: string): Promise<Activity> {
     try {
       const activityType = await this.activityTypeModel.findByIdAndDelete({
         _id: activityTypeId,

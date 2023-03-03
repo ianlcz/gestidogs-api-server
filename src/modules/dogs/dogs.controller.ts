@@ -37,7 +37,7 @@ export class DogsController {
   constructor(private readonly dogsService: DogsService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN, Role.MANAGER)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Create a dog' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -59,7 +59,7 @@ export class DogsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all dogs' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -97,7 +97,7 @@ export class DogsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN, Role.MANAGER)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Find dogs by owner' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -129,8 +129,8 @@ export class DogsController {
     status: HttpStatus.NOT_MODIFIED,
     description: 'Not Modified',
   })
-  @Put('/:dogId')
-  async ApiUnsupportedMediaTypeResponse(
+  @Put(':dogId')
+  async updateOne(
     @Param('dogId') dogId: string,
     @Body() updateDogDto: UpdateDogDto,
     @Req() req: Request,
@@ -139,7 +139,7 @@ export class DogsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all dogs' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -161,7 +161,7 @@ export class DogsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN, Role.MANAGER)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete a dog' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -171,7 +171,7 @@ export class DogsController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** and **Manager** can delete a dog',
+      'Unauthorized because only **Administrators** and **Managers** can delete a dog',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -183,7 +183,7 @@ export class DogsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Roles(Role.ADMIN, Role.MANAGER)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete dogs by owner' })
   @ApiResponse({
     status: HttpStatus.OK,
