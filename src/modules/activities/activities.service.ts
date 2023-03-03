@@ -61,6 +61,10 @@ export class ActivitiesService {
     }
   }
 
+  async findByEstablishment(establishmentId: string): Promise<Activity[]> {
+    return await this.activityTypeModel.find({ establishmentId });
+  }
+
   async updateOne(
     activityTypeId: string,
     activityTypeChanges: object,

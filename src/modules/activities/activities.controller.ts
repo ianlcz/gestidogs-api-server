@@ -90,6 +90,20 @@ export class ActivitiesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Find activities of an establishment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of activities of an establishment',
+    type: [Activity],
+  })
+  @Get('/establishment/:establishmentId')
+  async findByEstablishment(
+    @Param('establishmentId') establishmentId: string,
+  ): Promise<Activity[]> {
+    return await this.activitiesService.findByEstablishment(establishmentId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update an activity' })
   @ApiResponse({
     status: HttpStatus.OK,
