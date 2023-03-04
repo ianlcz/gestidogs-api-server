@@ -36,7 +36,3 @@ lerna-debug.log*
 
 # Environment Variables
 .env
-
-# Static Files
-swagger-static/*
-!.gitkeep
