@@ -1,6 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { MinLength } from 'class-validator';
 import { Types } from 'mongoose';
 
 import { Status } from '../../../enums/status.enum';
@@ -18,11 +17,10 @@ export class UpdateSessionDto {
   })
   status: Status;
 
-  @ApiPropertyOptional({ type: Number, required: true })
-  maxCapacity: number;
+  @ApiPropertyOptional({ type: Number, required: true, default: 1 })
+  maximumCapacity: number;
 
   @ApiPropertyOptional({ type: String })
-  @MinLength(40)
   report: string;
 
   @ApiPropertyOptional({ type: Date, required: true })

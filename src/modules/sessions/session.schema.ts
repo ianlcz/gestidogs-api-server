@@ -24,9 +24,9 @@ export class Session {
   @ApiProperty({ enum: Status, required: true, default: Status.PENDING })
   status: Status;
 
-  @Prop({ type: Number, required: true })
-  @ApiProperty({ type: Number, required: true })
-  maxCapacity: number;
+  @Prop({ type: Number, required: true, default: 1 })
+  @ApiProperty({ type: Number, required: true, default: 1 })
+  maximumCapacity: number;
 
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })

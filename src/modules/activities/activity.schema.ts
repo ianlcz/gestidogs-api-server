@@ -26,10 +26,6 @@ export class Activity {
   @ApiProperty({ type: Number, required: true })
   duration: number;
 
-  @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
-  maximumCapacity: number;
-
   @Prop({ type: Number, required: true })
   @ApiProperty({ type: Number, required: true })
   price: number;
