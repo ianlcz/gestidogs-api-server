@@ -19,7 +19,7 @@ export class CreateUserDto {
   })
   avatarUrl: string;
 
-  @ApiPropertyOptional({ enum: Role, default: Role.CLIENT })
+  @ApiProperty({ enum: Role, default: Role.CLIENT })
   role: Role;
 
   @ApiProperty({ type: String, required: true })

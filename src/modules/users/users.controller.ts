@@ -65,10 +65,6 @@ export class UsersController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad Request',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Not Found',
-  })
   @Post('login')
   async login(
     @Body() authLoginDto: AuthLoginDto,

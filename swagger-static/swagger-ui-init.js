@@ -77,9 +77,6 @@ window.onload = function() {
             },
             "400": {
               "description": "Bad Request"
-            },
-            "404": {
-              "description": "Not Found"
             }
           },
           "tags": [
@@ -1212,6 +1209,7 @@ window.onload = function() {
           "required": [
             "lastname",
             "firstname",
+            "role",
             "emailAddress",
             "password"
           ]
@@ -1293,6 +1291,7 @@ window.onload = function() {
           "required": [
             "lastname",
             "firstname",
+            "role",
             "emailAddress",
             "registeredAt"
           ]
@@ -1345,18 +1344,27 @@ window.onload = function() {
               "type": "string"
             },
             "schedules": {
-              "default": [],
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "array",
+                "properties": {
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  }
+                }
+              },
+              "default": []
             }
           },
           "required": [
             "ownerId",
             "name",
             "address",
-            "emailAddress"
+            "emailAddress",
+            "schedules"
           ]
         },
         "Establishment": {
@@ -1384,11 +1392,19 @@ window.onload = function() {
               "type": "string"
             },
             "schedules": {
-              "default": [],
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "array",
+                "properties": {
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  }
+                }
+              },
+              "default": []
             },
             "__v": {
               "type": "number"
@@ -1397,7 +1413,8 @@ window.onload = function() {
           "required": [
             "ownerId",
             "name",
-            "address"
+            "address",
+            "schedules"
           ]
         },
         "UpdateEstablishmentDto": {
@@ -1424,8 +1441,17 @@ window.onload = function() {
             "schedules": {
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "array",
+                "properties": {
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  }
+                }
+              },
+              "default": []
             }
           }
         },
