@@ -251,7 +251,25 @@ window.onload = function() {
         "get": {
           "operationId": "SessionsController_findByEducator",
           "summary": "Find sessions by educator",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "educatorId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "date",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
               "description": "List of sessions by their educator",
@@ -317,7 +335,16 @@ window.onload = function() {
         "get": {
           "operationId": "SessionsController_findByActivity",
           "summary": "Find sessions by activity",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "activityId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
               "description": "List of sessions by activity",

@@ -7,12 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -89,6 +91,11 @@ export class SessionsController {
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Find sessions by educator' })
+  @ApiQuery({
+    name: 'date',
+    type: Date,
+    required: false,
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of sessions by their educator',
@@ -96,8 +103,13 @@ export class SessionsController {
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
   @Get('/educator/:educatorId')
-  async findByEducator(educatorId: string): Promise<Session[]> {
-    return await this.sessionsService.findByEducator(educatorId);
+  async findByEducator(
+    @Param('educatorId') educatorId: string,
+    @Query('date') date?: Date,
+  ): Promise<{ today: Session[]; next: Session[] } | Session[]> {
+    return date instanceof Date && isFinite(date.getTime())
+      ? await this.sessionsService.findByEducatorAndDate(educatorId, date)
+      : await this.sessionsService.findByEducator(educatorId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -108,7 +120,9 @@ export class SessionsController {
     type: [Session],
   })
   @Get('/activity/:activityId')
-  async findByActivity(activityId: string): Promise<Session[]> {
+  async findByActivity(
+    @Param('activityId') activityId: string,
+  ): Promise<Session[]> {
     return await this.sessionsService.findByActivity(activityId);
   }
 

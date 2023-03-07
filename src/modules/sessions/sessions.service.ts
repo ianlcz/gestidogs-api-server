@@ -65,11 +65,31 @@ export class SessionsService {
   }
 
   async findByEducator(educatorId: string): Promise<Session[]> {
-    return await this.sessionModel.findById({ educatorId });
+    return await this.sessionModel.find({ educatorId });
+  }
+
+  async findByEducatorAndDate(
+    educatorId: string,
+    date: Date,
+  ): Promise<{ today: Session[]; next: Session[] }> {
+    const tomorrow = new Date();
+    tomorrow.setDate(date.getDate() + 1);
+
+    const todaySession: Session[] = await this.sessionModel.find({
+      educatorId,
+      beginDate: { $gte: date },
+      endDate: { $lt: tomorrow },
+    });
+    const nextSessions: Session[] = await this.sessionModel.find({
+      educatorId,
+      beginDate: { $gte: tomorrow },
+    });
+
+    return { today: todaySession, next: nextSessions };
   }
 
   async findByActivity(activityId: string): Promise<Session[]> {
-    return await this.sessionModel.findById({ activityId });
+    return await this.sessionModel.find({ activityId });
   }
 
   async updateOne(sessionId: string, sessionChanges: object): Promise<Session> {
