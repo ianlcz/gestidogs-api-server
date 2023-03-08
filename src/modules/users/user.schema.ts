@@ -25,7 +25,7 @@ export class User {
   avatarUrl: string;
 
   @Prop({ type: String, enum: Role, required: true, default: Role.CLIENT })
-  @ApiPropertyOptional({ enum: Role, default: Role.CLIENT })
+  @ApiProperty({ enum: Role, default: Role.CLIENT })
   role: Role;
 
   @Prop({ type: String, lowercase: true, unique: true, required: true })

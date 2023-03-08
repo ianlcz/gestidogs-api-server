@@ -1,8 +1,8 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
@@ -219,7 +219,7 @@ export class UsersService {
     }
   }
 
-  async validateUser(credentials: AuthLoginDto): Promise<User | null> {
+  async validateUser(credentials: AuthLoginDto): Promise<User> {
     const user: User = await this.userModel.findOne({
       emailAddress: credentials.emailAddress,
     });
@@ -232,18 +232,18 @@ export class UsersService {
       return user;
     }
 
-    return null;
+    throw new BadRequestException();
   }
 
   async login(
     authLoginDto: AuthLoginDto,
   ): Promise<{ token: string; user: User }> {
     const validateUser = await this.validateUser(authLoginDto);
-    if (!validateUser) throw new NotFoundException();
 
     this.setLastConnectionDate(validateUser.emailAddress);
 
     const user = await this.validateUser(authLoginDto);
+
     const payload = {
       sub: user._id,
       emailAddress: user.emailAddress,

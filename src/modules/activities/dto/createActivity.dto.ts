@@ -19,9 +19,6 @@ export class CreateActivityDto {
   @IsNotEmpty()
   duration: number;
 
-  @ApiPropertyOptional({ type: Number })
-  maximumCapacity: number;
-
   @ApiProperty({ type: Number, required: true })
   @IsNotEmpty()
   price: number;

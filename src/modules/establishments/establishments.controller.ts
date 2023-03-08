@@ -99,7 +99,7 @@ export class EstablishmentsController {
     description: 'List of owner-managed establishments',
     type: [Establishment],
   })
-  @Get('/owner/:ownerId')
+  @Get('/owners/:ownerId')
   async findByOwner(
     @Param('ownerId') ownerId: string,
   ): Promise<Establishment[]> {
@@ -196,7 +196,7 @@ export class EstablishmentsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
-  @Delete('/owner/:ownerId')
+  @Delete('/owners/:ownerId')
   async deleteByOwner(
     @Param('ownerId') ownerId: string,
     @Res() response: Response,

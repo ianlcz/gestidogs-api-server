@@ -109,7 +109,7 @@ export class DogsController {
     description:
       'Unauthorized because only **Administrators** and **Managers** can find dogs by their owner',
   })
-  @Get('/owner/:ownerId')
+  @Get('/owners/:ownerId')
   async findByOwner(@Param('ownerId') ownerId: string): Promise<Dog[]> {
     return await this.dogsService.findByOwner(ownerId);
   }
@@ -198,7 +198,7 @@ export class DogsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
-  @Delete('/owner/:ownerId')
+  @Delete('/owners/:ownerId')
   async deleteByOwner(
     @Param('ownerId') ownerId: string,
     @Res() response: Response,

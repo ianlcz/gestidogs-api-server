@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
+import { IsArray } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class UpdateEstablishmentDto {
@@ -22,7 +23,16 @@ export class UpdateEstablishmentDto {
   emailAddress: string;
 
   @ApiPropertyOptional({
-    type: Array<[{ beginDate: Date; endDate: Date }]>,
+    type: 'array',
+    items: {
+      type: 'array',
+      properties: {
+        startTime: { type: 'string' },
+        endTime: { type: 'string' },
+      },
+    },
+    default: [],
   })
-  schedules: [{ beginDate: Date; endDate: Date }][];
+  @IsArray()
+  schedules: [{ startTime: string; endTime: string }][];
 }

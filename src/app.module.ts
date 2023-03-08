@@ -17,6 +17,8 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 
 import { RolesGuard } from './guards/roles.guard';
 import { ActivitiesModule } from './modules/activities/activities.module';
+import { SessionsController } from './modules/sessions/sessions.controller';
+import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
@@ -30,8 +32,9 @@ import { ActivitiesModule } from './modules/activities/activities.module';
     EstablishmentsModule,
     DogsModule,
     ActivitiesModule,
+    SessionsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, SessionsController],
   providers: [
     AppService,
     {

@@ -96,7 +96,7 @@ export class ActivitiesController {
     description: 'List of activities of an establishment',
     type: [Activity],
   })
-  @Get('/establishment/:establishmentId')
+  @Get('/establishments/:establishmentId')
   async findByEstablishment(
     @Param('establishmentId') establishmentId: string,
   ): Promise<Activity[]> {

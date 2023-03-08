@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsArray, IsEmail, IsNotEmpty } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateEstablishmentDto {
@@ -23,12 +23,21 @@ export class CreateEstablishmentDto {
   phoneNumber: string;
 
   @ApiProperty({ type: String, required: true })
+  @IsNotEmpty()
   @IsEmail()
   emailAddress: string;
 
-  @ApiPropertyOptional({
-    type: Array<[{ beginDate: Date; endDate: Date }]>,
+  @ApiProperty({
+    type: 'array',
+    items: {
+      type: 'array',
+      properties: {
+        startTime: { type: 'string' },
+        endTime: { type: 'string' },
+      },
+    },
     default: [],
   })
-  schedules: [{ beginDate: Date; endDate: Date }][];
+  @IsArray()
+  schedules: [{ startTime: string; endTime: string }][];
 }

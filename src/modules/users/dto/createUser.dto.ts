@@ -19,7 +19,7 @@ export class CreateUserDto {
   })
   avatarUrl: string;
 
-  @ApiPropertyOptional({ enum: Role, default: Role.CLIENT })
+  @ApiProperty({ enum: Role, default: Role.CLIENT })
   role: Role;
 
   @ApiProperty({ type: String, required: true })
@@ -32,7 +32,9 @@ export class CreateUserDto {
   @MinLength(8)
   password: string;
 
+  @ApiProperty({ type: Date })
   birthDate: Date;
+
   activities: [Types.ObjectId];
   dogs: [Types.ObjectId];
   registeredAt: Date;

@@ -23,6 +23,388 @@ window.onload = function() {
           }
         }
       },
+      "/sessions": {
+        "post": {
+          "operationId": "SessionsController_create",
+          "summary": "Create a session",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Session successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can create a new session"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "SessionsController_findAll",
+          "summary": "Find all sessions",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of sessions",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Session"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all sessions"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "SessionsController_deleteAll",
+          "summary": "Remove all sessions",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Remove all sessions"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all sessions"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/sessions/{sessionId}": {
+        "get": {
+          "operationId": "SessionsController_findOne",
+          "summary": "Find a session",
+          "parameters": [
+            {
+              "name": "sessionId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found session",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "SessionsController_updateOne",
+          "summary": "Update a session",
+          "parameters": [
+            {
+              "name": "sessionId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateSessionDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The modified session",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            },
+            "401": {
+              "description": "**Client** not allowed to modify a session"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "SessionsController_deleteOne",
+          "summary": "Delete a session",
+          "parameters": [
+            {
+              "name": "sessionId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted session",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/sessions/users/{userId}": {
+        "get": {
+          "operationId": "SessionsController_findByEducator",
+          "summary": "Find sessions by user",
+          "parameters": [
+            {
+              "name": "userId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "date",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of sessions by their user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Session"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/sessions/activities/{activityId}": {
+        "get": {
+          "operationId": "SessionsController_findByActivity",
+          "summary": "Find sessions by activity",
+          "parameters": [
+            {
+              "name": "activityId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of sessions by activity",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Session"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "SessionsController_deleteByActivity",
+          "summary": "Delete sessions by activity",
+          "parameters": [
+            {
+              "name": "activityId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Sessions successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/sessions/educators/{educatorId}": {
+        "delete": {
+          "operationId": "SessionsController_deleteByEducator",
+          "summary": "Delete sessions by educator",
+          "parameters": [
+            {
+              "name": "educatorId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Sessions successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/users/register": {
         "post": {
           "operationId": "UsersController_register",
@@ -77,9 +459,6 @@ window.onload = function() {
             },
             "400": {
               "description": "Bad Request"
-            },
-            "404": {
-              "description": "Not Found"
             }
           },
           "tags": [
@@ -526,7 +905,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/owner/{ownerId}": {
+      "/establishments/owners/{ownerId}": {
         "get": {
           "operationId": "EstablishmentsController_findByOwner",
           "summary": "Find establishments by owner",
@@ -825,7 +1204,7 @@ window.onload = function() {
           ]
         }
       },
-      "/dogs/owner/{ownerId}": {
+      "/dogs/owners/{ownerId}": {
         "get": {
           "operationId": "DogsController_findByOwner",
           "summary": "Find dogs by owner",
@@ -1121,7 +1500,7 @@ window.onload = function() {
           ]
         }
       },
-      "/activities/establishment/{establishmentId}": {
+      "/activities/establishments/{establishmentId}": {
         "get": {
           "operationId": "ActivitiesController_findByEstablishment",
           "summary": "Find activities of an establishment",
@@ -1180,6 +1559,136 @@ window.onload = function() {
         }
       },
       "schemas": {
+        "CreateSessionDto": {
+          "type": "object",
+          "properties": {
+            "educatorId": {
+              "type": "string"
+            },
+            "activityId": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "Online",
+                "Pending",
+                "Postponed",
+                "Canceled"
+              ],
+              "default": "Pending"
+            },
+            "maximumCapacity": {
+              "type": "number",
+              "default": 1
+            },
+            "report": {
+              "type": "string"
+            },
+            "beginDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "endDate": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          "required": [
+            "educatorId",
+            "activityId",
+            "status",
+            "maximumCapacity",
+            "beginDate",
+            "endDate"
+          ]
+        },
+        "Session": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "educatorId": {
+              "type": "string"
+            },
+            "activityId": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "Online",
+                "Pending",
+                "Postponed",
+                "Canceled"
+              ],
+              "default": "Pending"
+            },
+            "maximumCapacity": {
+              "type": "number",
+              "default": 1
+            },
+            "report": {
+              "type": "string"
+            },
+            "beginDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "endDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "educatorId",
+            "activityId",
+            "status",
+            "maximumCapacity",
+            "beginDate",
+            "endDate"
+          ]
+        },
+        "UpdateSessionDto": {
+          "type": "object",
+          "properties": {
+            "educatorId": {
+              "type": "string"
+            },
+            "activityId": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "Online",
+                "Pending",
+                "Postponed",
+                "Canceled"
+              ],
+              "default": "Pending"
+            },
+            "maximumCapacity": {
+              "type": "number",
+              "default": 1
+            },
+            "report": {
+              "type": "string"
+            },
+            "beginDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "endDate": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        },
         "CreateUserDto": {
           "type": "object",
           "properties": {
@@ -1207,13 +1716,19 @@ window.onload = function() {
             },
             "password": {
               "type": "string"
+            },
+            "birthDate": {
+              "format": "date-time",
+              "type": "string"
             }
           },
           "required": [
             "lastname",
             "firstname",
+            "role",
             "emailAddress",
-            "password"
+            "password",
+            "birthDate"
           ]
         },
         "AuthLoginDto": {
@@ -1293,6 +1808,7 @@ window.onload = function() {
           "required": [
             "lastname",
             "firstname",
+            "role",
             "emailAddress",
             "registeredAt"
           ]
@@ -1345,18 +1861,27 @@ window.onload = function() {
               "type": "string"
             },
             "schedules": {
-              "default": [],
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "array",
+                "properties": {
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  }
+                }
+              },
+              "default": []
             }
           },
           "required": [
             "ownerId",
             "name",
             "address",
-            "emailAddress"
+            "emailAddress",
+            "schedules"
           ]
         },
         "Establishment": {
@@ -1384,11 +1909,19 @@ window.onload = function() {
               "type": "string"
             },
             "schedules": {
-              "default": [],
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "array",
+                "properties": {
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  }
+                }
+              },
+              "default": []
             },
             "__v": {
               "type": "number"
@@ -1397,7 +1930,8 @@ window.onload = function() {
           "required": [
             "ownerId",
             "name",
-            "address"
+            "address",
+            "schedules"
           ]
         },
         "UpdateEstablishmentDto": {
@@ -1424,8 +1958,17 @@ window.onload = function() {
             "schedules": {
               "type": "array",
               "items": {
-                "type": "string"
-              }
+                "type": "array",
+                "properties": {
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  }
+                }
+              },
+              "default": []
             }
           }
         },
@@ -1542,9 +2085,6 @@ window.onload = function() {
             "duration": {
               "type": "number"
             },
-            "maximumCapacity": {
-              "type": "number"
-            },
             "price": {
               "type": "number"
             }
@@ -1574,9 +2114,6 @@ window.onload = function() {
             "duration": {
               "type": "number"
             },
-            "maximumCapacity": {
-              "type": "number"
-            },
             "price": {
               "type": "number"
             },
@@ -1604,9 +2141,6 @@ window.onload = function() {
               "type": "string"
             },
             "duration": {
-              "type": "number"
-            },
-            "maximumCapacity": {
               "type": "number"
             },
             "price": {

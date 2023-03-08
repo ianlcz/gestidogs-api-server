@@ -16,8 +16,5 @@ export class UpdateActivityDto {
   duration: number;
 
   @ApiPropertyOptional({ type: Number })
-  maximumCapacity: number;
-
-  @ApiPropertyOptional({ type: Number })
   price: number;
 }
