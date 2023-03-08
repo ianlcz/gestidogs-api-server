@@ -68,14 +68,14 @@ export class SessionsService {
     return await this.sessionModel.find({ educatorId });
   }
 
-  async findByEducatorAndDate(
+  async findEducatorSessionsByDate(
     educatorId: string,
     date: Date,
   ): Promise<{ today: Session[]; next: Session[] }> {
     const tomorrow = new Date();
     tomorrow.setDate(date.getDate() + 1);
 
-    const todaySession: Session[] = await this.sessionModel.find({
+    const todaySessions: Session[] = await this.sessionModel.find({
       educatorId,
       beginDate: { $gte: date },
       endDate: { $lt: tomorrow },
@@ -85,7 +85,7 @@ export class SessionsService {
       beginDate: { $gte: tomorrow },
     });
 
-    return { today: todaySession, next: nextSessions };
+    return { today: todaySessions, next: nextSessions };
   }
 
   async findByActivity(activityId: string): Promise<Session[]> {

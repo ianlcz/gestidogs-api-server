@@ -247,13 +247,13 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/educator/{educatorId}": {
+      "/sessions/users/{userId}": {
         "get": {
           "operationId": "SessionsController_findByEducator",
-          "summary": "Find sessions by educator",
+          "summary": "Find sessions by user",
           "parameters": [
             {
-              "name": "educatorId",
+              "name": "userId",
               "required": true,
               "in": "path",
               "schema": {
@@ -272,7 +272,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of sessions by their educator",
+              "description": "List of sessions by their user",
               "content": {
                 "application/json": {
                   "schema": {
@@ -296,42 +296,9 @@ window.onload = function() {
               "BearerToken": []
             }
           ]
-        },
-        "delete": {
-          "operationId": "SessionsController_deleteByEducator",
-          "summary": "Delete sessions by educator",
-          "parameters": [
-            {
-              "name": "educatorId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Sessions successfully deleted"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
-            },
-            "404": {
-              "description": "Not found"
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
         }
       },
-      "/sessions/activity/{activityId}": {
+      "/sessions/activities/{activityId}": {
         "get": {
           "operationId": "SessionsController_findByActivity",
           "summary": "Find sessions by activity",
@@ -388,6 +355,41 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/sessions/educators/{educatorId}": {
+        "delete": {
+          "operationId": "SessionsController_deleteByEducator",
+          "summary": "Delete sessions by educator",
+          "parameters": [
+            {
+              "name": "educatorId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Sessions successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
             },
             "404": {
               "description": "Not found"
@@ -903,7 +905,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/owner/{ownerId}": {
+      "/establishments/owners/{ownerId}": {
         "get": {
           "operationId": "EstablishmentsController_findByOwner",
           "summary": "Find establishments by owner",
@@ -1202,7 +1204,7 @@ window.onload = function() {
           ]
         }
       },
-      "/dogs/owner/{ownerId}": {
+      "/dogs/owners/{ownerId}": {
         "get": {
           "operationId": "DogsController_findByOwner",
           "summary": "Find dogs by owner",
@@ -1498,7 +1500,7 @@ window.onload = function() {
           ]
         }
       },
-      "/activities/establishment/{establishmentId}": {
+      "/activities/establishments/{establishmentId}": {
         "get": {
           "operationId": "ActivitiesController_findByEstablishment",
           "summary": "Find activities of an establishment",
@@ -1714,6 +1716,10 @@ window.onload = function() {
             },
             "password": {
               "type": "string"
+            },
+            "birthDate": {
+              "format": "date-time",
+              "type": "string"
             }
           },
           "required": [
@@ -1721,7 +1727,8 @@ window.onload = function() {
             "firstname",
             "role",
             "emailAddress",
-            "password"
+            "password",
+            "birthDate"
           ]
         },
         "AuthLoginDto": {

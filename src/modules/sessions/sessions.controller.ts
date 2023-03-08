@@ -30,6 +30,8 @@ import { UpdateSessionDto } from './dto/updateSession.dto';
 import { Session } from './session.schema';
 import { SessionsService } from './sessions.service';
 
+type sessionEducatorType = { today: Session[]; next: Session[] } | Session[];
+
 @ApiBearerAuth('BearerToken')
 @ApiTags('sessions')
 @Controller('sessions')
@@ -90,7 +92,7 @@ export class SessionsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Find sessions by educator' })
+  @ApiOperation({ summary: 'Find sessions by user' })
   @ApiQuery({
     name: 'date',
     type: Date,
@@ -98,18 +100,18 @@ export class SessionsController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'List of sessions by their educator',
+    description: 'List of sessions by their user',
     type: [Session],
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
-  @Get('/educator/:educatorId')
+  @Get('/users/:userId')
   async findByEducator(
-    @Param('educatorId') educatorId: string,
+    @Param('userId') userId: string,
     @Query('date') date?: Date,
-  ): Promise<{ today: Session[]; next: Session[] } | Session[]> {
+  ): Promise<sessionEducatorType> {
     return date instanceof Date && isFinite(date.getTime())
-      ? await this.sessionsService.findByEducatorAndDate(educatorId, date)
-      : await this.sessionsService.findByEducator(educatorId);
+      ? await this.sessionsService.findEducatorSessionsByDate(userId, date)
+      : await this.sessionsService.findByEducator(userId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -119,7 +121,7 @@ export class SessionsController {
     description: 'List of sessions by activity',
     type: [Session],
   })
-  @Get('/activity/:activityId')
+  @Get('/activities/:activityId')
   async findByActivity(
     @Param('activityId') activityId: string,
   ): Promise<Session[]> {
@@ -210,7 +212,7 @@ export class SessionsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
-  @Delete('/educator/:educatorId')
+  @Delete('/educators/:educatorId')
   async deleteByEducator(
     @Param('educatorId') educatorId: string,
     @Res() response: Response,
@@ -239,7 +241,7 @@ export class SessionsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
-  @Delete('/activity/:activityId')
+  @Delete('/activities/:activityId')
   async deleteByActivity(
     @Param('activityId') activityId: string,
     @Res() response: Response,
