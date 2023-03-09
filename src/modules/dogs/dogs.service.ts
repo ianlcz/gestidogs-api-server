@@ -131,7 +131,10 @@ export class DogsService {
     const owners = await this.usersService.findAll();
     owners.map(
       async (owner) =>
-        await this.usersService.updateOne(owner._id.toString(), { dogs: [] }),
+        await this.usersService.updateOne(owner._id.toString(), {
+          ...owner,
+          dogs: [],
+        }),
     );
 
     await this.dogModel.deleteMany();

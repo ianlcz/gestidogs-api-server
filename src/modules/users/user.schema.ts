@@ -35,7 +35,7 @@ export class User {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: Date, default: new Date() })
+  @Prop({ type: Date })
   @ApiPropertyOptional({ type: Date })
   birthDate: Date;
 

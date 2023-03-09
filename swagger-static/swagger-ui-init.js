@@ -1727,8 +1727,7 @@ window.onload = function() {
             "firstname",
             "role",
             "emailAddress",
-            "password",
-            "birthDate"
+            "password"
           ]
         },
         "AuthLoginDto": {

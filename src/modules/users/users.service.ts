@@ -18,6 +18,7 @@ import { User, UserDocument } from './user.schema';
 
 import { EstablishmentsService } from '../establishments/establishments.service';
 import { DogsService } from '../dogs/dogs.service';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -38,6 +39,8 @@ export class UsersService {
   async findOne(userId: string): Promise<User> {
     try {
       const user = await this.userModel.findById(userId);
+
+      // Hide User password
       user.password = undefined;
 
       return user;
@@ -50,8 +53,11 @@ export class UsersService {
     }
   }
 
-  async updateOne(userId: string, userChanges: object): Promise<User> {
+  async updateOne(userId: string, userChanges: UpdateUserDto): Promise<User> {
     try {
+      // Hashing new user password
+      userChanges.password = bcrypt.hashSync(userChanges.password, 12);
+
       const modifyUser = await this.userModel.findOneAndUpdate(
         { _id: userId },
         {
@@ -60,6 +66,8 @@ export class UsersService {
         },
         { returnOriginal: false },
       );
+
+      // Hide User password
       modifyUser.password = undefined;
 
       return modifyUser;
@@ -86,6 +94,8 @@ export class UsersService {
   async deleteOne(userId: string): Promise<User> {
     try {
       const deleteUser = await this.userModel.findOneAndDelete({ _id: userId });
+
+      // Hide User password
       deleteUser.password = undefined;
 
       deleteUser.dogs.map(
@@ -199,6 +209,7 @@ export class UsersService {
 
       // Save User data on MongoDB
       await userToRegister.save();
+
       // Hide User password
       userToRegister.password = undefined;
 
@@ -225,6 +236,7 @@ export class UsersService {
     });
 
     if (user && bcrypt.compareSync(credentials.password, user.password)) {
+      // Hide User password
       user.password = undefined;
 
       request.user = user;
@@ -250,6 +262,7 @@ export class UsersService {
       role: user.role,
     };
 
+    // Hide User password
     user.password = undefined;
 
     return { token: this.jwtService.sign(payload), user };
@@ -259,6 +272,8 @@ export class UsersService {
     const user = await this.userModel.findOne({
       emailAddress: token.emailAddress,
     });
+
+    // Hide User password
     user.password = undefined;
 
     return user;
