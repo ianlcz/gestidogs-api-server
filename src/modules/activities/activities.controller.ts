@@ -19,7 +19,7 @@ import {
 
 import { Response } from 'express';
 import { Roles } from 'src/decorators/roles.decorator';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { AccessTokenGuard } from 'src/guards/accessToken.guard';
 
 import { Activity } from './activity.schema';
 
@@ -34,7 +34,7 @@ import { Role } from 'src/enums/role.enum';
 export class ActivitiesController {
   constructor(private readonly activitiesService: ActivitiesService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Create an activity' })
   @ApiResponse({
@@ -58,7 +58,7 @@ export class ActivitiesController {
     return await this.activitiesService.create(createActivityDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all activities' })
   @ApiResponse({
@@ -76,7 +76,7 @@ export class ActivitiesController {
     return await this.activitiesService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find an activity' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -89,7 +89,7 @@ export class ActivitiesController {
     return await this.activitiesService.findOne(activityId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find activities of an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -103,7 +103,7 @@ export class ActivitiesController {
     return await this.activitiesService.findByEstablishment(establishmentId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Update an activity' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -122,7 +122,7 @@ export class ActivitiesController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all activities' })
   @ApiResponse({
@@ -144,7 +144,7 @@ export class ActivitiesController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete an activity' })
   @ApiResponse({

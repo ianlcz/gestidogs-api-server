@@ -23,7 +23,7 @@ import { Response } from 'express';
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateSessionDto } from './dto/createSession.dto';
 import { UpdateSessionDto } from './dto/updateSession.dto';
@@ -38,7 +38,7 @@ type sessionEducatorType = { today: Session[]; next: Session[] } | Session[];
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Create a session' })
   @ApiResponse({
@@ -60,7 +60,7 @@ export class SessionsController {
     return await this.sessionsService.create(createSessionDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all sessions' })
   @ApiResponse({
@@ -78,7 +78,7 @@ export class SessionsController {
     return await this.sessionsService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find a session' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -91,7 +91,7 @@ export class SessionsController {
     return await this.sessionsService.findOne(sessionId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find sessions by user' })
   @ApiQuery({
     name: 'date',
@@ -114,7 +114,7 @@ export class SessionsController {
       : await this.sessionsService.findByEducator(userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find sessions by activity' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -128,7 +128,7 @@ export class SessionsController {
     return await this.sessionsService.findByActivity(activityId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Update a session' })
   @ApiResponse({
@@ -152,7 +152,7 @@ export class SessionsController {
     return await this.sessionsService.updateOne(sessionId, updateSessionDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all sessions' })
   @ApiResponse({
@@ -174,7 +174,7 @@ export class SessionsController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Delete a session' })
   @ApiResponse({
@@ -196,7 +196,7 @@ export class SessionsController {
     return await this.sessionsService.deleteOne(sessionId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Delete sessions by educator' })
   @ApiResponse({
@@ -225,7 +225,7 @@ export class SessionsController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete sessions by activity' })
   @ApiResponse({

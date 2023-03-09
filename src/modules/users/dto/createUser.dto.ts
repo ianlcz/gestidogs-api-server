@@ -39,4 +39,5 @@ export class CreateUserDto {
   dogs: [Types.ObjectId];
   registeredAt: Date;
   lastConnectionAt: Date;
+  refreshToken: string;
 }

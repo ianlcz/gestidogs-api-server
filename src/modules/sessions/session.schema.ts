@@ -9,7 +9,6 @@ export type SessionDocument = HydratedDocument<Session>;
 
 @Schema()
 export class Session {
-  @ApiPropertyOptional({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })

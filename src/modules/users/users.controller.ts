@@ -25,13 +25,14 @@ import { AuthLoginDto } from './dto/authLogin.dto';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { User } from './user.schema';
 import { UsersService } from './users.service';
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
+import { RefreshTokenGuard } from 'src/guards/refreshToken.guard';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('users')
@@ -66,13 +67,27 @@ export class UsersController {
     description: 'Bad Request',
   })
   @Post('login')
-  async login(
-    @Body() authLoginDto: AuthLoginDto,
-  ): Promise<{ token: string; user: User }> {
+  async login(@Body() authLoginDto: AuthLoginDto) {
     return await this.usersService.login(authLoginDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Logout a user' })
+  @Post('logout')
+  logout(@Req() req: Request) {
+    this.usersService.logout(req.user['sub']);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @ApiOperation({ summary: 'Refresh a user' })
+  @Post('refresh')
+  refreshTokens(@Req() req: Request) {
+    const userId = req.user['sub'];
+    const refreshToken = req.user['refreshToken'];
+    return this.usersService.refreshTokens(userId, refreshToken);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Get user logged informations' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -84,7 +99,7 @@ export class UsersController {
     return await this.usersService.getInfos(request.user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all users' })
   @ApiResponse({
@@ -102,7 +117,7 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Find a user' })
   @ApiResponse({
@@ -121,7 +136,7 @@ export class UsersController {
     return await this.usersService.findOne(userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Update user informations' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -140,7 +155,7 @@ export class UsersController {
     return await this.usersService.updateOne(userId, updateUserDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all users' })
   @ApiResponse({
@@ -162,7 +177,7 @@ export class UsersController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({

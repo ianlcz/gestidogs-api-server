@@ -471,6 +471,46 @@ window.onload = function() {
           ]
         }
       },
+      "/users/logout": {
+        "post": {
+          "operationId": "UsersController_logout",
+          "summary": "Logout a user",
+          "parameters": [],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "users"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/users/refresh": {
+        "post": {
+          "operationId": "UsersController_refreshTokens",
+          "summary": "Refresh a user",
+          "parameters": [],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "users"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/users/online": {
         "get": {
           "operationId": "UsersController_getInfos",
@@ -1645,9 +1685,6 @@ window.onload = function() {
         "Session": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "educatorId": {
               "type": "string"
             },
@@ -1787,9 +1824,6 @@ window.onload = function() {
         "User": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "lastname": {
               "type": "string"
             },
@@ -1929,9 +1963,6 @@ window.onload = function() {
         "Establishment": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "ownerId": {
               "type": "string"
             },
@@ -2059,9 +2090,6 @@ window.onload = function() {
         "Dog": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "ownerId": {
               "type": "string"
             },
@@ -2160,9 +2188,6 @@ window.onload = function() {
         "Activity": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "establishmentId": {
               "type": "string"
             },

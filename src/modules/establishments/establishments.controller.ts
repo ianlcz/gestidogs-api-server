@@ -19,7 +19,7 @@ import {
 
 import { Response } from 'express';
 
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
 import { UpdateEstablishmentDto } from './dto/updateEstablishment.dto';
@@ -35,7 +35,7 @@ import { Role } from '../../enums/role.enum';
 export class EstablishmentsController {
   constructor(private readonly establishmentsService: EstablishmentsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Create an establishment' })
   @ApiResponse({
@@ -59,7 +59,7 @@ export class EstablishmentsController {
     return await this.establishmentsService.create(createEstablishmentDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all establishments' })
   @ApiResponse({
@@ -77,7 +77,7 @@ export class EstablishmentsController {
     return await this.establishmentsService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -92,7 +92,7 @@ export class EstablishmentsController {
     return await this.establishmentsService.findOne(establishmentId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find establishments by owner' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -106,7 +106,7 @@ export class EstablishmentsController {
     return await this.establishmentsService.findByOwner(ownerId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Update an establishment' })
   @ApiResponse({
@@ -134,7 +134,7 @@ export class EstablishmentsController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all establishments' })
   @ApiResponse({
@@ -156,7 +156,7 @@ export class EstablishmentsController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete an establishment' })
   @ApiResponse({
@@ -180,7 +180,7 @@ export class EstablishmentsController {
     return await this.establishmentsService.deleteOne(establishmentId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete establishments by owner' })
   @ApiResponse({

@@ -7,7 +7,6 @@ export type EstablishmentDocument = HydratedDocument<Establishment>;
 
 @Schema()
 export class Establishment {
-  @ApiPropertyOptional({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })

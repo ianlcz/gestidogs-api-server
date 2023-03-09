@@ -25,7 +25,7 @@ import { UpdateDogDto } from './dto/updateDog.dto';
 import { Dog } from './dog.schema';
 import { DogsService } from './dogs.service';
 
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
@@ -36,7 +36,7 @@ import { Role } from '../../enums/role.enum';
 export class DogsController {
   constructor(private readonly dogsService: DogsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Create a dog' })
   @ApiResponse({
@@ -58,7 +58,7 @@ export class DogsController {
     return await this.dogsService.create(createDogDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all dogs' })
   @ApiResponse({
@@ -76,7 +76,7 @@ export class DogsController {
     return await this.dogsService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find a dog' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -96,7 +96,7 @@ export class DogsController {
     return await this.dogsService.findOne(dogId, req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Find dogs by owner' })
   @ApiResponse({
@@ -127,7 +127,7 @@ export class DogsController {
     return await this.dogsService.findByEstablishment(establishmentId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Update a dog' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -151,7 +151,7 @@ export class DogsController {
     return await this.dogsService.updateOne(dogId, updateDogDto, req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Remove all dogs' })
   @ApiResponse({
@@ -173,7 +173,7 @@ export class DogsController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete a dog' })
   @ApiResponse({
@@ -195,7 +195,7 @@ export class DogsController {
     return await this.dogsService.deleteOne(dogId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete dogs by owner' })
   @ApiResponse({

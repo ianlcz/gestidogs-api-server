@@ -7,7 +7,6 @@ export type DogDocument = HydratedDocument<Dog>;
 
 @Schema()
 export class Dog {
-  @ApiPropertyOptional({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })
