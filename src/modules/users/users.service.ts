@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
@@ -245,7 +240,10 @@ export class UsersService {
       return user;
     }
 
-    throw new BadRequestException();
+    throw new HttpException(
+      'Wrong login and/or password',
+      HttpStatus.BAD_REQUEST,
+    );
   }
 
   async login(
