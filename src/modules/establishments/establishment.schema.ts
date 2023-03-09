@@ -34,6 +34,10 @@ export class Establishment {
   @ApiPropertyOptional({ type: String })
   emailAddress: string;
 
+  @Prop({ type: [Types.ObjectId] })
+  @ApiProperty({ type: [String] })
+  employees: [{ type: Types.ObjectId; ref: 'User' }];
+
   @Prop({
     type: [[{ startTime: String, endTime: String }]],
     default: [],

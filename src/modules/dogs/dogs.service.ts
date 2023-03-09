@@ -91,6 +91,10 @@ export class DogsService {
     return await this.dogModel.find({ ownerId });
   }
 
+  async findByEstablishment(establishmentId: string): Promise<Dog[]> {
+    return await this.dogModel.find({ establishmentId });
+  }
+
   async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {
     try {
       const dog = await this.dogModel.findById(dogId);

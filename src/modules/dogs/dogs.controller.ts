@@ -114,6 +114,19 @@ export class DogsController {
     return await this.dogsService.findByOwner(ownerId);
   }
 
+  @ApiOperation({ summary: 'Find dogs by establishment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of dogs by establishment',
+    type: [Dog],
+  })
+  @Get('/establishments/:establishmentId')
+  async findByEstablishment(
+    @Param('establishmentId') establishmentId: string,
+  ): Promise<Dog[]> {
+    return await this.dogsService.findByEstablishment(establishmentId);
+  }
+
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a dog' })
   @ApiResponse({

@@ -27,6 +27,10 @@ export class CreateEstablishmentDto {
   @IsEmail()
   emailAddress: string;
 
+  @ApiProperty({ type: 'array' })
+  @IsArray()
+  employees: [Types.ObjectId];
+
   @ApiProperty({
     type: 'array',
     items: {

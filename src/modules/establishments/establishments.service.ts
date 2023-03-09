@@ -34,6 +34,9 @@ export class EstablishmentsService {
         createEstablishmentDto.ownerId.toString(),
       );
 
+      // By default, Managers are employees of their establishments
+      createEstablishmentDto.employees = [createEstablishmentDto.ownerId];
+
       if (
         owner &&
         (owner.role === Role.ADMINISTRATOR || owner.role === Role.MANAGER)

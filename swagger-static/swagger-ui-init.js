@@ -1279,6 +1279,45 @@ window.onload = function() {
           ]
         }
       },
+      "/dogs/establishments/{establishmentId}": {
+        "get": {
+          "operationId": "DogsController_findByEstablishment",
+          "summary": "Find dogs by establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of dogs by establishment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Dog"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/activities": {
         "post": {
           "operationId": "ActivitiesController_create",
@@ -1859,6 +1898,9 @@ window.onload = function() {
             "emailAddress": {
               "type": "string"
             },
+            "employees": {
+              "type": "array"
+            },
             "schedules": {
               "type": "array",
               "items": {
@@ -1880,6 +1922,7 @@ window.onload = function() {
             "name",
             "address",
             "emailAddress",
+            "employees",
             "schedules"
           ]
         },
@@ -1907,6 +1950,12 @@ window.onload = function() {
             "emailAddress": {
               "type": "string"
             },
+            "employees": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "schedules": {
               "type": "array",
               "items": {
@@ -1930,6 +1979,7 @@ window.onload = function() {
             "ownerId",
             "name",
             "address",
+            "employees",
             "schedules"
           ]
         },
@@ -1977,6 +2027,9 @@ window.onload = function() {
             "ownerId": {
               "type": "string"
             },
+            "establishmentId": {
+              "type": "string"
+            },
             "nationalId": {
               "type": "string"
             },
@@ -1995,6 +2048,7 @@ window.onload = function() {
           },
           "required": [
             "ownerId",
+            "establishmentId",
             "nationalId",
             "name",
             "breed",
@@ -2009,6 +2063,9 @@ window.onload = function() {
               "type": "string"
             },
             "ownerId": {
+              "type": "string"
+            },
+            "establishmentId": {
               "type": "string"
             },
             "nationalId": {
@@ -2036,6 +2093,7 @@ window.onload = function() {
           },
           "required": [
             "ownerId",
+            "establishmentId",
             "nationalId",
             "name",
             "breed",
@@ -2047,6 +2105,9 @@ window.onload = function() {
           "type": "object",
           "properties": {
             "ownerId": {
+              "type": "string"
+            },
+            "establishmentId": {
               "type": "string"
             },
             "nationalId": {
@@ -2066,7 +2127,8 @@ window.onload = function() {
             }
           },
           "required": [
-            "ownerId"
+            "ownerId",
+            "establishmentId"
           ]
         },
         "CreateActivityDto": {
