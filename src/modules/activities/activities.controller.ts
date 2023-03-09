@@ -26,7 +26,8 @@ import { Activity } from './activity.schema';
 import { ActivitiesService } from './activities.service';
 import { CreateActivityDto } from './dto/createActivity.dto';
 import { UpdateActivityDto } from './dto/updateActivity.dto';
-import { Role } from 'src/enums/role.enum';
+
+import { Role } from '../../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('activities')

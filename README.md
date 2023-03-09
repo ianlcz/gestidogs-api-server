@@ -22,17 +22,18 @@ First of all, if you have just cloned the repository you have to install the pro
 
 ## Usage
 
-### Generate your JWT_SECRET
+### How to generate a JWT secret ?
 
 On Linux and Mac, type this command `openssl rand -hex 32` or go to https://generate-secret.now.sh/32.
 
 ### Write the .env files
 
-You must copy the `.env.example` file in the root folder of the application and replace `<GESTIDOGS_MONGO_URI>` and `<GESTIDOGS_JWT_SECRET>` with your own :
+You must copy the `.env.example` file in the root folder of the application and replace `<GESTIDOGS_MONGO_URI>`, `<GESTIDOGS_JWT_ACCESS_SECRET>` and `<GESTIDOGS_JWT_REFRESH_SECRET>` with your own :
 
 ```
 GESTIDOGS_MONGO_URI=<GESTIDOGS_MONGO_URI>
-JWT_SECRET=<GESTIDOGS_JWT_SECRET>
+JWT_ACCESS_SECRET=<GESTIDOGS_JWT_ACCESS_SECRET>
+JWT_REFRESH_SECRET=<GESTIDOGS_JWT_REFRESH_SECRET>
 ```
 
 ### Running
