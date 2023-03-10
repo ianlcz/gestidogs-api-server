@@ -37,12 +37,26 @@ export class ActivitiesService {
   }
 
   async findAll(): Promise<Activity[]> {
-    return await this.activityTypeModel.find();
+    return await this.activityTypeModel.find().populate({
+      path: 'establishment',
+      model: 'Establishment',
+      populate: [
+        { path: 'owner', model: 'User' },
+        { path: 'employees', model: 'User' },
+      ],
+    });
   }
 
   async findOne(activityTypeId: string): Promise<Activity> {
     try {
-      return await this.activityTypeModel.findById(activityTypeId);
+      return await this.activityTypeModel.findById(activityTypeId).populate({
+        path: 'establishment',
+        model: 'Establishment',
+        populate: [
+          { path: 'owner', model: 'User' },
+          { path: 'employees', model: 'User' },
+        ],
+      });
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
@@ -62,7 +76,14 @@ export class ActivitiesService {
   }
 
   async findByEstablishment(establishmentId: string): Promise<Activity[]> {
-    return await this.activityTypeModel.find({ establishmentId });
+    return await this.activityTypeModel.find({ establishmentId }).populate({
+      path: 'establishment',
+      model: 'Establishment',
+      populate: [
+        { path: 'owner', model: 'User' },
+        { path: 'employees', model: 'User' },
+      ],
+    });
   }
 
   async updateOne(
@@ -70,13 +91,22 @@ export class ActivitiesService {
     activityTypeChanges: object,
   ): Promise<Activity> {
     try {
-      return await this.activityTypeModel.findByIdAndUpdate(
-        {
-          _id: activityTypeId,
-        },
-        { $set: { ...activityTypeChanges }, $inc: { __v: 1 } },
-        { returnOriginal: false },
-      );
+      return await this.activityTypeModel
+        .findByIdAndUpdate(
+          {
+            _id: activityTypeId,
+          },
+          { $set: { ...activityTypeChanges }, $inc: { __v: 1 } },
+          { returnOriginal: false },
+        )
+        .populate({
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        });
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
@@ -101,9 +131,18 @@ export class ActivitiesService {
 
   async deleteOne(activityTypeId: string): Promise<Activity> {
     try {
-      const activityType = await this.activityTypeModel.findByIdAndDelete({
-        _id: activityTypeId,
-      });
+      const activityType = await this.activityTypeModel
+        .findByIdAndDelete({
+          _id: activityTypeId,
+        })
+        .populate({
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        });
 
       return activityType;
     } catch (error) {

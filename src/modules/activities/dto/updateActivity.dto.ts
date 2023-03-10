@@ -1,10 +1,10 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { Types } from 'mongoose';
+import { Establishment } from '../../establishments/establishment.schema';
 
 export class UpdateActivityDto {
   @ApiPropertyOptional({ type: String })
-  establishmentId: Types.ObjectId;
+  establishment: Establishment;
 
   @ApiPropertyOptional({ type: String })
   title: string;

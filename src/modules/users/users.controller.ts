@@ -50,9 +50,13 @@ export class UsersController {
     description: 'Unprocessable Entity',
   })
   @Post('register')
-  async register(
-    @Body() createUserDto: CreateUserDto,
-  ): Promise<{ token: string; user: User }> {
+  async register(@Body() createUserDto: CreateUserDto): Promise<{
+    tokens: {
+      accessToken: string;
+      refreshToken: string;
+    };
+    user: User;
+  }> {
     return await this.usersService.register(createUserDto);
   }
 

@@ -31,12 +31,6 @@ export class DogsService {
       // Instanciate Dog Model with createDogDto
       const dogToCreate = new this.dogModel(createDogDto);
 
-      // Add dogId in Owner dog list
-      await this.usersService.setDog(
-        createDogDto.ownerId.toString(),
-        dogToCreate._id.toString(),
-      );
-
       // Save Dog data on MongoDB and return them
       return await dogToCreate.save();
     } catch (error) {
@@ -54,17 +48,64 @@ export class DogsService {
   }
 
   async findAll(): Promise<Dog[]> {
-    return await this.dogModel.find();
+    return await this.dogModel.find().populate([
+      {
+        path: 'owner',
+        model: 'User',
+        populate: {
+          path: 'dogs',
+          model: 'Dog',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+      },
+      {
+        path: 'establishment',
+        model: 'Establishment',
+        populate: [
+          { path: 'owner', model: 'User' },
+          { path: 'employees', model: 'User' },
+        ],
+      },
+    ]);
   }
 
   async findOne(dogId: string, user: any): Promise<Dog> {
     try {
-      const dog = await this.dogModel.findById(dogId);
+      const dog = await this.dogModel.findById(dogId).populate([
+        {
+          path: 'owner',
+          model: 'User',
+          populate: {
+            path: 'dogs',
+            model: 'Dog',
+            populate: {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          },
+        },
+        {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      ]);
 
-      if (
-        user.role === Role.CLIENT &&
-        user.userId.toString() !== dog.ownerId.toString()
-      ) {
+      if (user.role === Role.CLIENT && user._id !== dog.owner._id) {
         throw new UnauthorizedException();
       }
 
@@ -88,31 +129,130 @@ export class DogsService {
   }
 
   async findByOwner(ownerId: string): Promise<Dog[]> {
-    return await this.dogModel.find({ ownerId });
+    return await this.dogModel.find({ ownerId }).populate([
+      {
+        path: 'owner',
+        model: 'User',
+        populate: {
+          path: 'dogs',
+          model: 'Dog',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+      },
+      {
+        path: 'establishment',
+        model: 'Establishment',
+        populate: [
+          { path: 'owner', model: 'User' },
+          { path: 'employees', model: 'User' },
+        ],
+      },
+    ]);
   }
 
   async findByEstablishment(establishmentId: string): Promise<Dog[]> {
-    return await this.dogModel.find({ establishmentId });
+    return await this.dogModel.find({ establishmentId }).populate([
+      {
+        path: 'owner',
+        model: 'User',
+        populate: {
+          path: 'dogs',
+          model: 'Dog',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+      },
+      {
+        path: 'establishment',
+        model: 'Establishment',
+        populate: [
+          { path: 'owner', model: 'User' },
+          { path: 'employees', model: 'User' },
+        ],
+      },
+    ]);
   }
 
   async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {
     try {
-      const dog = await this.dogModel.findById(dogId);
+      const dog = await this.dogModel.findById(dogId).populate([
+        {
+          path: 'owner',
+          model: 'User',
+          populate: {
+            path: 'dogs',
+            model: 'Dog',
+            populate: {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          },
+        },
+        {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      ]);
 
-      if (
-        user.role === Role.CLIENT &&
-        user.userId.toString() !== dog.ownerId.toString()
-      ) {
+      if (user.role === Role.CLIENT && user._id !== dog.owner._id) {
         throw new UnauthorizedException();
       }
 
-      return await this.dogModel.findByIdAndUpdate(
-        {
-          _id: dogId,
-        },
-        { $set: { ...dogChanges }, $inc: { __v: 1 } },
-        { returnOriginal: false },
-      );
+      return await this.dogModel
+        .findByIdAndUpdate(
+          {
+            _id: dogId,
+          },
+          { $set: { ...dogChanges }, $inc: { __v: 1 } },
+          { returnOriginal: false },
+        )
+        .populate([
+          {
+            path: 'owner',
+            model: 'User',
+            populate: {
+              path: 'dogs',
+              model: 'Dog',
+              populate: {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
+            },
+          },
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
@@ -146,12 +286,34 @@ export class DogsService {
 
   async deleteOne(dogId: string): Promise<Dog> {
     try {
-      const dog = await this.dogModel.findByIdAndDelete({ _id: dogId });
-
-      await this.usersService.deleteDog(
-        dog.ownerId.toString(),
-        dog._id.toString(),
-      );
+      const dog = await this.dogModel
+        .findByIdAndDelete({ _id: dogId })
+        .populate([
+          {
+            path: 'owner',
+            model: 'User',
+            populate: {
+              path: 'dogs',
+              model: 'Dog',
+              populate: {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
+            },
+          },
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ]);
 
       return dog;
     } catch (error) {
@@ -168,18 +330,13 @@ export class DogsService {
     }
   }
 
-  async deleteByOwner(ownerId: string): Promise<void> {
+  async deleteByOwner(ownerId: string): Promise<Dog[]> {
     try {
       const dogs: Dog[] = await this.findByOwner(ownerId);
 
-      dogs.map(async (dog) => {
-        await this.deleteOne(dog._id.toString());
+      dogs.forEach(async (dog) => await this.deleteOne(dog._id.toString()));
 
-        await this.usersService.deleteDog(
-          dog.ownerId.toString(),
-          dog._id.toString(),
-        );
-      });
+      return dogs;
     } catch (error) {
       throw new HttpException(
         {

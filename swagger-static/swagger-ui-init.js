@@ -1641,10 +1641,10 @@ window.onload = function() {
         "CreateSessionDto": {
           "type": "object",
           "properties": {
-            "educatorId": {
+            "educator": {
               "type": "string"
             },
-            "activityId": {
+            "activity": {
               "type": "string"
             },
             "status": {
@@ -1674,8 +1674,8 @@ window.onload = function() {
             }
           },
           "required": [
-            "educatorId",
-            "activityId",
+            "educator",
+            "activity",
             "status",
             "maximumCapacity",
             "beginDate",
@@ -1685,10 +1685,10 @@ window.onload = function() {
         "Session": {
           "type": "object",
           "properties": {
-            "educatorId": {
+            "educator": {
               "type": "string"
             },
-            "activityId": {
+            "activity": {
               "type": "string"
             },
             "status": {
@@ -1721,8 +1721,8 @@ window.onload = function() {
             }
           },
           "required": [
-            "educatorId",
-            "activityId",
+            "educator",
+            "activity",
             "status",
             "maximumCapacity",
             "beginDate",
@@ -1732,10 +1732,10 @@ window.onload = function() {
         "UpdateSessionDto": {
           "type": "object",
           "properties": {
-            "educatorId": {
+            "educator": {
               "type": "string"
             },
-            "activityId": {
+            "activity": {
               "type": "string"
             },
             "status": {
@@ -1858,13 +1858,6 @@ window.onload = function() {
                 "type": "string"
               }
             },
-            "dogs": {
-              "default": [],
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
             "registeredAt": {
               "format": "date-time",
               "type": "string"
@@ -1914,7 +1907,7 @@ window.onload = function() {
         "CreateEstablishmentDto": {
           "type": "object",
           "properties": {
-            "ownerId": {
+            "owner": {
               "type": "string"
             },
             "name": {
@@ -1952,7 +1945,7 @@ window.onload = function() {
             }
           },
           "required": [
-            "ownerId",
+            "owner",
             "name",
             "address",
             "emailAddress",
@@ -1963,7 +1956,7 @@ window.onload = function() {
         "Establishment": {
           "type": "object",
           "properties": {
-            "ownerId": {
+            "owner": {
               "type": "string"
             },
             "name": {
@@ -2007,7 +2000,7 @@ window.onload = function() {
             }
           },
           "required": [
-            "ownerId",
+            "owner",
             "name",
             "address",
             "employees",
@@ -2017,7 +2010,7 @@ window.onload = function() {
         "UpdateEstablishmentDto": {
           "type": "object",
           "properties": {
-            "ownerId": {
+            "owner": {
               "type": "string"
             },
             "name": {
@@ -2034,6 +2027,9 @@ window.onload = function() {
             },
             "emailAddress": {
               "type": "string"
+            },
+            "employees": {
+              "type": "array"
             },
             "schedules": {
               "type": "array",
@@ -2055,10 +2051,10 @@ window.onload = function() {
         "CreateDogDto": {
           "type": "object",
           "properties": {
-            "ownerId": {
+            "owner": {
               "type": "string"
             },
-            "establishmentId": {
+            "establishment": {
               "type": "string"
             },
             "nationalId": {
@@ -2078,8 +2074,8 @@ window.onload = function() {
             }
           },
           "required": [
-            "ownerId",
-            "establishmentId",
+            "owner",
+            "establishment",
             "nationalId",
             "name",
             "breed",
@@ -2090,10 +2086,10 @@ window.onload = function() {
         "Dog": {
           "type": "object",
           "properties": {
-            "ownerId": {
+            "owner": {
               "type": "string"
             },
-            "establishmentId": {
+            "establishment": {
               "type": "string"
             },
             "nationalId": {
@@ -2120,8 +2116,8 @@ window.onload = function() {
             }
           },
           "required": [
-            "ownerId",
-            "establishmentId",
+            "owner",
+            "establishment",
             "nationalId",
             "name",
             "breed",
@@ -2132,10 +2128,10 @@ window.onload = function() {
         "UpdateDogDto": {
           "type": "object",
           "properties": {
-            "ownerId": {
+            "owner": {
               "type": "string"
             },
-            "establishmentId": {
+            "establishment": {
               "type": "string"
             },
             "nationalId": {
@@ -2155,14 +2151,14 @@ window.onload = function() {
             }
           },
           "required": [
-            "ownerId",
-            "establishmentId"
+            "owner",
+            "establishment"
           ]
         },
         "CreateActivityDto": {
           "type": "object",
           "properties": {
-            "establishmentId": {
+            "establishment": {
               "type": "string"
             },
             "title": {
@@ -2179,7 +2175,7 @@ window.onload = function() {
             }
           },
           "required": [
-            "establishmentId",
+            "establishment",
             "title",
             "duration",
             "price"
@@ -2188,7 +2184,7 @@ window.onload = function() {
         "Activity": {
           "type": "object",
           "properties": {
-            "establishmentId": {
+            "establishment": {
               "type": "string"
             },
             "title": {
@@ -2208,7 +2204,7 @@ window.onload = function() {
             }
           },
           "required": [
-            "establishmentId",
+            "establishment",
             "title",
             "duration",
             "price"
@@ -2217,7 +2213,7 @@ window.onload = function() {
         "UpdateActivityDto": {
           "type": "object",
           "properties": {
-            "establishmentId": {
+            "establishment": {
               "type": "string"
             },
             "title": {

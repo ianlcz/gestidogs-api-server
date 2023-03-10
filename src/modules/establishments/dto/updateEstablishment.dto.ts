@@ -1,11 +1,12 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsArray } from 'class-validator';
-import { Types } from 'mongoose';
+
+import { User } from '../../users/user.schema';
 
 export class UpdateEstablishmentDto {
   @ApiPropertyOptional({ type: String })
-  ownerId: Types.ObjectId;
+  owner: User;
 
   @ApiPropertyOptional({ type: String })
   name: string;
@@ -21,6 +22,10 @@ export class UpdateEstablishmentDto {
 
   @ApiPropertyOptional({ type: String })
   emailAddress: string;
+
+  @ApiPropertyOptional({ type: 'array' })
+  @IsArray()
+  employees: User[];
 
   @ApiPropertyOptional({
     type: 'array',

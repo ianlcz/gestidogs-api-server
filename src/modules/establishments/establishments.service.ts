@@ -31,11 +31,11 @@ export class EstablishmentsService {
   ): Promise<Establishment> {
     try {
       const owner = await this.usersService.findOne(
-        createEstablishmentDto.ownerId.toString(),
+        createEstablishmentDto.owner._id.toString(),
       );
 
       // By default, Managers are employees of their establishments
-      createEstablishmentDto.employees = [createEstablishmentDto.ownerId];
+      createEstablishmentDto.employees = [createEstablishmentDto.owner];
 
       if (
         owner &&
@@ -70,12 +70,18 @@ export class EstablishmentsService {
   }
 
   async findAll(): Promise<Establishment[]> {
-    return await this.establishmentModel.find();
+    return await this.establishmentModel.find().populate([
+      { path: 'owner', model: 'User' },
+      { path: 'employees', model: 'User' },
+    ]);
   }
 
   async findOne(establishmentId: string): Promise<Establishment> {
     try {
-      return await this.establishmentModel.findById(establishmentId);
+      return await this.establishmentModel.findById(establishmentId).populate([
+        { path: 'owner', model: 'User' },
+        { path: 'employees', model: 'User' },
+      ]);
     } catch (error) {
       throw new HttpException(
         { status: HttpStatus.NOT_FOUND, error },
@@ -86,7 +92,10 @@ export class EstablishmentsService {
   }
 
   async findByOwner(ownerId: string): Promise<Establishment[]> {
-    return await this.establishmentModel.find({ ownerId });
+    return await this.establishmentModel.find({ ownerId }).populate([
+      { path: 'owner', model: 'User' },
+      { path: 'employees', model: 'User' },
+    ]);
   }
 
   async updateOne(
@@ -94,14 +103,19 @@ export class EstablishmentsService {
     establishmentChanges: object,
   ): Promise<Establishment> {
     try {
-      return await this.establishmentModel.findOneAndUpdate(
-        { _id: establishmentId },
-        {
-          $set: { ...establishmentChanges },
-          $inc: { __v: 1 },
-        },
-        { returnOriginal: false },
-      );
+      return await this.establishmentModel
+        .findOneAndUpdate(
+          { _id: establishmentId },
+          {
+            $set: { ...establishmentChanges },
+            $inc: { __v: 1 },
+          },
+          { returnOriginal: false },
+        )
+        .populate([
+          { path: 'owner', model: 'User' },
+          { path: 'employees', model: 'User' },
+        ]);
     } catch (error) {
       throw new HttpException(
         {
@@ -122,9 +136,14 @@ export class EstablishmentsService {
 
   async deleteOne(establishmentId: string): Promise<Establishment> {
     try {
-      return await this.establishmentModel.findOneAndDelete({
-        _id: establishmentId,
-      });
+      return await this.establishmentModel
+        .findOneAndDelete({
+          _id: establishmentId,
+        })
+        .populate([
+          { path: 'owner', model: 'User' },
+          { path: 'employees', model: 'User' },
+        ]);
     } catch (error) {
       throw new HttpException(
         {

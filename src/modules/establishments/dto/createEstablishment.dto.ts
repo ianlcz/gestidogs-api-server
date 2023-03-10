@@ -1,12 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsArray, IsEmail, IsNotEmpty } from 'class-validator';
-import { Types } from 'mongoose';
+
+import { User } from '../../users/user.schema';
 
 export class CreateEstablishmentDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
-  ownerId: Types.ObjectId;
+  owner: User;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
@@ -29,7 +30,7 @@ export class CreateEstablishmentDto {
 
   @ApiProperty({ type: 'array' })
   @IsArray()
-  employees: [Types.ObjectId];
+  employees: User[];
 
   @ApiProperty({
     type: 'array',

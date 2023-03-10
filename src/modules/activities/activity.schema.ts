@@ -3,13 +3,15 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
+import { Establishment } from '../establishments/establishment.schema';
+
 export type ActivityDocument = HydratedDocument<Activity>;
 
 @Schema()
 export class Activity {
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, ref: 'Establishment', required: true })
   @ApiProperty({ type: String, required: true })
-  establishmentId: { type: Types.ObjectId; ref: 'Establishment' };
+  establishment: Establishment;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })

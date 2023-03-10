@@ -5,19 +5,22 @@ import { HydratedDocument, Types } from 'mongoose';
 
 import { Status } from '../../enums/status.enum';
 
+import { Activity } from '../activities/activity.schema';
+import { User } from '../users/user.schema';
+
 export type SessionDocument = HydratedDocument<Session>;
 
 @Schema()
 export class Session {
   _id: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   @ApiProperty({ type: String, required: true })
-  educatorId: { type: Types.ObjectId; ref: 'User' };
+  educator: User;
 
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, ref: 'Activity', required: true })
   @ApiProperty({ type: String, required: true })
-  activityId: { type: Types.ObjectId; ref: 'Activity' };
+  activity: Activity;
 
   @Prop({ type: String, enum: Status, required: true, default: Status.PENDING })
   @ApiProperty({ enum: Status, required: true, default: Status.PENDING })

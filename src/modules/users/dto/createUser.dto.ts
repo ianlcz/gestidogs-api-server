@@ -1,9 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
-import { Types } from 'mongoose';
 
 import { Role } from '../../../enums/role.enum';
+
+import { Activity } from '../../activities/activity.schema';
+import { Dog } from '../../dogs/dog.schema';
 
 export class CreateUserDto {
   @ApiProperty({ type: String, required: true })
@@ -35,8 +37,8 @@ export class CreateUserDto {
   @ApiPropertyOptional({ type: Date })
   birthDate: Date;
 
-  activities: [Types.ObjectId];
-  dogs: [Types.ObjectId];
+  activities: Activity[];
+  dogs: Dog[];
   registeredAt: Date;
   lastConnectionAt: Date;
   refreshToken: string;

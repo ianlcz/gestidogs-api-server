@@ -1,18 +1,20 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsNotEmpty } from 'class-validator';
-import { Types } from 'mongoose';
+
+import { User } from '../../users/user.schema';
+import { Activity } from '../../activities/activity.schema';
 
 import { Status } from '../../../enums/status.enum';
 
 export class CreateSessionDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
-  educatorId: Types.ObjectId;
+  educator: User;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
-  activityId: Types.ObjectId;
+  activity: Activity;
 
   @ApiProperty({
     enum: Status,

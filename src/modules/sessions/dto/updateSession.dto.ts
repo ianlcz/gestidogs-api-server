@@ -1,15 +1,16 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { Types } from 'mongoose';
-
 import { Status } from '../../../enums/status.enum';
+
+import { User } from '../../users/user.schema';
+import { Activity } from '../../activities/activity.schema';
 
 export class UpdateSessionDto {
   @ApiPropertyOptional({ type: String, required: true })
-  educatorId: Types.ObjectId;
+  educator: User;
 
   @ApiPropertyOptional({ type: String, required: true })
-  activityId: Types.ObjectId;
+  activity: Activity;
 
   @ApiPropertyOptional({
     enum: Status,
