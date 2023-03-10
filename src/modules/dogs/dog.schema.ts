@@ -13,11 +13,11 @@ export class Dog {
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: User, required: true })
   owner: User;
 
   @Prop({ type: Types.ObjectId, ref: 'Establishment', required: true })
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: Establishment, required: true })
   establishment: Establishment;
 
   @Prop({ type: String, required: true })

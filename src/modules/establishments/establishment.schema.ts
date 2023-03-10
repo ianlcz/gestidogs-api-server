@@ -12,7 +12,7 @@ export class Establishment {
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: () => User, required: true })
   owner: User;
 
   @Prop({ type: String, required: true })
@@ -36,7 +36,7 @@ export class Establishment {
   emailAddress: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  @ApiProperty({ type: [String] })
+  @ApiProperty({ type: () => [User] })
   employees: User[];
 
   @Prop({

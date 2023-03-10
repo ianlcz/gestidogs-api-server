@@ -1682,14 +1682,154 @@ window.onload = function() {
             "endDate"
           ]
         },
+        "Establishment": {
+          "type": "object",
+          "properties": {
+            "owner": {
+              "$ref": "#/components/schemas/User"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "emailAddress": {
+              "type": "string"
+            },
+            "employees": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "schedules": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "properties": {
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  }
+                }
+              },
+              "default": []
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "owner",
+            "name",
+            "address",
+            "employees",
+            "schedules"
+          ]
+        },
+        "Activity": {
+          "type": "object",
+          "properties": {
+            "establishment": {
+              "$ref": "#/components/schemas/Establishment"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "number"
+            },
+            "price": {
+              "type": "number"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "establishment",
+            "title",
+            "duration",
+            "price"
+          ]
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "lastname": {
+              "type": "string"
+            },
+            "firstname": {
+              "type": "string"
+            },
+            "avatarUrl": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "Administrator",
+                "Manager",
+                "Educator",
+                "Client"
+              ],
+              "default": "Client"
+            },
+            "emailAddress": {
+              "type": "string",
+              "uniqueItems": true
+            },
+            "birthDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "activities": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Activity"
+              }
+            },
+            "registeredAt": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "lastConnectionAt": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "lastname",
+            "firstname",
+            "role",
+            "emailAddress",
+            "registeredAt"
+          ]
+        },
         "Session": {
           "type": "object",
           "properties": {
             "educator": {
-              "type": "string"
+              "$ref": "#/components/schemas/User"
             },
             "activity": {
-              "type": "string"
+              "$ref": "#/components/schemas/Activity"
             },
             "status": {
               "type": "string",
@@ -1821,63 +1961,6 @@ window.onload = function() {
             "password"
           ]
         },
-        "User": {
-          "type": "object",
-          "properties": {
-            "lastname": {
-              "type": "string"
-            },
-            "firstname": {
-              "type": "string"
-            },
-            "avatarUrl": {
-              "type": "string"
-            },
-            "role": {
-              "type": "string",
-              "enum": [
-                "Administrator",
-                "Manager",
-                "Educator",
-                "Client"
-              ],
-              "default": "Client"
-            },
-            "emailAddress": {
-              "type": "string",
-              "uniqueItems": true
-            },
-            "birthDate": {
-              "format": "date-time",
-              "type": "string"
-            },
-            "activities": {
-              "default": [],
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "registeredAt": {
-              "format": "date-time",
-              "type": "string"
-            },
-            "lastConnectionAt": {
-              "format": "date-time",
-              "type": "string"
-            },
-            "__v": {
-              "type": "number"
-            }
-          },
-          "required": [
-            "lastname",
-            "firstname",
-            "role",
-            "emailAddress",
-            "registeredAt"
-          ]
-        },
         "UpdateUserDto": {
           "type": "object",
           "properties": {
@@ -1949,60 +2032,6 @@ window.onload = function() {
             "name",
             "address",
             "emailAddress",
-            "employees",
-            "schedules"
-          ]
-        },
-        "Establishment": {
-          "type": "object",
-          "properties": {
-            "owner": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "address": {
-              "type": "string"
-            },
-            "phoneNumber": {
-              "type": "string"
-            },
-            "emailAddress": {
-              "type": "string"
-            },
-            "employees": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "schedules": {
-              "type": "array",
-              "items": {
-                "type": "array",
-                "properties": {
-                  "startTime": {
-                    "type": "string"
-                  },
-                  "endTime": {
-                    "type": "string"
-                  }
-                }
-              },
-              "default": []
-            },
-            "__v": {
-              "type": "number"
-            }
-          },
-          "required": [
-            "owner",
-            "name",
-            "address",
             "employees",
             "schedules"
           ]
@@ -2087,10 +2116,10 @@ window.onload = function() {
           "type": "object",
           "properties": {
             "owner": {
-              "type": "string"
+              "$ref": "#/components/schemas/User"
             },
             "establishment": {
-              "type": "string"
+              "$ref": "#/components/schemas/Establishment"
             },
             "nationalId": {
               "type": "string"
@@ -2171,35 +2200,6 @@ window.onload = function() {
               "type": "number"
             },
             "price": {
-              "type": "number"
-            }
-          },
-          "required": [
-            "establishment",
-            "title",
-            "duration",
-            "price"
-          ]
-        },
-        "Activity": {
-          "type": "object",
-          "properties": {
-            "establishment": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "duration": {
-              "type": "number"
-            },
-            "price": {
-              "type": "number"
-            },
-            "__v": {
               "type": "number"
             }
           },

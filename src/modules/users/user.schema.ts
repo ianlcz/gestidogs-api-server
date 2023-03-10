@@ -41,7 +41,7 @@ export class User {
   birthDate: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Activity' }], default: [] })
-  @ApiPropertyOptional({ type: [String], default: [] })
+  @ApiPropertyOptional({ type: [Activity], default: [] })
   activities: Activity[];
 
   @Prop({ type: Date, default: new Date() })

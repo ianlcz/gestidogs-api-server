@@ -15,11 +15,11 @@ export class Session {
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: User, required: true })
   educator: User;
 
   @Prop({ type: Types.ObjectId, ref: 'Activity', required: true })
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: Activity, required: true })
   activity: Activity;
 
   @Prop({ type: String, enum: Status, required: true, default: Status.PENDING })
