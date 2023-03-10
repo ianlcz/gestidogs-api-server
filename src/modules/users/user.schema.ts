@@ -9,7 +9,6 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @ApiPropertyOptional({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: String, required: true })
@@ -35,7 +34,7 @@ export class User {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: Date, default: new Date() })
+  @Prop({ type: Date })
   @ApiPropertyOptional({ type: Date })
   birthDate: Date;
 
@@ -54,6 +53,9 @@ export class User {
   @Prop()
   @ApiPropertyOptional({ type: Date })
   lastConnectionAt: Date;
+
+  @Prop()
+  refreshToken: string;
 
   @Prop()
   @ApiPropertyOptional({ type: Number })

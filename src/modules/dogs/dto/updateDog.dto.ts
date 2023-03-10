@@ -7,6 +7,9 @@ export class UpdateDogDto {
   @ApiProperty({ type: String })
   ownerId: Types.ObjectId;
 
+  @ApiProperty({ type: String })
+  establishmentId: Types.ObjectId;
+
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
   nationalId: string;

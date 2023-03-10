@@ -471,6 +471,46 @@ window.onload = function() {
           ]
         }
       },
+      "/users/logout": {
+        "post": {
+          "operationId": "UsersController_logout",
+          "summary": "Logout a user",
+          "parameters": [],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "users"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/users/refresh": {
+        "post": {
+          "operationId": "UsersController_refreshTokens",
+          "summary": "Refresh a user",
+          "parameters": [],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "users"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/users/online": {
         "get": {
           "operationId": "UsersController_getInfos",
@@ -1279,6 +1319,45 @@ window.onload = function() {
           ]
         }
       },
+      "/dogs/establishments/{establishmentId}": {
+        "get": {
+          "operationId": "DogsController_findByEstablishment",
+          "summary": "Find dogs by establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of dogs by establishment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Dog"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "dogs"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/activities": {
         "post": {
           "operationId": "ActivitiesController_create",
@@ -1606,9 +1685,6 @@ window.onload = function() {
         "Session": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "educatorId": {
               "type": "string"
             },
@@ -1727,8 +1803,7 @@ window.onload = function() {
             "firstname",
             "role",
             "emailAddress",
-            "password",
-            "birthDate"
+            "password"
           ]
         },
         "AuthLoginDto": {
@@ -1749,9 +1824,6 @@ window.onload = function() {
         "User": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "lastname": {
               "type": "string"
             },
@@ -1860,6 +1932,9 @@ window.onload = function() {
             "emailAddress": {
               "type": "string"
             },
+            "employees": {
+              "type": "array"
+            },
             "schedules": {
               "type": "array",
               "items": {
@@ -1881,15 +1956,13 @@ window.onload = function() {
             "name",
             "address",
             "emailAddress",
+            "employees",
             "schedules"
           ]
         },
         "Establishment": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "ownerId": {
               "type": "string"
             },
@@ -1907,6 +1980,12 @@ window.onload = function() {
             },
             "emailAddress": {
               "type": "string"
+            },
+            "employees": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "schedules": {
               "type": "array",
@@ -1931,6 +2010,7 @@ window.onload = function() {
             "ownerId",
             "name",
             "address",
+            "employees",
             "schedules"
           ]
         },
@@ -1978,6 +2058,9 @@ window.onload = function() {
             "ownerId": {
               "type": "string"
             },
+            "establishmentId": {
+              "type": "string"
+            },
             "nationalId": {
               "type": "string"
             },
@@ -1996,6 +2079,7 @@ window.onload = function() {
           },
           "required": [
             "ownerId",
+            "establishmentId",
             "nationalId",
             "name",
             "breed",
@@ -2006,10 +2090,10 @@ window.onload = function() {
         "Dog": {
           "type": "object",
           "properties": {
-            "_id": {
+            "ownerId": {
               "type": "string"
             },
-            "ownerId": {
+            "establishmentId": {
               "type": "string"
             },
             "nationalId": {
@@ -2037,6 +2121,7 @@ window.onload = function() {
           },
           "required": [
             "ownerId",
+            "establishmentId",
             "nationalId",
             "name",
             "breed",
@@ -2048,6 +2133,9 @@ window.onload = function() {
           "type": "object",
           "properties": {
             "ownerId": {
+              "type": "string"
+            },
+            "establishmentId": {
               "type": "string"
             },
             "nationalId": {
@@ -2067,7 +2155,8 @@ window.onload = function() {
             }
           },
           "required": [
-            "ownerId"
+            "ownerId",
+            "establishmentId"
           ]
         },
         "CreateActivityDto": {
@@ -2099,9 +2188,6 @@ window.onload = function() {
         "Activity": {
           "type": "object",
           "properties": {
-            "_id": {
-              "type": "string"
-            },
             "establishmentId": {
               "type": "string"
             },

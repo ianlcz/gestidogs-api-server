@@ -7,9 +7,6 @@ export type ActivityDocument = HydratedDocument<Activity>;
 
 @Schema()
 export class Activity {
-  @ApiPropertyOptional({ type: String })
-  _id: Types.ObjectId;
-
   @Prop({ type: Types.ObjectId, required: true })
   @ApiProperty({ type: String, required: true })
   establishmentId: { type: Types.ObjectId; ref: 'Establishment' };

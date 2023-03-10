@@ -3,7 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
-import { JwtStrategy } from '../../strategies/jwt.strategy';
+import { AccessTokenStrategy } from '../../strategies/accessToken.strategy';
+import { RefreshTokenStrategy } from '../../strategies/refreshToken.strategy';
 
 import { User, UserSchema } from './user.schema';
 import { UsersService } from './users.service';
@@ -15,18 +16,13 @@ import { DogsModule } from '../dogs/dogs.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    JwtModule.registerAsync({
-      useFactory: async () => ({
-        secret: process.env.JWT_SECRET,
-        signOptions: { expiresIn: '7d' },
-      }),
-    }),
+    JwtModule.register({}),
     PassportModule,
     EstablishmentsModule,
     DogsModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, JwtStrategy],
+  providers: [UsersService, AccessTokenStrategy, RefreshTokenStrategy],
   exports: [UsersService],
 })
 export class UsersModule {}

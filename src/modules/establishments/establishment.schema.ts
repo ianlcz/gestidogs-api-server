@@ -7,7 +7,6 @@ export type EstablishmentDocument = HydratedDocument<Establishment>;
 
 @Schema()
 export class Establishment {
-  @ApiPropertyOptional({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })
@@ -33,6 +32,10 @@ export class Establishment {
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
   emailAddress: string;
+
+  @Prop({ type: [Types.ObjectId] })
+  @ApiProperty({ type: [String] })
+  employees: [{ type: Types.ObjectId; ref: 'User' }];
 
   @Prop({
     type: [[{ startTime: String, endTime: String }]],

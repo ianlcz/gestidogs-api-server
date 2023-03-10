@@ -9,6 +9,10 @@ export class CreateDogDto {
   @IsNotEmpty()
   ownerId: Types.ObjectId;
 
+  @ApiProperty({ type: String, required: true })
+  @IsNotEmpty()
+  establishmentId: Types.ObjectId;
+
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
   nationalId: string;

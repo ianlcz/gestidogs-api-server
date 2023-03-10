@@ -1,11 +1,13 @@
 import {
   BadRequestException,
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 import { Model } from 'mongoose';
 import { request } from 'express';
@@ -17,15 +19,20 @@ import { AuthLoginDto } from './dto/authLogin.dto';
 import { User, UserDocument } from './user.schema';
 
 import { EstablishmentsService } from '../establishments/establishments.service';
+
 import { DogsService } from '../dogs/dogs.service';
+import { UpdateUserDto } from './dto/updateUser.dto';
+
+import { Role } from 'src/enums/role.enum';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    private readonly establishmentsService: EstablishmentsService,
-    private readonly dogsService: DogsService,
-    private readonly jwtService: JwtService,
+    private establishmentsService: EstablishmentsService,
+    private dogsService: DogsService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -38,6 +45,8 @@ export class UsersService {
   async findOne(userId: string): Promise<User> {
     try {
       const user = await this.userModel.findById(userId);
+
+      // Hide User password
       user.password = undefined;
 
       return user;
@@ -50,8 +59,11 @@ export class UsersService {
     }
   }
 
-  async updateOne(userId: string, userChanges: object): Promise<User> {
+  async updateOne(userId: string, userChanges: UpdateUserDto): Promise<User> {
     try {
+      // Hashing new user password
+      userChanges.password = bcrypt.hashSync(userChanges.password, 12);
+
       const modifyUser = await this.userModel.findOneAndUpdate(
         { _id: userId },
         {
@@ -60,6 +72,8 @@ export class UsersService {
         },
         { returnOriginal: false },
       );
+
+      // Hide User password
       modifyUser.password = undefined;
 
       return modifyUser;
@@ -86,6 +100,8 @@ export class UsersService {
   async deleteOne(userId: string): Promise<User> {
     try {
       const deleteUser = await this.userModel.findOneAndDelete({ _id: userId });
+
+      // Hide User password
       deleteUser.password = undefined;
 
       deleteUser.dogs.map(
@@ -181,30 +197,44 @@ export class UsersService {
     }
   }
 
-  async register(
-    createUserDto: CreateUserDto,
-  ): Promise<{ token: string; user: User }> {
+  async register(createUserDto: CreateUserDto): Promise<any> {
     try {
+      // Check if user exists
+      const userExists = await this.userModel.findOne({
+        emailAddress: createUserDto.emailAddress,
+      });
+
+      if (userExists) {
+        throw new BadRequestException('User already exists');
+      }
+
       // Hash User password and set User registration date
       createUserDto.password = bcrypt.hashSync(createUserDto.password, 12);
       createUserDto.registeredAt = new Date();
       createUserDto.lastConnectionAt = new Date();
 
       // Instanciate User Model with createUserDto
-      const userToRegister = new this.userModel(createUserDto);
-      const payload = {
-        emailAddress: userToRegister.emailAddress,
-        sub: userToRegister._id,
-      };
+      const newUser = new this.userModel(createUserDto);
 
       // Save User data on MongoDB
-      await userToRegister.save();
+      await newUser.save();
+
+      const tokens = await this.getTokens(
+        newUser._id.toString(),
+        newUser.emailAddress,
+        newUser.role,
+      );
+      await this.updateRefreshToken(
+        newUser._id.toString(),
+        tokens.refreshToken,
+      );
+
       // Hide User password
-      userToRegister.password = undefined;
+      newUser.password = undefined;
 
-      request.user = userToRegister;
+      request.user = newUser;
 
-      return { token: this.jwtService.sign(payload), user: userToRegister };
+      return { tokens, user: newUser };
     } catch (error) {
       throw new HttpException(
         {
@@ -223,44 +253,139 @@ export class UsersService {
     const user: User = await this.userModel.findOne({
       emailAddress: credentials.emailAddress,
     });
+    if (!user) throw new BadRequestException('User does not exist');
 
-    if (user && bcrypt.compareSync(credentials.password, user.password)) {
-      user.password = undefined;
+    const passwordMatches = bcrypt.compareSync(
+      credentials.password,
+      user.password,
+    );
 
-      request.user = user;
+    if (!passwordMatches)
+      throw new BadRequestException('Password is incorrect');
 
-      return user;
-    }
-
-    throw new BadRequestException();
-  }
-
-  async login(
-    authLoginDto: AuthLoginDto,
-  ): Promise<{ token: string; user: User }> {
-    const validateUser = await this.validateUser(authLoginDto);
-
-    this.setLastConnectionDate(validateUser.emailAddress);
-
-    const user = await this.validateUser(authLoginDto);
-
-    const payload = {
-      sub: user._id,
-      emailAddress: user.emailAddress,
-      role: user.role,
-    };
-
+    // Hide User password
     user.password = undefined;
 
-    return { token: this.jwtService.sign(payload), user };
+    request.user = user;
+
+    return user;
+  }
+
+  async login(data: AuthLoginDto): Promise<{
+    tokens: {
+      accessToken: string;
+      refreshToken: string;
+    };
+    user: User;
+  }> {
+    const validatedUser = await this.validateUser(data);
+
+    this.setLastConnectionDate(validatedUser.emailAddress);
+
+    const user = await this.validateUser(data);
+
+    const tokens = await this.getTokens(
+      user._id.toString(),
+      user.emailAddress,
+      user.role,
+    );
+    await this.updateRefreshToken(user._id.toString(), tokens.refreshToken);
+
+    // Hide User password
+    user.password = undefined;
+
+    return { tokens, user };
+  }
+
+  async logout(userId: string): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userId, { refreshToken: null });
+  }
+
+  async updateRefreshToken(
+    userId: string,
+    refreshToken: string,
+  ): Promise<void> {
+    const hashedRefreshToken = bcrypt.hashSync(refreshToken, 12);
+
+    await this.userModel.updateOne(
+      { _id: userId },
+      { refreshToken: hashedRefreshToken },
+    );
+  }
+
+  async refreshTokens(
+    userId: string,
+    refreshToken: string,
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const user = await this.userModel.findById(userId);
+
+    if (!user || !user.refreshToken)
+      throw new ForbiddenException('Access Denied');
+
+    const refreshTokenMatches = bcrypt.compareSync(
+      user.refreshToken,
+      refreshToken,
+    );
+
+    if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+
+    const tokens = await this.getTokens(user.id, user.emailAddress, user.role);
+
+    await this.updateRefreshToken(user.id, tokens.refreshToken);
+
+    return tokens;
   }
 
   async getInfos(token: any): Promise<User> {
     const user = await this.userModel.findOne({
       emailAddress: token.emailAddress,
     });
+
+    // Hide User password
     user.password = undefined;
 
     return user;
+  }
+
+  async getTokens(
+    userId: string,
+    emailAddress: string,
+    role: Role,
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          emailAddress,
+          role,
+        },
+        {
+          secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+          expiresIn: '15m',
+        },
+      ),
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          emailAddress,
+          role,
+        },
+        {
+          secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+          expiresIn: '7d',
+        },
+      ),
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

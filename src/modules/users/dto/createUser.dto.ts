@@ -32,11 +32,12 @@ export class CreateUserDto {
   @MinLength(8)
   password: string;
 
-  @ApiProperty({ type: Date })
+  @ApiPropertyOptional({ type: Date })
   birthDate: Date;
 
   activities: [Types.ObjectId];
   dogs: [Types.ObjectId];
   registeredAt: Date;
   lastConnectionAt: Date;
+  refreshToken: string;
 }

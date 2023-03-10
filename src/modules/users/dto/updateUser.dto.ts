@@ -23,4 +23,6 @@ export class UpdateUserDto {
 
   @ApiPropertyOptional()
   avatarUrl: string;
+
+  dogs: [];
 }

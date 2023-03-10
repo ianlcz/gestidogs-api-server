@@ -22,7 +22,7 @@ import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MongooseModule.forRoot(process.env.GESTIDOGS_MONGO_URI),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'swagger-static'),
