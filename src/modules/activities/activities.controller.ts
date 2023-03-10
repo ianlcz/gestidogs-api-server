@@ -18,8 +18,8 @@ import {
 } from '@nestjs/swagger';
 
 import { Response } from 'express';
-import { Roles } from 'src/decorators/roles.decorator';
-import { AccessTokenGuard } from 'src/guards/accessToken.guard';
+import { Roles } from '../../decorators/roles.decorator';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { Activity } from './activity.schema';
 

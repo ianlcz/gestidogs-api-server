@@ -32,7 +32,7 @@ import { UsersService } from './users.service';
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
-import { RefreshTokenGuard } from 'src/guards/refreshToken.guard';
+import { RefreshTokenGuard } from '../../guards/refreshToken.guard';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('users')
