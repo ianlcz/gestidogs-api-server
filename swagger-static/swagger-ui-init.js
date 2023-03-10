@@ -1858,13 +1858,6 @@ window.onload = function() {
                 "type": "string"
               }
             },
-            "dogs": {
-              "default": [],
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
             "registeredAt": {
               "format": "date-time",
               "type": "string"

@@ -36,7 +36,21 @@ export class UsersService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    const users = await this.userModel.find();
+    const users: User[] = await this.userModel.find().populate({
+      path: 'activities',
+      model: 'Activity',
+      populate: [
+        {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      ],
+    });
+
     users.map((user) => (user.password = undefined));
 
     return users;
@@ -44,7 +58,20 @@ export class UsersService {
 
   async findOne(userId: string): Promise<User> {
     try {
-      const user = await this.userModel.findById(userId);
+      const user: User = await this.userModel.findById(userId).populate({
+        path: 'activities',
+        model: 'Activity',
+        populate: [
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ],
+      });
 
       // Hide User password
       user.password = undefined;
@@ -64,14 +91,29 @@ export class UsersService {
       // Hashing new user password
       userChanges.password = bcrypt.hashSync(userChanges.password, 12);
 
-      const modifyUser = await this.userModel.findOneAndUpdate(
-        { _id: userId },
-        {
-          $set: { ...userChanges },
-          $inc: { __v: 1 },
-        },
-        { returnOriginal: false },
-      );
+      const modifyUser: User = await this.userModel
+        .findOneAndUpdate(
+          { _id: userId },
+          {
+            $set: { ...userChanges },
+            $inc: { __v: 1 },
+          },
+          { returnOriginal: false },
+        )
+        .populate({
+          path: 'activities',
+          model: 'Activity',
+          populate: [
+            {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          ],
+        });
 
       // Hide User password
       modifyUser.password = undefined;
@@ -99,15 +141,31 @@ export class UsersService {
 
   async deleteOne(userId: string): Promise<User> {
     try {
-      const deleteUser = await this.userModel.findOneAndDelete({ _id: userId });
+      const deleteUser: User = await this.userModel
+        .findOneAndDelete({ _id: userId })
+        .populate({
+          path: 'activities',
+          model: 'Activity',
+          populate: [
+            {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          ],
+        });
+
+      // Delete User dogs
+      await this.dogsService.deleteByOwner(userId);
+
+      // Delete User establishments
+      await this.establishmentsService.deleteByOwner(userId);
 
       // Hide User password
       deleteUser.password = undefined;
-
-      deleteUser.dogs.map(
-        async (dog) => await this.dogsService.deleteOne(dog._id.toString()),
-      );
-      await this.establishmentsService.deleteByOwner(userId);
 
       return deleteUser;
     } catch (error) {
@@ -147,57 +205,10 @@ export class UsersService {
     }
   }
 
-  async setDog(userId: string, dogId: string): Promise<void> {
-    try {
-      const { dogs } = await this.findOne(userId);
-
-      await this.userModel.findOneAndUpdate(
-        { _id: userId },
-        { dogs: [...dogs, dogId] },
-        {
-          returnOriginal: false,
-        },
-      );
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_MODIFIED,
-          error,
-        },
-        HttpStatus.NOT_MODIFIED,
-        {
-          cause: error,
-        },
-      );
-    }
-  }
-
-  async deleteDog(userId: string, dogId: string): Promise<void> {
-    try {
-      const { dogs } = await this.findOne(userId);
-
-      await this.userModel.findOneAndUpdate(
-        { _id: userId },
-        { dogs: dogs.filter((dog) => dog.toString() !== dogId) },
-        {
-          returnOriginal: false,
-        },
-      );
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_MODIFIED,
-          error,
-        },
-        HttpStatus.NOT_MODIFIED,
-        {
-          cause: error,
-        },
-      );
-    }
-  }
-
-  async register(createUserDto: CreateUserDto): Promise<any> {
+  async register(createUserDto: CreateUserDto): Promise<{
+    tokens: { accessToken: string; refreshToken: string };
+    user: User;
+  }> {
     try {
       // Check if user exists
       const userExists = await this.userModel.findOne({
@@ -250,9 +261,24 @@ export class UsersService {
   }
 
   async validateUser(credentials: AuthLoginDto): Promise<User> {
-    const user: User = await this.userModel.findOne({
-      emailAddress: credentials.emailAddress,
-    });
+    const user: User = await this.userModel
+      .findOne({
+        emailAddress: credentials.emailAddress,
+      })
+      .populate({
+        path: 'activities',
+        model: 'Activity',
+        populate: [
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ],
+      });
     if (!user) throw new BadRequestException('User does not exist');
 
     const passwordMatches = bcrypt.compareSync(
@@ -272,10 +298,7 @@ export class UsersService {
   }
 
   async login(data: AuthLoginDto): Promise<{
-    tokens: {
-      accessToken: string;
-      refreshToken: string;
-    };
+    tokens: { accessToken: string; refreshToken: string };
     user: User;
   }> {
     const validatedUser = await this.validateUser(data);
@@ -320,7 +343,20 @@ export class UsersService {
     accessToken: string;
     refreshToken: string;
   }> {
-    const user = await this.userModel.findById(userId);
+    const user = await this.userModel.findById(userId).populate({
+      path: 'activities',
+      model: 'Activity',
+      populate: [
+        {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      ],
+    });
 
     if (!user || !user.refreshToken)
       throw new ForbiddenException('Access Denied');
@@ -340,9 +376,24 @@ export class UsersService {
   }
 
   async getInfos(token: any): Promise<User> {
-    const user = await this.userModel.findOne({
-      emailAddress: token.emailAddress,
-    });
+    const user = await this.userModel
+      .findOne({
+        emailAddress: token.emailAddress,
+      })
+      .populate({
+        path: 'activities',
+        model: 'Activity',
+        populate: [
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ],
+      });
 
     // Hide User password
     user.password = undefined;

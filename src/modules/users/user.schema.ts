@@ -6,7 +6,6 @@ import { HydratedDocument, Types } from 'mongoose';
 import { Role } from '../../enums/role.enum';
 
 import { Activity } from '../activities/activity.schema';
-import { Dog } from '../dogs/dog.schema';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -44,10 +43,6 @@ export class User {
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Activity' }], default: [] })
   @ApiPropertyOptional({ type: [String], default: [] })
   activities: Activity[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Dog' }], default: [] })
-  @ApiPropertyOptional({ type: [String], default: [] })
-  dogs: Dog[];
 
   @Prop({ type: Date, default: new Date() })
   @ApiProperty({ type: Date })

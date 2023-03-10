@@ -40,12 +40,40 @@ export class SessionsService {
   }
 
   async findAll(): Promise<Session[]> {
-    return await this.sessionModel.find();
+    return await this.sessionModel.find().populate([
+      {
+        path: 'activity',
+        model: 'Activity',
+        populate: {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      },
+      { path: 'educator', model: 'User' },
+    ]);
   }
 
   async findOne(sessionId: string): Promise<Session> {
     try {
-      return await this.sessionModel.findById(sessionId);
+      return await this.sessionModel.findById(sessionId).populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+        { path: 'educator', model: 'User' },
+      ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
@@ -65,7 +93,21 @@ export class SessionsService {
   }
 
   async findByEducator(educatorId: string): Promise<Session[]> {
-    return await this.sessionModel.find({ educatorId });
+    return await this.sessionModel.find({ educatorId }).populate([
+      {
+        path: 'activity',
+        model: 'Activity',
+        populate: {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      },
+      { path: 'educator', model: 'User' },
+    ]);
   }
 
   async findEducatorSessionsByDate(
@@ -75,30 +117,92 @@ export class SessionsService {
     const tomorrow = new Date();
     tomorrow.setDate(date.getDate() + 1);
 
-    const todaySessions: Session[] = await this.sessionModel.find({
-      educatorId,
-      beginDate: { $gte: date },
-      endDate: { $lt: tomorrow },
-    });
-    const nextSessions: Session[] = await this.sessionModel.find({
-      educatorId,
-      beginDate: { $gte: tomorrow },
-    });
+    const todaySessions: Session[] = await this.sessionModel
+      .find({
+        educatorId,
+        beginDate: { $gte: date },
+        endDate: { $lt: tomorrow },
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+        { path: 'educator', model: 'User' },
+      ]);
+    const nextSessions: Session[] = await this.sessionModel
+      .find({
+        educatorId,
+        beginDate: { $gte: tomorrow },
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+        { path: 'educator', model: 'User' },
+      ]);
 
     return { today: todaySessions, next: nextSessions };
   }
 
   async findByActivity(activityId: string): Promise<Session[]> {
-    return await this.sessionModel.find({ activityId });
+    return await this.sessionModel.find({ activityId }).populate([
+      {
+        path: 'activity',
+        model: 'Activity',
+        populate: {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      },
+      { path: 'educator', model: 'User' },
+    ]);
   }
 
   async updateOne(sessionId: string, sessionChanges: object): Promise<Session> {
     try {
-      return await this.sessionModel.findByIdAndUpdate(
-        { _id: sessionId },
-        { $set: { ...sessionChanges }, $inc: { __v: 1 } },
-        { returnOriginal: false },
-      );
+      return await this.sessionModel
+        .findByIdAndUpdate(
+          { _id: sessionId },
+          { $set: { ...sessionChanges }, $inc: { __v: 1 } },
+          { returnOriginal: false },
+        )
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+            populate: {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          },
+          { path: 'educator', model: 'User' },
+        ]);
     } catch (error) {
       throw new HttpException(
         {
@@ -119,9 +223,25 @@ export class SessionsService {
 
   async deleteOne(sessionId: string): Promise<Session> {
     try {
-      return await this.sessionModel.findByIdAndDelete({
-        _id: sessionId,
-      });
+      return await this.sessionModel
+        .findByIdAndDelete({
+          _id: sessionId,
+        })
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+            populate: {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          },
+          { path: 'educator', model: 'User' },
+        ]);
     } catch (error) {
       throw new HttpException(
         {
@@ -138,7 +258,21 @@ export class SessionsService {
 
   async deleteByEducator(educatorId: string): Promise<void> {
     try {
-      await this.sessionModel.findOneAndDelete({ educatorId });
+      await this.sessionModel.findOneAndDelete({ educatorId }).populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+        { path: 'educator', model: 'User' },
+      ]);
     } catch (error) {
       throw new HttpException(
         {
@@ -155,7 +289,21 @@ export class SessionsService {
 
   async deleteByActivity(activityId: string): Promise<void> {
     try {
-      await this.sessionModel.findByIdAndDelete({ activityId });
+      await this.sessionModel.findByIdAndDelete({ activityId }).populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+          populate: {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        },
+        { path: 'educator', model: 'User' },
+      ]);
     } catch (error) {
       throw new HttpException(
         {
