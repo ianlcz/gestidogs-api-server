@@ -1,14 +1,15 @@
 import { Prop } from '@nestjs/mongoose';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { Types } from 'mongoose';
+import { Establishment } from '../../establishments/establishment.schema';
+import { User } from '../../users/user.schema';
 
 export class UpdateDogDto {
   @ApiProperty({ type: String })
-  ownerId: Types.ObjectId;
+  owner: User;
 
   @ApiProperty({ type: String })
-  establishmentId: Types.ObjectId;
+  establishment: Establishment;
 
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })

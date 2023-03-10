@@ -31,11 +31,11 @@ export class EstablishmentsService {
   ): Promise<Establishment> {
     try {
       const owner = await this.usersService.findOne(
-        createEstablishmentDto.ownerId.toString(),
+        createEstablishmentDto.owner._id.toString(),
       );
 
       // By default, Managers are employees of their establishments
-      createEstablishmentDto.employees = [createEstablishmentDto.ownerId];
+      createEstablishmentDto.employees = [createEstablishmentDto.owner];
 
       if (
         owner &&

@@ -33,7 +33,7 @@ export class DogsService {
 
       // Add dogId in Owner dog list
       await this.usersService.setDog(
-        createDogDto.ownerId.toString(),
+        createDogDto.owner._id.toString(),
         dogToCreate._id.toString(),
       );
 
@@ -61,10 +61,7 @@ export class DogsService {
     try {
       const dog = await this.dogModel.findById(dogId);
 
-      if (
-        user.role === Role.CLIENT &&
-        user.userId.toString() !== dog.ownerId.toString()
-      ) {
+      if (user.role === Role.CLIENT && user._id !== dog.owner._id) {
         throw new UnauthorizedException();
       }
 
@@ -99,10 +96,7 @@ export class DogsService {
     try {
       const dog = await this.dogModel.findById(dogId);
 
-      if (
-        user.role === Role.CLIENT &&
-        user.userId.toString() !== dog.ownerId.toString()
-      ) {
+      if (user.role === Role.CLIENT && user._id !== dog.owner._id) {
         throw new UnauthorizedException();
       }
 
@@ -149,7 +143,7 @@ export class DogsService {
       const dog = await this.dogModel.findByIdAndDelete({ _id: dogId });
 
       await this.usersService.deleteDog(
-        dog.ownerId.toString(),
+        dog.owner._id.toString(),
         dog._id.toString(),
       );
 
@@ -176,7 +170,7 @@ export class DogsService {
         await this.deleteOne(dog._id.toString());
 
         await this.usersService.deleteDog(
-          dog.ownerId.toString(),
+          dog.owner._id.toString(),
           dog._id.toString(),
         );
       });

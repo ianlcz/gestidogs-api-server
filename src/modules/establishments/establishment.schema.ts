@@ -3,15 +3,17 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
+import { User } from '../users/user.schema';
+
 export type EstablishmentDocument = HydratedDocument<Establishment>;
 
 @Schema()
 export class Establishment {
   _id: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   @ApiProperty({ type: String, required: true })
-  ownerId: { type: Types.ObjectId; ref: 'User' };
+  owner: User;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
@@ -33,9 +35,9 @@ export class Establishment {
   @ApiPropertyOptional({ type: String })
   emailAddress: string;
 
-  @Prop({ type: [Types.ObjectId] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
   @ApiProperty({ type: [String] })
-  employees: [{ type: Types.ObjectId; ref: 'User' }];
+  employees: User[];
 
   @Prop({
     type: [[{ startTime: String, endTime: String }]],

@@ -2,6 +2,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsEmail, IsOptional, MinLength } from 'class-validator';
 
+import { Activity } from '../../activities/activity.schema';
+import { Dog } from '../../dogs/dog.schema';
+
 export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
@@ -24,5 +27,6 @@ export class UpdateUserDto {
   @ApiPropertyOptional()
   avatarUrl: string;
 
-  dogs: [];
+  dogs: Dog[];
+  activities: Activity[];
 }

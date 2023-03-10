@@ -2,16 +2,18 @@ import { Prop } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { IsNotEmpty } from 'class-validator';
-import { Types } from 'mongoose';
+
+import { User } from '../../users/user.schema';
+import { Establishment } from '../../establishments/establishment.schema';
 
 export class CreateDogDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
-  ownerId: Types.ObjectId;
+  owner: User;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
-  establishmentId: Types.ObjectId;
+  establishment: Establishment;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
