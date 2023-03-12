@@ -721,6 +721,34 @@ window.onload = function() {
           ]
         }
       },
+      "/users/establishments/{establishmentId}": {
+        "get": {
+          "operationId": "UsersController_findByEstablishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "users"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/establishments": {
         "post": {
           "operationId": "EstablishmentsController_create",

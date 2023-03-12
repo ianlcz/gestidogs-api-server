@@ -23,7 +23,8 @@ import { EstablishmentsService } from '../establishments/establishments.service'
 import { DogsService } from '../dogs/dogs.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
-import { Role } from 'src/enums/role.enum';
+import { Role } from '../../enums/role.enum';
+import { Dog } from '../dogs/dog.schema';
 
 @Injectable()
 export class UsersService {
@@ -84,6 +85,18 @@ export class UsersService {
         { cause: error },
       );
     }
+  }
+
+  async findByEstablishment(establishmentId: string): Promise<User[]> {
+    // Get All employees of the Establishment
+    const { employees }: { employees: User[] } =
+      await this.establishmentsService.findOne(establishmentId);
+
+    // Get All dog owners
+    const dogs: Dog[] = await this.dogsService.findAll();
+    const clients: User[] = dogs.map((dog: Dog) => dog.owner);
+
+    return [...new Set([...employees, ...clients])];
   }
 
   async updateOne(userId: string, userChanges: UpdateUserDto): Promise<User> {

@@ -52,18 +52,6 @@ export class DogsService {
       {
         path: 'owner',
         model: 'User',
-        populate: {
-          path: 'dogs',
-          model: 'Dog',
-          populate: {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
-        },
       },
       {
         path: 'establishment',
