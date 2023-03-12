@@ -60,7 +60,7 @@ export class EstablishmentsController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
+  @Roles(Role.ADMINISTRATOR, Role.CLIENT)
   @ApiOperation({ summary: 'Find all establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -70,7 +70,7 @@ export class EstablishmentsController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** can find all establishments',
+      'Unauthorized because only **Administrators** and **Clients** can find all establishments',
   })
   @Get()
   async findAll(): Promise<Establishment[]> {

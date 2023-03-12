@@ -154,8 +154,8 @@ export class UsersService {
 
   async deleteOne(userId: string): Promise<User> {
     try {
-      const deleteUser: User = await this.userModel
-        .findOneAndDelete({ _id: userId })
+      const userToDelete: User = await this.userModel
+        .findOne({ _id: userId })
         .populate({
           path: 'activities',
           model: 'Activity',
@@ -171,6 +171,9 @@ export class UsersService {
           ],
         });
 
+      // Delete User
+      await this.userModel.deleteOne({ _id: userId });
+
       // Delete User dogs
       await this.dogsService.deleteByOwner(userId);
 
@@ -178,9 +181,9 @@ export class UsersService {
       await this.establishmentsService.deleteByOwner(userId);
 
       // Hide User password
-      deleteUser.password = undefined;
+      userToDelete.password = undefined;
 
-      return deleteUser;
+      return userToDelete;
     } catch (error) {
       throw new HttpException(
         {
