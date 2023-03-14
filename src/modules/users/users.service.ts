@@ -87,7 +87,10 @@ export class UsersService {
     }
   }
 
-  async findByEstablishment(establishmentId: string): Promise<User[]> {
+  async findByEstablishment(
+    establishmentId: string,
+    role?: Role,
+  ): Promise<User[]> {
     // Get All employees of the Establishment
     const { employees }: { employees: User[] } =
       await this.establishmentsService.findOne(establishmentId);
@@ -96,7 +99,11 @@ export class UsersService {
     const dogs: Dog[] = await this.dogsService.findAll();
     const clients: User[] = dogs.map((dog: Dog) => dog.owner);
 
-    return [...new Set([...employees, ...clients])];
+    return role
+      ? [...new Set([...employees, ...clients])].filter(
+          (user: User) => user.role === role,
+        )
+      : [...new Set([...employees, ...clients])];
   }
 
   async updateOne(userId: string, userChanges: UpdateUserDto): Promise<User> {

@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -15,6 +16,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -137,6 +139,7 @@ export class UsersController {
   @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Find users of an establishment' })
+  @ApiQuery({ name: 'role', enum: Role, required: false })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of users by establishment',
@@ -150,8 +153,9 @@ export class UsersController {
   @Get('establishments/:establishmentId')
   async findByEstablishment(
     @Param('establishmentId') establishmentId: string,
+    @Query('role') role?: Role,
   ): Promise<User[]> {
-    return await this.usersService.findByEstablishment(establishmentId);
+    return await this.usersService.findByEstablishment(establishmentId, role);
   }
 
   @UseGuards(AccessTokenGuard)
