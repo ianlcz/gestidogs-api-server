@@ -44,10 +44,9 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
+
+Then you can go to your browser at http://localhost:8080/docs to see the Swagger documentation of the GestiDogs API.
 
 ### Testing
 
