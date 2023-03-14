@@ -617,9 +617,6 @@ window.onload = function() {
                 }
               }
             },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find a user"
-            },
             "404": {
               "description": "Not Found"
             }
@@ -721,6 +718,62 @@ window.onload = function() {
           ]
         }
       },
+      "/users/establishments/{establishmentId}": {
+        "get": {
+          "operationId": "UsersController_findByEstablishment",
+          "summary": "Find users of an establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "role",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "enum": [
+                  "Administrator",
+                  "Manager",
+                  "Educator",
+                  "Client"
+                ],
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of users by establishment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find a user"
+            }
+          },
+          "tags": [
+            "users"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/establishments": {
         "post": {
           "operationId": "EstablishmentsController_create",
@@ -782,7 +835,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** can find all establishments"
+              "description": "Unauthorized because only **Administrators** and **Clients** can find all establishments"
             }
           },
           "tags": [

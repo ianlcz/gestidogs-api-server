@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -15,6 +16,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -122,22 +124,38 @@ export class UsersController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Find a user' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The found user',
     type: User,
   })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
+  @Get(':userId')
+  async findOne(@Param('userId') userId: string): Promise<User> {
+    return await this.usersService.findOne(userId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @ApiOperation({ summary: 'Find users of an establishment' })
+  @ApiQuery({ name: 'role', enum: Role, required: false })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of users by establishment',
+    type: [User],
+  })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
       'Unauthorized because only **Administrators** and **Managers** can find a user',
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
-  @Get(':userId')
-  async findOne(@Param('userId') userId: string): Promise<User> {
-    return await this.usersService.findOne(userId);
+  @Get('establishments/:establishmentId')
+  async findByEstablishment(
+    @Param('establishmentId') establishmentId: string,
+    @Query('role') role?: Role,
+  ): Promise<User[]> {
+    return await this.usersService.findByEstablishment(establishmentId, role);
   }
 
   @UseGuards(AccessTokenGuard)
