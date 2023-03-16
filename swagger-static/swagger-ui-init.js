@@ -498,7 +498,7 @@ window.onload = function() {
           "parameters": [],
           "responses": {
             "200": {
-              "description": ""
+              "description": "Refresh User"
             }
           },
           "tags": [

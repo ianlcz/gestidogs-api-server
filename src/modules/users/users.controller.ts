@@ -86,6 +86,10 @@ export class UsersController {
 
   @UseGuards(RefreshTokenGuard)
   @ApiOperation({ summary: 'Refresh a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Refresh User',
+  })
   @Get('refresh')
   refreshTokens(@Req() req: Request) {
     const userId = req.user['sub'];
