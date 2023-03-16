@@ -25,7 +25,7 @@ async function bootstrap() {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document, {
+  SwaggerModule.setup('docs', app, document, {
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: 'method',
@@ -44,22 +44,16 @@ async function bootstrap() {
   // get the swagger json file (if app is running in development mode)
   if (process.env.NODE_ENV === 'development') {
     // write swagger ui files
-    get(
-      `${await app.getUrl()}/swagger/swagger-ui-bundle.js`,
-      function (response) {
-        response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js'));
-      },
-    );
+    get(`${await app.getUrl()}/docs/swagger-ui-bundle.js`, function (response) {
+      response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js'));
+    });
+
+    get(`${await app.getUrl()}/docs/swagger-ui-init.js`, function (response) {
+      response.pipe(createWriteStream('swagger-static/swagger-ui-init.js'));
+    });
 
     get(
-      `${await app.getUrl()}/swagger/swagger-ui-init.js`,
-      function (response) {
-        response.pipe(createWriteStream('swagger-static/swagger-ui-init.js'));
-      },
-    );
-
-    get(
-      `${await app.getUrl()}/swagger/swagger-ui-standalone-preset.js`,
+      `${await app.getUrl()}/docs/swagger-ui-standalone-preset.js`,
       function (response) {
         response.pipe(
           createWriteStream('swagger-static/swagger-ui-standalone-preset.js'),
@@ -67,7 +61,7 @@ async function bootstrap() {
       },
     );
 
-    get(`${await app.getUrl()}/swagger/swagger-ui.css`, function (response) {
+    get(`${await app.getUrl()}/docs/swagger-ui.css`, function (response) {
       response.pipe(createWriteStream('swagger-static/swagger-ui.css'));
     });
   }

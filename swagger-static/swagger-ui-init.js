@@ -492,12 +492,12 @@ window.onload = function() {
         }
       },
       "/users/refresh": {
-        "post": {
+        "get": {
           "operationId": "UsersController_refreshTokens",
           "summary": "Refresh a user",
           "parameters": [],
           "responses": {
-            "201": {
+            "200": {
               "description": ""
             }
           },

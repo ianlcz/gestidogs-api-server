@@ -86,7 +86,7 @@ export class UsersController {
 
   @UseGuards(RefreshTokenGuard)
   @ApiOperation({ summary: 'Refresh a user' })
-  @Post('refresh')
+  @Get('refresh')
   refreshTokens(@Req() req: Request) {
     const userId = req.user['sub'];
     const refreshToken = req.user['refreshToken'];

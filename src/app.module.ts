@@ -26,7 +26,7 @@ import { SessionsModule } from './modules/sessions/sessions.module';
     MongooseModule.forRoot(process.env.GESTIDOGS_MONGO_URI),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'swagger-static'),
-      serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
+      serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/docs',
     }),
     UsersModule,
     EstablishmentsModule,
