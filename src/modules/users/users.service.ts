@@ -25,6 +25,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 
 import { Role } from '../../enums/role.enum';
 import { Dog } from '../dogs/dog.schema';
+import { Establishment } from '../establishments/establishment.schema';
 
 @Injectable()
 export class UsersService {
@@ -398,7 +399,7 @@ export class UsersService {
     return tokens;
   }
 
-  async getInfos(token: any): Promise<User> {
+  async getInfos(token: any) {
     const user = await this.userModel
       .findOne({
         emailAddress: token.emailAddress,
@@ -421,7 +422,15 @@ export class UsersService {
     // Hide User password
     user.password = undefined;
 
-    return user;
+    if (user.role === Role.MANAGER) {
+      // Get User logged establishments
+      const establishments: Establishment[] =
+        await this.establishmentsService.findByOwner(user._id.toString());
+
+      return { ...user, establishments };
+    } else {
+      return user;
+    }
   }
 
   async getTokens(
