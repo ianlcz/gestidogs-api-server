@@ -1785,7 +1785,6 @@ window.onload = function() {
             "owner",
             "name",
             "address",
-            "employees",
             "schedules"
           ]
         },
@@ -2085,7 +2084,6 @@ window.onload = function() {
             "name",
             "address",
             "emailAddress",
-            "employees",
             "schedules"
           ]
         },

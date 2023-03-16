@@ -28,8 +28,7 @@ export class CreateEstablishmentDto {
   @IsEmail()
   emailAddress: string;
 
-  @ApiProperty({ type: 'array' })
-  @IsArray()
+  @ApiPropertyOptional({ type: 'array' })
   employees: User[];
 
   @ApiProperty({

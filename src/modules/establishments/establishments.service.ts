@@ -30,42 +30,27 @@ export class EstablishmentsService {
     createEstablishmentDto: CreateEstablishmentDto,
   ): Promise<Establishment> {
     try {
-      const owner = await this.usersService.findOne(
-        createEstablishmentDto.owner._id.toString(),
-      );
-
       // By default, Managers are employees of their establishments
       createEstablishmentDto.employees = [createEstablishmentDto.owner];
 
-      if (
-        owner &&
-        (owner.role === Role.ADMINISTRATOR || owner.role === Role.MANAGER)
-      ) {
-        // Instanciate Establishment Model with createEstablishmentDto
-        const establishmentToCreate = new this.establishmentModel(
-          createEstablishmentDto,
-        );
+      // Instanciate Establishment Model with createEstablishmentDto
+      const establishmentToCreate = new this.establishmentModel(
+        createEstablishmentDto,
+      );
 
-        // Save Establishment data on MongoDB and return them
-        return await establishmentToCreate.save();
-      } else {
-        throw new UnauthorizedException();
-      }
+      // Save Establishment data on MongoDB and return them
+      return await establishmentToCreate.save();
     } catch (error) {
-      if (error instanceof UnauthorizedException) {
-        throw new UnauthorizedException();
-      } else {
-        throw new HttpException(
-          {
-            status: HttpStatus.UNPROCESSABLE_ENTITY,
-            error,
-          },
-          HttpStatus.UNPROCESSABLE_ENTITY,
-          {
-            cause: error,
-          },
-        );
-      }
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          error,
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        {
+          cause: error,
+        },
+      );
     }
   }
 

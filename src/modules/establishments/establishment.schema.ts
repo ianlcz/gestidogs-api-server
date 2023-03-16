@@ -36,7 +36,7 @@ export class Establishment {
   emailAddress: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  @ApiProperty({ type: () => [User] })
+  @ApiPropertyOptional({ type: () => [User] })
   employees: User[];
 
   @Prop({

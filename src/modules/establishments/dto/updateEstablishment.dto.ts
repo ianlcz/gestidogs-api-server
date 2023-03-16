@@ -24,7 +24,6 @@ export class UpdateEstablishmentDto {
   emailAddress: string;
 
   @ApiPropertyOptional({ type: 'array' })
-  @IsArray()
   employees: User[];
 
   @ApiPropertyOptional({
