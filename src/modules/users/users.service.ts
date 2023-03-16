@@ -385,8 +385,8 @@ export class UsersService {
       throw new ForbiddenException('Access Denied');
 
     const refreshTokenMatches = bcrypt.compareSync(
-      user.refreshToken,
       refreshToken,
+      user.refreshToken,
     );
 
     if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');

@@ -100,7 +100,7 @@ export class UsersController {
     description: 'The logged user',
     type: User,
   })
-  @Get('online')
+  @Get('me')
   async getInfos(@Req() request: Request): Promise<User> {
     return await this.usersService.getInfos(request.user);
   }

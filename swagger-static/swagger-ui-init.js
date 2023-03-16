@@ -511,7 +511,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/online": {
+      "/users/me": {
         "get": {
           "operationId": "UsersController_getInfos",
           "summary": "Get user logged informations",
