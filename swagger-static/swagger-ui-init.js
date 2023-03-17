@@ -370,6 +370,45 @@ window.onload = function() {
           ]
         }
       },
+      "/sessions/establishments/{establishmentId}": {
+        "get": {
+          "operationId": "SessionsController_findByEstablishment",
+          "summary": "Find session by establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of sessions by establishments",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Session"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/sessions/educators/{educatorId}": {
         "delete": {
           "operationId": "SessionsController_deleteByEducator",
@@ -1700,6 +1739,9 @@ window.onload = function() {
             "activity": {
               "type": "string"
             },
+            "establishment": {
+              "type": "string"
+            },
             "status": {
               "type": "string",
               "enum": [
@@ -1729,6 +1771,7 @@ window.onload = function() {
           "required": [
             "educator",
             "activity",
+            "establishment",
             "status",
             "maximumCapacity",
             "beginDate",
@@ -1883,6 +1926,9 @@ window.onload = function() {
             "activity": {
               "$ref": "#/components/schemas/Activity"
             },
+            "establishment": {
+              "$ref": "#/components/schemas/Establishment"
+            },
             "status": {
               "type": "string",
               "enum": [
@@ -1915,6 +1961,7 @@ window.onload = function() {
           "required": [
             "educator",
             "activity",
+            "establishment",
             "status",
             "maximumCapacity",
             "beginDate",

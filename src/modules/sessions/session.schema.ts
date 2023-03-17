@@ -7,6 +7,7 @@ import { Status } from '../../enums/status.enum';
 
 import { Activity } from '../activities/activity.schema';
 import { User } from '../users/user.schema';
+import { Establishment } from '../establishments/establishment.schema';
 
 export type SessionDocument = HydratedDocument<Session>;
 
@@ -21,6 +22,10 @@ export class Session {
   @Prop({ type: Types.ObjectId, ref: 'Activity', required: true })
   @ApiProperty({ type: Activity, required: true })
   activity: Activity;
+
+  @Prop({ type: Types.ObjectId, ref: 'Establishment', required: true })
+  @ApiProperty({ type: Establishment, required: true })
+  establishment: Establishment;
 
   @Prop({ type: String, enum: Status, required: true, default: Status.PENDING })
   @ApiProperty({ enum: Status, required: true, default: Status.PENDING })
