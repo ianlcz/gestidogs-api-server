@@ -261,31 +261,16 @@ export class UsersService {
 
   async deleteOne(userId: string): Promise<User> {
     try {
-      const userToDelete: User = await this.userModel
-        .findOne({ _id: userId })
-        .populate({
-          path: 'activities',
-          model: 'Activity',
-          populate: [
-            {
-              path: 'establishment',
-              model: 'Establishment',
-              populate: [
-                { path: 'owner', model: 'User' },
-                { path: 'employees', model: 'User' },
-              ],
-            },
-          ],
-        });
-
-      // Delete User
-      await this.userModel.deleteOne({ _id: userId });
+      const userToDelete: User = await this.userModel.findOne({ _id: userId });
 
       // Delete User dogs
       await this.dogsService.deleteByOwner(userId);
 
       // Delete User establishments
       await this.establishmentsService.deleteByOwner(userId);
+
+      // Delete User
+      await this.userModel.deleteOne({ _id: userId });
 
       // Hide User password
       userToDelete.password = undefined;

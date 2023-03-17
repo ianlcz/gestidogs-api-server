@@ -92,7 +92,7 @@ export class SessionsController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find sessions by user' })
+  @ApiOperation({ summary: 'Find sessions by educator' })
   @ApiQuery({
     name: 'date',
     type: Date,
@@ -100,18 +100,18 @@ export class SessionsController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'List of sessions by their user',
+    description: 'List of sessions by their educator',
     type: [Session],
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
-  @Get('/users/:userId')
+  @Get('/educators/:educatorId')
   async findByEducator(
-    @Param('userId') userId: string,
+    @Param('educatorId') educatorId: string,
     @Query('date') date?: Date,
   ): Promise<sessionEducatorType> {
     return date instanceof Date && isFinite(date.getTime())
-      ? await this.sessionsService.findEducatorSessionsByDate(userId, date)
-      : await this.sessionsService.findByEducator(userId);
+      ? await this.sessionsService.findEducatorSessionsByDate(educatorId, date)
+      : await this.sessionsService.findByEducator(educatorId);
   }
 
   @UseGuards(AccessTokenGuard)

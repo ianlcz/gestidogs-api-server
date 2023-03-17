@@ -247,13 +247,13 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/users/{userId}": {
+      "/sessions/educators/{educatorId}": {
         "get": {
           "operationId": "SessionsController_findByEducator",
-          "summary": "Find sessions by user",
+          "summary": "Find sessions by educator",
           "parameters": [
             {
-              "name": "userId",
+              "name": "educatorId",
               "required": true,
               "in": "path",
               "schema": {
@@ -272,7 +272,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of sessions by their user",
+              "description": "List of sessions by their educator",
               "content": {
                 "application/json": {
                   "schema": {
@@ -283,6 +283,39 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "SessionsController_deleteByEducator",
+          "summary": "Delete sessions by educator",
+          "parameters": [
+            {
+              "name": "educatorId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Sessions successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
             },
             "404": {
               "description": "Not found"
@@ -355,41 +388,6 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
-            },
-            "404": {
-              "description": "Not found"
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
-      "/sessions/educators/{educatorId}": {
-        "delete": {
-          "operationId": "SessionsController_deleteByEducator",
-          "summary": "Delete sessions by educator",
-          "parameters": [
-            {
-              "name": "educatorId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Sessions successfully deleted"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
             },
             "404": {
               "description": "Not found"
@@ -1670,6 +1668,30 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/reservations": {
+        "post": {
+          "operationId": "ReservationsController_create",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateReservationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "reservations"
+          ]
+        }
       }
     },
     "info": {
@@ -2280,6 +2302,25 @@ window.onload = function() {
               "type": "number"
             }
           }
+        },
+        "CreateReservationDto": {
+          "type": "object",
+          "properties": {
+            "session": {
+              "type": "string"
+            },
+            "dog": {
+              "type": "string"
+            },
+            "isApproved": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "session",
+            "dog"
+          ]
         }
       }
     }
