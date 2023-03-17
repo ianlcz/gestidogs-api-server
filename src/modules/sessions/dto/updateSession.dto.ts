@@ -6,10 +6,10 @@ import { User } from '../../users/user.schema';
 import { Activity } from '../../activities/activity.schema';
 
 export class UpdateSessionDto {
-  @ApiPropertyOptional({ type: String, required: true })
+  @ApiPropertyOptional({ type: String })
   educator: User;
 
-  @ApiPropertyOptional({ type: String, required: true })
+  @ApiPropertyOptional({ type: String })
   activity: Activity;
 
   @ApiPropertyOptional({
@@ -18,15 +18,15 @@ export class UpdateSessionDto {
   })
   status: Status;
 
-  @ApiPropertyOptional({ type: Number, required: true, default: 1 })
+  @ApiPropertyOptional({ type: Number, default: 1 })
   maximumCapacity: number;
 
   @ApiPropertyOptional({ type: String })
   report: string;
 
-  @ApiPropertyOptional({ type: Date, required: true })
+  @ApiPropertyOptional({ type: Date })
   beginDate: Date;
 
-  @ApiPropertyOptional({ type: Date, required: true })
+  @ApiPropertyOptional({ type: Date })
   endDate: Date;
 }

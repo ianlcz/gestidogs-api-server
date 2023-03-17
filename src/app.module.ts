@@ -19,6 +19,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { SessionsController } from './modules/sessions/sessions.controller';
 import { SessionsModule } from './modules/sessions/sessions.module';
+import { ReservationsModule } from './modules/reservations/reservations.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { SessionsModule } from './modules/sessions/sessions.module';
     DogsModule,
     ActivitiesModule,
     SessionsModule,
+    ReservationsModule,
   ],
   controllers: [AppController, SessionsController],
   providers: [
