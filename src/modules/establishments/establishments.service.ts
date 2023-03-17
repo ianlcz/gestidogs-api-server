@@ -4,15 +4,12 @@ import {
   HttpStatus,
   Inject,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
 import { UsersService } from '../users/users.service';
-
-import { Role } from '../../enums/role.enum';
 
 import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
 import { Establishment, EstablishmentDocument } from './establishment.schema';

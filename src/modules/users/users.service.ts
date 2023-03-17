@@ -37,6 +37,105 @@ export class UsersService {
     private configService: ConfigService,
   ) {}
 
+  private async getTokens(
+    userId: string,
+    emailAddress: string,
+    role: Role,
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          emailAddress,
+          role,
+        },
+        {
+          secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+          expiresIn: '1h',
+        },
+      ),
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          emailAddress,
+          role,
+        },
+        {
+          secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+          expiresIn: '7d',
+        },
+      ),
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  private async validateUser(credentials: AuthLoginDto): Promise<User> {
+    const user: User = await this.userModel
+      .findOne({
+        emailAddress: credentials.emailAddress,
+      })
+      .populate({
+        path: 'activities',
+        model: 'Activity',
+        populate: [
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ],
+      });
+    if (!user) throw new BadRequestException('User does not exist');
+
+    const passwordMatches = bcrypt.compareSync(
+      credentials.password,
+      user.password,
+    );
+
+    if (!passwordMatches)
+      throw new BadRequestException('Password is incorrect');
+
+    // Hide User password
+    user.password = undefined;
+
+    request.user = user;
+
+    return user;
+  }
+
+  private async setLastConnectionDate(emailAddress: string): Promise<void> {
+    try {
+      await this.userModel.findOneAndUpdate(
+        { emailAddress },
+        { lastConnectionAt: new Date() },
+        {
+          returnOriginal: false,
+        },
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_MODIFIED,
+          error,
+        },
+        HttpStatus.NOT_MODIFIED,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
   async findAll(): Promise<User[]> {
     const users: User[] = await this.userModel.find().populate({
       path: 'activities',
@@ -206,29 +305,6 @@ export class UsersService {
     }
   }
 
-  async setLastConnectionDate(emailAddress: string): Promise<void> {
-    try {
-      await this.userModel.findOneAndUpdate(
-        { emailAddress },
-        { lastConnectionAt: new Date() },
-        {
-          returnOriginal: false,
-        },
-      );
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_MODIFIED,
-          error,
-        },
-        HttpStatus.NOT_MODIFIED,
-        {
-          cause: error,
-        },
-      );
-    }
-  }
-
   async register(createUserDto: CreateUserDto): Promise<{
     tokens: { accessToken: string; refreshToken: string };
     user: User;
@@ -282,43 +358,6 @@ export class UsersService {
         },
       );
     }
-  }
-
-  async validateUser(credentials: AuthLoginDto): Promise<User> {
-    const user: User = await this.userModel
-      .findOne({
-        emailAddress: credentials.emailAddress,
-      })
-      .populate({
-        path: 'activities',
-        model: 'Activity',
-        populate: [
-          {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
-        ],
-      });
-    if (!user) throw new BadRequestException('User does not exist');
-
-    const passwordMatches = bcrypt.compareSync(
-      credentials.password,
-      user.password,
-    );
-
-    if (!passwordMatches)
-      throw new BadRequestException('Password is incorrect');
-
-    // Hide User password
-    user.password = undefined;
-
-    request.user = user;
-
-    return user;
   }
 
   async login(data: AuthLoginDto): Promise<{
@@ -431,44 +470,5 @@ export class UsersService {
     } else {
       return user;
     }
-  }
-
-  async getTokens(
-    userId: string,
-    emailAddress: string,
-    role: Role,
-  ): Promise<{
-    accessToken: string;
-    refreshToken: string;
-  }> {
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(
-        {
-          sub: userId,
-          emailAddress,
-          role,
-        },
-        {
-          secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-          expiresIn: '15m',
-        },
-      ),
-      this.jwtService.signAsync(
-        {
-          sub: userId,
-          emailAddress,
-          role,
-        },
-        {
-          secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-          expiresIn: '7d',
-        },
-      ),
-    ]);
-
-    return {
-      accessToken,
-      refreshToken,
-    };
   }
 }
