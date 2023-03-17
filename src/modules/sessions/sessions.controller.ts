@@ -129,6 +129,20 @@ export class SessionsController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find session by establishment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of sessions by establishments',
+    type: [Session],
+  })
+  @Get('establishments/:establishmentId')
+  async findByEstablishment(
+    @Param('establishmentId') establishmentId: string,
+  ): Promise<Session[]> {
+    return await this.sessionsService.findByEstablishment(establishmentId);
+  }
+  
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Update a session' })
   @ApiResponse({

@@ -180,6 +180,10 @@ export class SessionsService {
     ]);
   }
 
+  async findByEstablishment(establishmentId: string): Promise<Session[]> {
+    return await this.sessionModel.find({ establishment: establishmentId });
+  }
+
   async updateOne(sessionId: string, sessionChanges: object): Promise<Session> {
     try {
       return await this.sessionModel

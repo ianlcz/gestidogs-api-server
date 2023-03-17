@@ -6,6 +6,7 @@ import { User } from '../../users/user.schema';
 import { Activity } from '../../activities/activity.schema';
 
 import { Status } from '../../../enums/status.enum';
+import { Establishment } from 'src/modules/establishments/establishment.schema';
 
 export class CreateSessionDto {
   @ApiProperty({ type: String, required: true })
@@ -15,6 +16,10 @@ export class CreateSessionDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   activity: Activity;
+
+  @ApiProperty({ type: String, required: true })
+  @IsNotEmpty()
+  establishment: Establishment;
 
   @ApiProperty({
     enum: Status,
