@@ -74,7 +74,7 @@ export class EstablishmentsService {
   }
 
   async findByOwner(ownerId: string): Promise<Establishment[]> {
-    return await this.establishmentModel.find({ ownerId }).populate([
+    return await this.establishmentModel.find({ owner : ownerId }).populate([
       { path: 'owner', model: 'User' },
       { path: 'employees', model: 'User' },
     ]);
