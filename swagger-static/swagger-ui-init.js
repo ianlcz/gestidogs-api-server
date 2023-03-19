@@ -403,8 +403,6 @@ window.onload = function() {
           ]
         }
       },
-<<<<<<< HEAD
-=======
       "/sessions/establishments/{establishmentId}": {
         "get": {
           "operationId": "SessionsController_findByEstablishment",
@@ -444,42 +442,6 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/educators/{educatorId}": {
-        "delete": {
-          "operationId": "SessionsController_deleteByEducator",
-          "summary": "Delete sessions by educator",
-          "parameters": [
-            {
-              "name": "educatorId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Sessions successfully deleted"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
-            },
-            "404": {
-              "description": "Not found"
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
->>>>>>> dev
       "/users/register": {
         "post": {
           "operationId": "UsersController_register",
@@ -1749,6 +1711,7 @@ window.onload = function() {
       "/reservations": {
         "post": {
           "operationId": "ReservationsController_create",
+          "summary": "Create a reservation",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -1762,11 +1725,26 @@ window.onload = function() {
           },
           "responses": {
             "201": {
-              "description": ""
+              "description": "Reservation successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Reservation"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Unprocessable Entity"
             }
           },
           "tags": [
             "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       }
@@ -2400,6 +2378,28 @@ window.onload = function() {
             "isApproved": {
               "type": "boolean",
               "default": false
+            }
+          },
+          "required": [
+            "session",
+            "dog"
+          ]
+        },
+        "Reservation": {
+          "type": "object",
+          "properties": {
+            "session": {
+              "$ref": "#/components/schemas/Session"
+            },
+            "dog": {
+              "$ref": "#/components/schemas/Dog"
+            },
+            "isApproved": {
+              "type": "boolean",
+              "default": false
+            },
+            "__v": {
+              "type": "number"
             }
           },
           "required": [

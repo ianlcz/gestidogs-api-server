@@ -141,7 +141,7 @@ export class SessionsController {
   ): Promise<Session[]> {
     return await this.sessionsService.findByEstablishment(establishmentId);
   }
-  
+
   @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Update a session' })
