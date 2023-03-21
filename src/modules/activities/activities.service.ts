@@ -76,14 +76,7 @@ export class ActivitiesService {
   }
 
   async findByEstablishment(establishmentId: string): Promise<Activity[]> {
-    return await this.activityTypeModel.find({ establishmentId }).populate({
-      path: 'establishment',
-      model: 'Establishment',
-      populate: [
-        { path: 'owner', model: 'User' },
-        { path: 'employees', model: 'User' },
-      ],
-    });
+    return await this.activityTypeModel.find({ establishmentId });
   }
 
   async updateOne(
