@@ -7,6 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { ReservationsService } from '../reservations/reservations.service';
 
 import { CreateSessionDto } from './dto/createSession.dto';
 import { Session, SessionDocument } from './session.schema';
@@ -16,6 +17,7 @@ export class SessionsService {
   constructor(
     @InjectModel(Session.name)
     private readonly sessionModel: Model<SessionDocument>,
+    private readonly reservationsService: ReservationsService,
   ) {}
 
   async create(createSessionDto: CreateSessionDto): Promise<Session> {
@@ -44,14 +46,6 @@ export class SessionsService {
       {
         path: 'activity',
         model: 'Activity',
-        populate: {
-          path: 'establishment',
-          model: 'Establishment',
-          populate: [
-            { path: 'owner', model: 'User' },
-            { path: 'employees', model: 'User' },
-          ],
-        },
       },
       { path: 'educator', model: 'User' },
     ]);
@@ -63,14 +57,6 @@ export class SessionsService {
         {
           path: 'activity',
           model: 'Activity',
-          populate: {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
         },
         { path: 'educator', model: 'User' },
       ]);
@@ -97,14 +83,6 @@ export class SessionsService {
       {
         path: 'activity',
         model: 'Activity',
-        populate: {
-          path: 'establishment',
-          model: 'Establishment',
-          populate: [
-            { path: 'owner', model: 'User' },
-            { path: 'employees', model: 'User' },
-          ],
-        },
       },
       { path: 'educator', model: 'User' },
     ]);
@@ -127,14 +105,6 @@ export class SessionsService {
         {
           path: 'activity',
           model: 'Activity',
-          populate: {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
         },
         { path: 'educator', model: 'User' },
       ]);
@@ -147,14 +117,6 @@ export class SessionsService {
         {
           path: 'activity',
           model: 'Activity',
-          populate: {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
         },
         { path: 'educator', model: 'User' },
       ]);
@@ -167,14 +129,6 @@ export class SessionsService {
       {
         path: 'activity',
         model: 'Activity',
-        populate: {
-          path: 'establishment',
-          model: 'Establishment',
-          populate: [
-            { path: 'owner', model: 'User' },
-            { path: 'employees', model: 'User' },
-          ],
-        },
       },
       { path: 'educator', model: 'User' },
     ]);
@@ -182,6 +136,20 @@ export class SessionsService {
 
   async findByEstablishment(establishmentId: string): Promise<Session[]> {
     return await this.sessionModel.find({ establishment: establishmentId });
+  }
+
+  async findPlacesLeft(sessionId: string): Promise<number> {
+    // Get maximum capacity of the Session
+    const { maximumCapacity }: { maximumCapacity: number } = await this.findOne(
+      sessionId,
+    );
+
+    // Get reservations corresponding to the Session
+    const reservations = await this.reservationsService.findBySession(
+      sessionId,
+    );
+
+    return maximumCapacity - reservations.length;
   }
 
   async updateOne(sessionId: string, sessionChanges: object): Promise<Session> {
@@ -196,14 +164,6 @@ export class SessionsService {
           {
             path: 'activity',
             model: 'Activity',
-            populate: {
-              path: 'establishment',
-              model: 'Establishment',
-              populate: [
-                { path: 'owner', model: 'User' },
-                { path: 'employees', model: 'User' },
-              ],
-            },
           },
           { path: 'educator', model: 'User' },
         ]);
@@ -235,14 +195,6 @@ export class SessionsService {
           {
             path: 'activity',
             model: 'Activity',
-            populate: {
-              path: 'establishment',
-              model: 'Establishment',
-              populate: [
-                { path: 'owner', model: 'User' },
-                { path: 'employees', model: 'User' },
-              ],
-            },
           },
           { path: 'educator', model: 'User' },
         ]);
@@ -266,14 +218,6 @@ export class SessionsService {
         {
           path: 'activity',
           model: 'Activity',
-          populate: {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
         },
         { path: 'educator', model: 'User' },
       ]);
@@ -297,14 +241,6 @@ export class SessionsService {
         {
           path: 'activity',
           model: 'Activity',
-          populate: {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
         },
         { path: 'educator', model: 'User' },
       ]);

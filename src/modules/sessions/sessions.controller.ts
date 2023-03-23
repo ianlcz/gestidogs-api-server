@@ -144,6 +144,24 @@ export class SessionsController {
 
   @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @ApiOperation({ summary: 'Find number of places left in a session' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Number of places remaining in a session',
+    type: Number,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators**, **Managers** and **Educators** can find number of places left in a session',
+  })
+  @Get(':sessionId/remaining-places')
+  async findPlacesLeft(@Param('sessionId') sessionId: string): Promise<number> {
+    return await this.sessionsService.findPlacesLeft(sessionId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Update a session' })
   @ApiResponse({
     status: HttpStatus.OK,
