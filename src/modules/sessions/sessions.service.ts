@@ -138,6 +138,20 @@ export class SessionsService {
     return await this.sessionModel.find({ establishment: establishmentId });
   }
 
+  async findPlacesLeft(sessionId: string): Promise<number> {
+    // Get maximum capacity of the Session
+    const { maximumCapacity }: { maximumCapacity: number } = await this.findOne(
+      sessionId,
+    );
+
+    // Get reservations corresponding to the Session
+    const reservations = await this.reservationsService.findBySession(
+      sessionId,
+    );
+
+    return maximumCapacity - reservations.length;
+  }
+
   async updateOne(sessionId: string, sessionChanges: object): Promise<Session> {
     try {
       return await this.sessionModel
@@ -165,20 +179,6 @@ export class SessionsService {
         },
       );
     }
-  }
-
-  async findPlacesLeft(sessionId: string): Promise<number> {
-    // Get maximum capacity of the Session
-    const { maximumCapacity }: { maximumCapacity: number } = await this.findOne(
-      sessionId,
-    );
-
-    // Get reservations corresponding to the Session
-    const reservations = await this.reservationsService.findBySession(
-      sessionId,
-    );
-
-    return maximumCapacity - reservations.length;
   }
 
   async deleteAll(): Promise<void> {
