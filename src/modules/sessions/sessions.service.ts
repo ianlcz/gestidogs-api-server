@@ -7,6 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { Reservation } from '../reservations/reservation.schema';
 import { ReservationsService } from '../reservations/reservations.service';
 
 import { CreateSessionDto } from './dto/createSession.dto';
@@ -134,8 +135,28 @@ export class SessionsService {
     ]);
   }
 
-  async findByEstablishment(establishmentId: string): Promise<Session[]> {
-    return await this.sessionModel.find({ establishment: establishmentId });
+  async findByEstablishment(
+    establishmentId: string,
+    isReserved?: boolean,
+  ): Promise<Session[]> {
+    if (isReserved) {
+      // Get All Reservations
+      const reservations: Reservation[] =
+        await this.reservationsService.findAll();
+
+      // Get Session of each Reservation
+      const sessionsReserved = reservations.map(
+        (reservation) => reservation.session,
+      );
+
+      // Filter Session by establishment
+      return sessionsReserved.filter(
+        (session) =>
+          session.activity.establishment.toString() === establishmentId,
+      );
+    } else {
+      return await this.sessionModel.find({ establishment: establishmentId });
+    }
   }
 
   async findPlacesLeft(sessionId: string): Promise<number> {

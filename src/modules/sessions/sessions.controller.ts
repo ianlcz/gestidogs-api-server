@@ -160,6 +160,22 @@ export class SessionsController {
     return await this.sessionsService.findPlacesLeft(sessionId);
   }
 
+  @ApiOperation({ summary: 'Find reserved sessions by establishments' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of reserved sessions by establishments',
+    type: [Session],
+  })
+  @Get('establishments/:establishmentId/reserved')
+  async findReservedByEstablishment(
+    @Param('establishmentId') establishmentId: string,
+  ): Promise<Session[]> {
+    return await this.sessionsService.findByEstablishment(
+      establishmentId,
+      true,
+    );
+  }
+
   @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Update a session' })
