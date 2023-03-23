@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
@@ -12,7 +18,8 @@ export class ReservationsService {
   constructor(
     @InjectModel(Reservation.name)
     private reservationModel: Model<ReservationDocument>,
-    private sessionsService: SessionsService,
+    @Inject(forwardRef(() => SessionsService))
+    private readonly sessionsService: SessionsService,
   ) {}
 
   async create(
@@ -57,14 +64,6 @@ export class ReservationsService {
           {
             path: 'activity',
             model: 'Activity',
-            populate: {
-              path: 'establishment',
-              model: 'Establishment',
-              populate: [
-                { path: 'owner', model: 'User' },
-                { path: 'employees', model: 'User' },
-              ],
-            },
           },
           { path: 'educator', model: 'User' },
         ],
@@ -72,20 +71,10 @@ export class ReservationsService {
       {
         path: 'dog',
         model: 'Dog',
-        populate: [
-          {
-            path: 'owner',
-            model: 'User',
-          },
-          {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
-        ],
+        populate: {
+          path: 'owner',
+          model: 'User',
+        },
       },
     ]);
   }
@@ -99,14 +88,6 @@ export class ReservationsService {
           {
             path: 'activity',
             model: 'Activity',
-            populate: {
-              path: 'establishment',
-              model: 'Establishment',
-              populate: [
-                { path: 'owner', model: 'User' },
-                { path: 'employees', model: 'User' },
-              ],
-            },
           },
           { path: 'educator', model: 'User' },
         ],
@@ -114,20 +95,34 @@ export class ReservationsService {
       {
         path: 'dog',
         model: 'Dog',
+        populate: {
+          path: 'owner',
+          model: 'User',
+        },
+      },
+    ]);
+  }
+
+  async findBySession(sessionId: string): Promise<Reservation[]> {
+    return await this.reservationModel.find({ session: sessionId }).populate([
+      {
+        path: 'session',
+        model: 'Session',
         populate: [
           {
-            path: 'owner',
-            model: 'User',
+            path: 'activity',
+            model: 'Activity',
           },
-          {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
+          { path: 'educator', model: 'User' },
         ],
+      },
+      {
+        path: 'dog',
+        model: 'Dog',
+        populate: {
+          path: 'owner',
+          model: 'User',
+        },
       },
     ]);
   }
@@ -153,14 +148,6 @@ export class ReservationsService {
               {
                 path: 'activity',
                 model: 'Activity',
-                populate: {
-                  path: 'establishment',
-                  model: 'Establishment',
-                  populate: [
-                    { path: 'owner', model: 'User' },
-                    { path: 'employees', model: 'User' },
-                  ],
-                },
               },
               { path: 'educator', model: 'User' },
             ],
@@ -168,20 +155,10 @@ export class ReservationsService {
           {
             path: 'dog',
             model: 'Dog',
-            populate: [
-              {
-                path: 'owner',
-                model: 'User',
-              },
-              {
-                path: 'establishment',
-                model: 'Establishment',
-                populate: [
-                  { path: 'owner', model: 'User' },
-                  { path: 'employees', model: 'User' },
-                ],
-              },
-            ],
+            populate: {
+              path: 'owner',
+              model: 'User',
+            },
           },
         ]);
     } catch (error) {
@@ -216,14 +193,6 @@ export class ReservationsService {
               {
                 path: 'activity',
                 model: 'Activity',
-                populate: {
-                  path: 'establishment',
-                  model: 'Establishment',
-                  populate: [
-                    { path: 'owner', model: 'User' },
-                    { path: 'employees', model: 'User' },
-                  ],
-                },
               },
               { path: 'educator', model: 'User' },
             ],
@@ -231,20 +200,10 @@ export class ReservationsService {
           {
             path: 'dog',
             model: 'Dog',
-            populate: [
-              {
-                path: 'owner',
-                model: 'User',
-              },
-              {
-                path: 'establishment',
-                model: 'Establishment',
-                populate: [
-                  { path: 'owner', model: 'User' },
-                  { path: 'employees', model: 'User' },
-                ],
-              },
-            ],
+            populate: {
+              path: 'owner',
+              model: 'User',
+            },
           },
         ]);
     } catch (error) {

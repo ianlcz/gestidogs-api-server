@@ -442,6 +442,45 @@ window.onload = function() {
           ]
         }
       },
+      "/sessions/{sessionId}/remaining-places": {
+        "get": {
+          "operationId": "SessionsController_findPlacesLeft",
+          "summary": "Find number of places left in a session",
+          "parameters": [
+            {
+              "name": "sessionId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Number of places remaining in a session",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can find number of places left in a session"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/users/register": {
         "post": {
           "operationId": "UsersController_register",
@@ -1917,6 +1956,48 @@ window.onload = function() {
             },
             "404": {
               "description": "Not found"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/reservations/sessions/{sessionId}": {
+        "get": {
+          "operationId": "ReservationsController_findBySession",
+          "summary": "Find reservations by session",
+          "parameters": [
+            {
+              "name": "sessionId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of reservations by session",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Reservation"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations by session"
             }
           },
           "tags": [

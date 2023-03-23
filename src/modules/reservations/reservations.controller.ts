@@ -85,6 +85,26 @@ export class ReservationsController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @ApiOperation({ summary: 'Find reservations by session' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of reservations by session',
+    type: [Reservation],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can find reservations by session',
+  })
+  @Get('sessions/:sessionId')
+  async findBySession(
+    @Param('sessionId') sessionId: string,
+  ): Promise<Reservation[]> {
+    return await this.reservationsService.findBySession(sessionId);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Update a reservation' })
   @ApiResponse({
