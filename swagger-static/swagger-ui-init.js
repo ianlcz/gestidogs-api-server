@@ -481,6 +481,45 @@ window.onload = function() {
           ]
         }
       },
+      "/sessions/establishments/{establishmentId}/reserved": {
+        "get": {
+          "operationId": "SessionsController_findReservedByEstablishment",
+          "summary": "Find reserved sessions by establishments",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of reserved sessions by establishments",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Session"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/users/register": {
         "post": {
           "operationId": "UsersController_register",
