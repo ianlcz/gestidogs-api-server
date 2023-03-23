@@ -47,4 +47,217 @@ export class ReservationsService {
       );
     }
   }
+
+  async findAll(): Promise<Reservation[]> {
+    return await this.reservationModel.find().populate([
+      {
+        path: 'session',
+        model: 'Session',
+        populate: [
+          {
+            path: 'activity',
+            model: 'Activity',
+            populate: {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          },
+          { path: 'educator', model: 'User' },
+        ],
+      },
+      {
+        path: 'dog',
+        model: 'Dog',
+        populate: [
+          {
+            path: 'owner',
+            model: 'User',
+          },
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ],
+      },
+    ]);
+  }
+
+  async findOne(reservationId: string): Promise<Reservation> {
+    return await this.reservationModel.findById(reservationId).populate([
+      {
+        path: 'session',
+        model: 'Session',
+        populate: [
+          {
+            path: 'activity',
+            model: 'Activity',
+            populate: {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          },
+          { path: 'educator', model: 'User' },
+        ],
+      },
+      {
+        path: 'dog',
+        model: 'Dog',
+        populate: [
+          {
+            path: 'owner',
+            model: 'User',
+          },
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ],
+      },
+    ]);
+  }
+
+  async updateOne(
+    reservationId: string,
+    reservationChanges: object,
+  ): Promise<Reservation> {
+    try {
+      return await this.reservationModel
+        .findByIdAndUpdate(
+          {
+            _id: reservationId,
+          },
+          { $set: { ...reservationChanges }, $inc: { __v: 1 } },
+          { returnOriginal: false },
+        )
+        .populate([
+          {
+            path: 'session',
+            model: 'Session',
+            populate: [
+              {
+                path: 'activity',
+                model: 'Activity',
+                populate: {
+                  path: 'establishment',
+                  model: 'Establishment',
+                  populate: [
+                    { path: 'owner', model: 'User' },
+                    { path: 'employees', model: 'User' },
+                  ],
+                },
+              },
+              { path: 'educator', model: 'User' },
+            ],
+          },
+          {
+            path: 'dog',
+            model: 'Dog',
+            populate: [
+              {
+                path: 'owner',
+                model: 'User',
+              },
+              {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
+            ],
+          },
+        ]);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error,
+        },
+        HttpStatus.NOT_FOUND,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  async deleteAll(): Promise<void> {
+    await this.reservationModel.deleteMany();
+  }
+
+  async deleteOne(reservationId: string): Promise<Reservation> {
+    try {
+      return await this.reservationModel
+        .findByIdAndDelete({
+          _id: reservationId,
+        })
+        .populate([
+          {
+            path: 'session',
+            model: 'Session',
+            populate: [
+              {
+                path: 'activity',
+                model: 'Activity',
+                populate: {
+                  path: 'establishment',
+                  model: 'Establishment',
+                  populate: [
+                    { path: 'owner', model: 'User' },
+                    { path: 'employees', model: 'User' },
+                  ],
+                },
+              },
+              { path: 'educator', model: 'User' },
+            ],
+          },
+          {
+            path: 'dog',
+            model: 'Dog',
+            populate: [
+              {
+                path: 'owner',
+                model: 'User',
+              },
+              {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
+            ],
+          },
+        ]);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error,
+        },
+        HttpStatus.NOT_FOUND,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
 }

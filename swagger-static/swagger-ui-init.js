@@ -1746,6 +1746,187 @@ window.onload = function() {
               "BearerToken": []
             }
           ]
+        },
+        "get": {
+          "operationId": "ReservationsController_findAll",
+          "summary": "Find all reservations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of reservations",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Reservation"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all reservations"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ReservationsController_deleteAll",
+          "summary": "Remove all reservations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Remove all reservations"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all reservations"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/reservations/{reservationId}": {
+        "get": {
+          "operationId": "ReservationsController_findOne",
+          "summary": "Find a reservation",
+          "parameters": [
+            {
+              "name": "reservationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found reservation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Reservation"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "ReservationsController_updateOne",
+          "summary": "Update a reservation",
+          "parameters": [
+            {
+              "name": "reservationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateReservationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The modified reservation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Reservation"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            },
+            "401": {
+              "description": "**Client** not allowed to modify a reservation"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ReservationsController_deleteOne",
+          "summary": "Delete a reservation",
+          "parameters": [
+            {
+              "name": "reservationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted reservation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Reservation"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
         }
       }
     },
@@ -2400,6 +2581,25 @@ window.onload = function() {
             },
             "__v": {
               "type": "number"
+            }
+          },
+          "required": [
+            "session",
+            "dog"
+          ]
+        },
+        "UpdateReservationDto": {
+          "type": "object",
+          "properties": {
+            "session": {
+              "type": "string"
+            },
+            "dog": {
+              "type": "string"
+            },
+            "isApproved": {
+              "type": "boolean",
+              "default": false
             }
           },
           "required": [
