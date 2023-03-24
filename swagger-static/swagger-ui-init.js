@@ -2052,6 +2052,7 @@ window.onload = function() {
       "/payments": {
         "post": {
           "operationId": "PaymentsController_createPayments",
+          "summary": "Create a Payment",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -2065,11 +2066,29 @@ window.onload = function() {
           },
           "responses": {
             "201": {
-              "description": ""
+              "description": "Payment successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Client** can create a Payment"
+            },
+            "502": {
+              "description": "Bad Request"
             }
           },
           "tags": [
             "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       }
