@@ -28,12 +28,15 @@ On Linux and Mac, type this command `openssl rand -hex 32` or go to https://gene
 
 ### Write the .env files
 
-You must copy the `.env.example` file in the root folder of the application and replace `<GESTIDOGS_MONGO_URI>`, `<GESTIDOGS_JWT_ACCESS_SECRET>` and `<GESTIDOGS_JWT_REFRESH_SECRET>` with your own :
+You must copy the `.env.example` file in the root folder of the application and replace `<GESTIDOGS_MONGO_URI>`, `<GESTIDOGS_JWT_ACCESS_SECRET>`, `<GESTIDOGS_JWT_REFRESH_SECRET>` and `<STRIPE_SECRET_API_KEY>` with your own :
 
 ```
 GESTIDOGS_MONGO_URI=<GESTIDOGS_MONGO_URI>
+
 JWT_ACCESS_SECRET=<GESTIDOGS_JWT_ACCESS_SECRET>
 JWT_REFRESH_SECRET=<GESTIDOGS_JWT_REFRESH_SECRET>
+
+STRIPE_API_KEY=<STRIPE_SECRET_API_KEY>
 ```
 
 ### Running

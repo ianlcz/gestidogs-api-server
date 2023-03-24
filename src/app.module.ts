@@ -20,6 +20,7 @@ import { ActivitiesModule } from './modules/activities/activities.module';
 import { SessionsController } from './modules/sessions/sessions.controller';
 import { SessionsModule } from './modules/sessions/sessions.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ReservationsModule } from './modules/reservations/reservations.module';
     ActivitiesModule,
     SessionsModule,
     ReservationsModule,
+    PaymentsModule,
   ],
   controllers: [AppController, SessionsController],
   providers: [
