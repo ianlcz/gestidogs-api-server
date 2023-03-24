@@ -3,6 +3,7 @@ import {
   Controller,
   HttpStatus,
   Post,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -13,7 +14,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import Stripe from 'stripe';
 
 import { PaymentsService } from './payments.service';
@@ -46,14 +47,24 @@ export class PaymentsController {
     description: 'Bad Request',
   })
   @Post()
-  createPayments(@Res() response: Response, @Body() paymentDto: PaymentDto) {
+  async createPayments(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Body() paymentDto: PaymentDto,
+  ) {
     this.paymentsService
-      .createPayment(paymentDto)
+      .createPayment(paymentDto, request.user)
       .then((res: Stripe.Response<Stripe.PaymentIntent>) => {
         response.status(HttpStatus.CREATED).json(res.client_secret);
       })
       .catch((err: Error) => {
         response.status(HttpStatus.BAD_REQUEST).json(err);
       });
+  }
+
+  @Post('customer')
+  @ApiOperation({ summary: 'Create a Customer' })
+  async createCustomer(@Req() request: Request) {
+    return await this.paymentsService.createCustomer(request.user);
   }
 }

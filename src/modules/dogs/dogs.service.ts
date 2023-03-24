@@ -205,7 +205,6 @@ export class DogsService {
       async (owner) =>
         await this.usersService.updateOne(owner._id.toString(), {
           ...owner,
-          dogs: [],
         }),
     );
 

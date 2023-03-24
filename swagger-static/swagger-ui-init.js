@@ -2091,6 +2091,26 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/payments/customer": {
+        "post": {
+          "operationId": "PaymentsController_createCustomer",
+          "summary": "Create a Customer",
+          "parameters": [],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -2268,6 +2288,9 @@ window.onload = function() {
               "type": "string",
               "uniqueItems": true
             },
+            "phoneNumber": {
+              "type": "string"
+            },
             "birthDate": {
               "format": "date-time",
               "type": "string"
@@ -2411,6 +2434,9 @@ window.onload = function() {
             "emailAddress": {
               "type": "string"
             },
+            "phoneNumber": {
+              "type": "string"
+            },
             "password": {
               "type": "string"
             },
@@ -2452,6 +2478,9 @@ window.onload = function() {
               "type": "string"
             },
             "emailAddress": {
+              "type": "string"
+            },
+            "phoneNumber": {
               "type": "string"
             },
             "password": {
@@ -2773,6 +2802,18 @@ window.onload = function() {
         "PaymentDto": {
           "type": "object",
           "properties": {
+            "number": {
+              "type": "string"
+            },
+            "expMonth": {
+              "type": "number"
+            },
+            "expYear": {
+              "type": "number"
+            },
+            "cvc": {
+              "type": "string"
+            },
             "amount": {
               "type": "number"
             },
@@ -2781,6 +2822,10 @@ window.onload = function() {
             }
           },
           "required": [
+            "number",
+            "expMonth",
+            "expYear",
+            "cvc",
             "amount",
             "currency"
           ]

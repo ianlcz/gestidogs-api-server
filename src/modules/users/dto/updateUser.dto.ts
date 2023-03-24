@@ -1,9 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsEmail, IsOptional, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsPhoneNumber, MinLength } from 'class-validator';
 
 import { Activity } from '../../activities/activity.schema';
-import { Dog } from '../../dogs/dog.schema';
 
 export class UpdateUserDto {
   @ApiProperty()
@@ -19,6 +18,10 @@ export class UpdateUserDto {
   @IsEmail()
   emailAddress: string;
 
+  @ApiPropertyOptional({ type: String })
+  @IsPhoneNumber('FR')
+  phoneNumber: string;
+
   @ApiProperty()
   @IsOptional()
   @MinLength(8)
@@ -27,6 +30,6 @@ export class UpdateUserDto {
   @ApiPropertyOptional()
   avatarUrl: string;
 
-  dogs: Dog[];
+  stripeId?: string;
   activities: Activity[];
 }
