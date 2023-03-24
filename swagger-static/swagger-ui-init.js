@@ -2048,6 +2048,30 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/payments": {
+        "post": {
+          "operationId": "PaymentsController_createPayments",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "payments"
+          ]
+        }
       }
     },
     "info": {
@@ -2725,6 +2749,21 @@ window.onload = function() {
           "required": [
             "session",
             "dog"
+          ]
+        },
+        "PaymentDto": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
           ]
         }
       }
