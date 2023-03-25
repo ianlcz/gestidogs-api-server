@@ -16,6 +16,9 @@ export class CreateActivityDto {
   @ApiPropertyOptional({ type: String })
   description: string;
 
+  @ApiPropertyOptional({ type: String })
+  imageUrl: string;
+
   @ApiProperty({ type: Number, required: true })
   @IsNotEmpty()
   duration: number;
