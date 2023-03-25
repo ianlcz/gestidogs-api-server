@@ -21,6 +21,10 @@ export class Activity {
   @ApiPropertyOptional({ type: String })
   description: string;
 
+  @Prop()
+  @ApiPropertyOptional({ type: String })
+  imageUrl: string;
+
   @Prop({ type: Number, required: true })
   @ApiProperty({ type: Number, required: true })
   duration: number;
