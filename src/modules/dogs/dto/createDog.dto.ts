@@ -1,5 +1,5 @@
 import { Prop } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsNotEmpty } from 'class-validator';
 
@@ -22,6 +22,9 @@ export class CreateDogDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   name: string;
+
+  @ApiPropertyOptional({ type: String })
+  imageUrl: string;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()

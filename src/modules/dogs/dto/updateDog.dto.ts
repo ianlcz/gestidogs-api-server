@@ -19,6 +19,9 @@ export class UpdateDogDto {
   name: string;
 
   @ApiPropertyOptional({ type: String })
+  imageUrl: string;
+
+  @ApiPropertyOptional({ type: String })
   breed: string;
 
   birthDate: Date;
