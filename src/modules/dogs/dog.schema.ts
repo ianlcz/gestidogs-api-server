@@ -28,6 +28,10 @@ export class Dog {
   @ApiProperty({ type: String, required: true })
   name: string;
 
+  @Prop()
+  @ApiPropertyOptional({ type: String })
+  imageUrl: string;
+
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
   breed: string;
