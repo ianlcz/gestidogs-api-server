@@ -2245,6 +2245,9 @@ window.onload = function() {
             "description": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2601,6 +2604,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2634,6 +2640,9 @@ window.onload = function() {
               "type": "string"
             },
             "name": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "breed": {
@@ -2678,6 +2687,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2705,6 +2717,9 @@ window.onload = function() {
             "description": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2729,6 +2744,9 @@ window.onload = function() {
               "type": "string"
             },
             "description": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "duration": {
