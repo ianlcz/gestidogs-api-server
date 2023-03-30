@@ -2091,6 +2091,80 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/observations": {
+        "post": {
+          "operationId": "ObservationsController_create",
+          "summary": "Create a dog observation",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateObservationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Observation successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "**Client** not allowed to create a dog observation"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "ObservationsController_findAll",
+          "summary": "Find all dog observations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of observations",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Observation"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all observations"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -2223,6 +2297,9 @@ window.onload = function() {
               "type": "string"
             },
             "description": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "duration": {
@@ -2572,6 +2649,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2605,6 +2685,9 @@ window.onload = function() {
               "type": "string"
             },
             "name": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "breed": {
@@ -2649,6 +2732,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2676,6 +2762,9 @@ window.onload = function() {
             "description": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2700,6 +2789,9 @@ window.onload = function() {
               "type": "string"
             },
             "description": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "duration": {
@@ -2783,6 +2875,43 @@ window.onload = function() {
           "required": [
             "amount",
             "currency"
+          ]
+        },
+        "CreateObservationDto": {
+          "type": "object",
+          "properties": {
+            "dog": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "dog"
+          ]
+        },
+        "Observation": {
+          "type": "object",
+          "properties": {
+            "dog": {
+              "$ref": "#/components/schemas/Dog"
+            },
+            "description": {
+              "type": "string"
+            },
+            "createdAt": {
+              "format": "date-time",
+              "type": "string",
+              "default": "2023-03-30T15:50:49.553Z"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "dog",
+            "createdAt"
           ]
         }
       }
