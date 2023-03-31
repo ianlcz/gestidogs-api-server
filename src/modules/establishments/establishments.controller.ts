@@ -29,6 +29,8 @@ import { EstablishmentsService } from './establishments.service';
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
 
+import { User } from '../users/user.schema';
+
 @ApiBearerAuth('BearerToken')
 @ApiTags('establishments')
 @Controller('establishments')
@@ -57,6 +59,38 @@ export class EstablishmentsController {
     @Body() createEstablishmentDto: CreateEstablishmentDto,
   ): Promise<Establishment> {
     return await this.establishmentsService.create(createEstablishmentDto);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @ApiOperation({ summary: 'Add a new employee in establishment' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Establishment employees',
+    type: [User],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can add a new employee',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Not Found',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
+  })
+  @Post(':establishmentId/employees/:newEmployeeId')
+  async addEmployee(
+    @Param('establishmentId') establishmentId: string,
+    @Param('newEmployeeId') newEmployeeId: string,
+  ): Promise<User[]> {
+    return await this.establishmentsService.addEmployee(
+      establishmentId,
+      newEmployeeId,
+    );
   }
 
   @UseGuards(AccessTokenGuard)
