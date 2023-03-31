@@ -984,6 +984,62 @@ window.onload = function() {
           ]
         }
       },
+      "/establishments/{establishmentId}/employees/{newEmployeeId}": {
+        "post": {
+          "operationId": "EstablishmentsController_addEmployee",
+          "summary": "Add a new employee in establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "newEmployeeId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Establishment employees",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can add a new employee"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/establishments/{establishmentId}": {
         "get": {
           "operationId": "EstablishmentsController_findOne",
@@ -2225,6 +2281,9 @@ window.onload = function() {
             "description": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2572,6 +2631,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2605,6 +2667,9 @@ window.onload = function() {
               "type": "string"
             },
             "name": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "breed": {
@@ -2649,6 +2714,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2676,6 +2744,9 @@ window.onload = function() {
             "description": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2700,6 +2771,9 @@ window.onload = function() {
               "type": "string"
             },
             "description": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "duration": {
