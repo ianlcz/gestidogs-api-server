@@ -2165,6 +2165,45 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/observations/{observationId}": {
+        "get": {
+          "operationId": "ObservationsController_findOne",
+          "summary": "Find a dog observation",
+          "parameters": [
+            {
+              "name": "observationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found dog observation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -2903,7 +2942,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-03-30T15:50:49.553Z"
+              "default": "2023-03-31T09:15:20.871Z"
             },
             "__v": {
               "type": "number"

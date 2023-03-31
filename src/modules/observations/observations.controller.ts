@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -66,5 +67,20 @@ export class ObservationsController {
   @Get()
   async findAll(): Promise<Observation[]> {
     return await this.observationsService.findAll();
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find a dog observation' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The found dog observation',
+    type: Observation,
+  })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @Get(':observationId')
+  async findOne(
+    @Param('observationId') observationId: string,
+  ): Promise<Observation> {
+    return await this.observationsService.findOne(observationId);
   }
 }
