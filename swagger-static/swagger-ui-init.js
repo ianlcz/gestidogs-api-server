@@ -493,6 +493,15 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
+            },
+            {
+              "name": "date",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
             }
           ],
           "responses": {
@@ -2225,6 +2234,9 @@ window.onload = function() {
             "description": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2572,6 +2584,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2605,6 +2620,9 @@ window.onload = function() {
               "type": "string"
             },
             "name": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "breed": {
@@ -2649,6 +2667,9 @@ window.onload = function() {
             "name": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "breed": {
               "type": "string"
             },
@@ -2676,6 +2697,9 @@ window.onload = function() {
             "description": {
               "type": "string"
             },
+            "imageUrl": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2700,6 +2724,9 @@ window.onload = function() {
               "type": "string"
             },
             "description": {
+              "type": "string"
+            },
+            "imageUrl": {
               "type": "string"
             },
             "duration": {
