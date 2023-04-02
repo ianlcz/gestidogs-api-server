@@ -2056,7 +2056,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a reservation"
             },
             "404": {
               "description": "Not found"
@@ -2149,6 +2149,269 @@ window.onload = function() {
           },
           "tags": [
             "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/observations": {
+        "post": {
+          "operationId": "ObservationsController_create",
+          "summary": "Create a dog observation",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateObservationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Observation successfully created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "**Client** not allowed to create a dog observation"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "ObservationsController_findAll",
+          "summary": "Find all dog observations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of observations",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Observation"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can find all observations"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ObservationsController_deleteAll",
+          "summary": "Remove all dog observations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Remove all dog observations"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all dog observations"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/observations/{observationId}": {
+        "get": {
+          "operationId": "ObservationsController_findOne",
+          "summary": "Find a dog observation",
+          "parameters": [
+            {
+              "name": "observationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found dog observation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "ObservationsController_updateOne",
+          "summary": "Update a dog observation",
+          "parameters": [
+            {
+              "name": "observationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateObservationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The modified dog observation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            },
+            "401": {
+              "description": "**Client** not allowed to modify a dog observation"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ObservationsController_deleteOne",
+          "summary": "Delete a dog observation",
+          "parameters": [
+            {
+              "name": "observationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted dog observation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a dog observation"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/observations/dogs/{dogId}": {
+        "get": {
+          "operationId": "ObservationsController_findByDog",
+          "summary": "Find all observations of dog",
+          "parameters": [
+            {
+              "name": "dogId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of all observations of dog",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Observation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "observations"
           ],
           "security": [
             {
@@ -2867,6 +3130,54 @@ window.onload = function() {
             "amount",
             "currency"
           ]
+        },
+        "CreateObservationDto": {
+          "type": "object",
+          "properties": {
+            "dog": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "dog"
+          ]
+        },
+        "Observation": {
+          "type": "object",
+          "properties": {
+            "dog": {
+              "$ref": "#/components/schemas/Dog"
+            },
+            "description": {
+              "type": "string"
+            },
+            "createdAt": {
+              "format": "date-time",
+              "type": "string",
+              "default": "2023-04-02T22:37:31.566Z"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "dog",
+            "createdAt"
+          ]
+        },
+        "UpdateObservationDto": {
+          "type": "object",
+          "properties": {
+            "dog": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
         }
       }
     }
