@@ -54,6 +54,14 @@ export class ObservationsService {
     });
   }
 
+  async findByDog(dogId: string): Promise<Observation[]> {
+    return await this.observationModel.find({ dog: dogId }).populate({
+      path: 'dog',
+      model: 'Dog',
+      populate: { path: 'owner', model: 'User' },
+    });
+  }
+
   async updateOne(
     observationId: string,
     observationChanges: object,

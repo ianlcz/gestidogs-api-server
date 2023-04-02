@@ -2380,6 +2380,45 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/observations/dogs/{dogId}": {
+        "get": {
+          "operationId": "ObservationsController_findByDog",
+          "summary": "Find all observations of dog",
+          "parameters": [
+            {
+              "name": "dogId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of all observations of dog",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Observation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -3118,7 +3157,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-02T20:59:23.949Z"
+              "default": "2023-04-02T22:37:31.566Z"
             },
             "__v": {
               "type": "number"

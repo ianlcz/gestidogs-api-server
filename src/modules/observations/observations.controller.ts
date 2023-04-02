@@ -91,6 +91,18 @@ export class ObservationsController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find all observations of a dog' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of all observations of a dog',
+    type: [Observation],
+  })
+  @Get('dogs/:dogId')
+  async findByDog(@Param('dogId') dogId: string): Promise<Observation[]> {
+    return await this.observationsService.findByDog(dogId);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Update a dog observation' })
   @ApiResponse({
