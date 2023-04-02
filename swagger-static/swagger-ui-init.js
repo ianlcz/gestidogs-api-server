@@ -2056,7 +2056,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a reservation"
             },
             "404": {
               "description": "Not found"
@@ -2229,6 +2229,27 @@ window.onload = function() {
               "BearerToken": []
             }
           ]
+        },
+        "delete": {
+          "operationId": "ObservationsController_deleteAll",
+          "summary": "Remove all dog observations",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Remove all dog observations"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** can remove all dog observations"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
         }
       },
       "/observations/{observationId}": {
@@ -2255,6 +2276,96 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "ObservationsController_updateOne",
+          "summary": "Update a dog observation",
+          "parameters": [
+            {
+              "name": "observationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateObservationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The modified dog observation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            },
+            "401": {
+              "description": "**Client** not allowed to modify a dog observation"
+            }
+          },
+          "tags": [
+            "observations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "ObservationsController_deleteOne",
+          "summary": "Delete a dog observation",
+          "parameters": [
+            {
+              "name": "observationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted dog observation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Observation"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a dog observation"
             },
             "404": {
               "description": "Not found"
@@ -3007,7 +3118,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-03-31T09:15:20.871Z"
+              "default": "2023-04-02T20:59:23.949Z"
             },
             "__v": {
               "type": "number"
@@ -3017,6 +3128,17 @@ window.onload = function() {
             "dog",
             "createdAt"
           ]
+        },
+        "UpdateObservationDto": {
+          "type": "object",
+          "properties": {
+            "dog": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
         }
       }
     }

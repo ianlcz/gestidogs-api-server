@@ -1,10 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
   Post,
+  Put,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -14,11 +17,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { Response } from 'express';
+
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateObservationDto } from './dto/createObservation.dto';
+import { UpdateObservationDto } from './dto/updateObservation.dto';
 import { Observation } from './observation.schema';
 import { ObservationsService } from './observations.service';
 
@@ -82,5 +88,78 @@ export class ObservationsController {
     @Param('observationId') observationId: string,
   ): Promise<Observation> {
     return await this.observationsService.findOne(observationId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @ApiOperation({ summary: 'Update a dog observation' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The modified dog observation',
+    type: Observation,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: '**Client** not allowed to modify a dog observation',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_MODIFIED,
+    description: 'Not Modified',
+  })
+  @Put(':observationId')
+  async updateOne(
+    @Param('observationId') observationId: string,
+    @Body() updateObservationDto: UpdateObservationDto,
+  ): Promise<Observation> {
+    return await this.observationsService.updateOne(
+      observationId,
+      updateObservationDto,
+    );
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR)
+  @ApiOperation({ summary: 'Remove all dog observations' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Remove all dog observations',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** can remove all dog observations',
+  })
+  @Delete()
+  async deleteAll(@Res() response: Response): Promise<void> {
+    await this.observationsService.deleteAll();
+
+    response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: `Delete all documents in 'observations' Collection`,
+    });
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @ApiOperation({ summary: 'Delete a dog observation' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The deleted dog observation',
+    type: Observation,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can delete a dog observation',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Not found',
+  })
+  @Delete(':observationId')
+  async deleteOne(
+    @Param('observationId') observationId: string,
+  ): Promise<Observation> {
+    return await this.observationsService.deleteOne(observationId);
   }
 }
