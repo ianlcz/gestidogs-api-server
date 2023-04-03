@@ -64,7 +64,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-#### Docker
+## Docker
 
 You can launch the API with Docker by following the [Docker commands](./docs/docker.md) documentation.
 
