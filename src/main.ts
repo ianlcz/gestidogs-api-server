@@ -45,27 +45,23 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'development') {
     // write swagger ui files
     get(`${await app.getUrl()}/docs/swagger-ui-bundle.js`, (response) =>
-      response.pipe(
-        createWriteStream('src/swagger-static/swagger-ui-bundle.js'),
-      ),
+      response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js')),
     );
 
     get(`${await app.getUrl()}/docs/swagger-ui-init.js`, (response) =>
-      response.pipe(createWriteStream('src/swagger-static/swagger-ui-init.js')),
+      response.pipe(createWriteStream('swagger-static/swagger-ui-init.js')),
     );
 
     get(
       `${await app.getUrl()}/docs/swagger-ui-standalone-preset.js`,
       (response) =>
         response.pipe(
-          createWriteStream(
-            'src/swagger-static/swagger-ui-standalone-preset.js',
-          ),
+          createWriteStream('swagger-static/swagger-ui-standalone-preset.js'),
         ),
     );
 
     get(`${await app.getUrl()}/docs/swagger-ui.css`, (response) =>
-      response.pipe(createWriteStream('src/swagger-static/swagger-ui.css')),
+      response.pipe(createWriteStream('swagger-static/swagger-ui.css')),
     );
   }
 }
