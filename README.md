@@ -64,6 +64,10 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Docker
+
+You can launch the API with Docker by following the [Docker commands](./docs/docker.md) documentation.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.

@@ -2384,7 +2384,7 @@ window.onload = function() {
       "/observations/dogs/{dogId}": {
         "get": {
           "operationId": "ObservationsController_findByDog",
-          "summary": "Find all observations of dog",
+          "summary": "Find all observations of a dog",
           "parameters": [
             {
               "name": "dogId",
@@ -2397,7 +2397,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of all observations of dog",
+              "description": "List of all observations of a dog",
               "content": {
                 "application/json": {
                   "schema": {
@@ -3157,7 +3157,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-02T22:37:31.566Z"
+              "default": "2023-04-03T21:16:40.795Z"
             },
             "__v": {
               "type": "number"
