@@ -6,6 +6,7 @@ import Stripe from 'stripe';
 import { User, UserDocument } from '../users/user.schema';
 
 import { PaymentDto } from './dto/payment.dto';
+import { CardDto } from './dto/card.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -17,43 +18,63 @@ export class PaymentsService {
     });
   }
 
-  async createCustomer(
-    userLogged: any,
-  ): Promise<Stripe.Response<Stripe.Customer>> {
-    const customer = await this.stripe.customers.create({
-      name: `${userLogged.firstname} ${userLogged.lastname}`,
-      email: userLogged.emailAddress,
-      phone: userLogged.phoneNumber,
-    });
+  async createPaymentMethodCard(
+    cardDto: CardDto,
+    user: any,
+  ): Promise<Stripe.Response<Stripe.PaymentMethod>> {
+    const customer: Stripe.Response<Stripe.Customer> =
+      await this.stripe.customers.create({
+        name: `${user.firstname} ${user.lastname}`,
+        email: user.emailAddress,
+        phone: user?.phoneNumber,
+      });
+    const card: Stripe.Response<Stripe.PaymentMethod> =
+      await this.stripe.paymentMethods.create({
+        type: 'card',
+        card: {
+          number: cardDto.number,
+          exp_month: cardDto.expMonth,
+          exp_year: cardDto.expYear,
+          cvc: cardDto.cvc,
+        },
+      });
 
-    await this.userModel.findByIdAndUpdate(userLogged._id, {
-      $set: { stripeId: customer.id },
-    });
+    const attachment: Stripe.Response<Stripe.PaymentMethod> =
+      await this.stripe.paymentMethods.attach(card.id, {
+        customer: customer.id,
+      });
 
-    return customer;
+    await this.userModel.findOneAndUpdate(
+      { _id: user._id },
+      { $set: { stripeId: customer.id } },
+      { returnOriginal: false },
+    );
+
+    return attachment;
   }
 
-  async createPayment(
-    { number, expMonth, expYear, cvc, amount, currency }: PaymentDto,
-    userLogged: any,
+  async createPaymentIntent(
+    paymentMethodId: string,
+    user: any,
+    { amount, currency }: PaymentDto,
   ): Promise<Stripe.Response<Stripe.PaymentIntent>> {
-    const paymentMethod = await this.stripe.paymentMethods.create({
-      type: 'card',
-      card: {
-        number: number,
-        exp_month: expMonth,
-        exp_year: expYear,
-        cvc: cvc,
-      },
-    });
-
-    const { stripeId } = await this.userModel.findById(userLogged.sub);
-
-    return this.stripe.paymentIntents.create({
+    const paymentIntent = await this.stripe.paymentIntents.create({
       amount: amount * 100, // Default amount in cents
       currency: currency,
-      payment_method: paymentMethod.id,
-      customer: stripeId,
+      payment_method: paymentMethodId,
+      customer: user.stripeId,
+    });
+
+    return await this.stripe.paymentIntents.confirm(paymentIntent.id, {
+      payment_method: paymentMethodId,
+    });
+  }
+
+  async findPaymentMethodsByStripeId(
+    stripeId: string,
+  ): Promise<Stripe.Response<Stripe.ApiList<Stripe.PaymentMethod>>> {
+    return await this.stripe.customers.listPaymentMethods(stripeId, {
+      type: 'card',
     });
   }
 }

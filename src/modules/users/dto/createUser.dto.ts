@@ -19,7 +19,7 @@ export class CreateUserDto {
   @ApiPropertyOptional({
     type: String,
   })
-  avatarUrl: string;
+  avatarUrl?: string;
 
   @ApiProperty({ enum: Role, default: Role.CLIENT })
   role: Role;
@@ -31,7 +31,7 @@ export class CreateUserDto {
 
   @ApiPropertyOptional({ type: String })
   @IsPhoneNumber('FR')
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
@@ -39,10 +39,10 @@ export class CreateUserDto {
   password: string;
 
   @ApiPropertyOptional({ type: Date })
-  birthDate: Date;
+  birthDate?: Date;
 
-  activities: Activity[];
-  dogs: Dog[];
+  activities?: Activity[];
+  dogs?: Dog[];
   registeredAt: Date;
   lastConnectionAt: Date;
   refreshToken: string;

@@ -7,29 +7,29 @@ import { Activity } from '../../activities/activity.schema';
 export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
-  lastname: string;
+  lastname?: string;
 
   @ApiProperty()
   @IsOptional()
-  firstname: string;
+  firstname?: string;
 
   @ApiProperty()
   @IsOptional()
   @IsEmail()
-  emailAddress: string;
+  emailAddress?: string;
 
   @ApiPropertyOptional({ type: String })
   @IsPhoneNumber('FR')
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @ApiProperty()
   @IsOptional()
   @MinLength(8)
-  password: string;
+  password?: string;
 
   @ApiPropertyOptional()
-  avatarUrl: string;
+  avatarUrl?: string;
 
   stripeId?: string;
-  activities: Activity[];
+  activities?: Activity[];
 }

@@ -48,7 +48,8 @@ export class User {
   @ApiPropertyOptional({ type: [Activity], default: [] })
   activities: Activity[];
 
-  @Prop({ type: String })
+  @Prop({ type: String, required: false })
+  @ApiPropertyOptional({ type: String, required: false })
   stripeId?: string;
 
   @Prop({ type: Date, default: new Date() })
