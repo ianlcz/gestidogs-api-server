@@ -7,6 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+
 import { Reservation } from '../reservations/reservation.schema';
 import { ReservationsService } from '../reservations/reservations.service';
 
@@ -137,8 +138,12 @@ export class SessionsService {
 
   async findByEstablishment(
     establishmentId: string,
+    date?: Date,
     isReserved?: boolean,
   ): Promise<Session[]> {
+    const tomorrow = new Date();
+    tomorrow.setDate(date?.getDate() + 1);
+
     if (isReserved) {
       // Get All Reservations
       const reservations: Reservation[] =
@@ -150,12 +155,25 @@ export class SessionsService {
       );
 
       // Filter Session by establishment
-      return sessionsReserved.filter(
-        (session) =>
-          session.activity.establishment.toString() === establishmentId,
-      );
+      return date
+        ? sessionsReserved.filter(
+            (session) =>
+              session.activity.establishment.toString() === establishmentId &&
+              session.beginDate >= date &&
+              session.endDate < tomorrow,
+          )
+        : sessionsReserved.filter(
+            (session) =>
+              session.activity.establishment.toString() === establishmentId,
+          );
     } else {
-      return await this.sessionModel.find({ establishment: establishmentId });
+      return date
+        ? await this.sessionModel.find({
+            establishment: establishmentId,
+            beginDate: { $gte: date },
+            endDate: { $lt: tomorrow },
+          })
+        : await this.sessionModel.find({ establishment: establishmentId });
     }
   }
 

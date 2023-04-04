@@ -160,7 +160,13 @@ export class SessionsController {
     return await this.sessionsService.findPlacesLeft(sessionId);
   }
 
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find reserved sessions by establishments' })
+  @ApiQuery({
+    name: 'date',
+    type: Date,
+    required: false,
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of reserved sessions by establishments',
@@ -169,9 +175,11 @@ export class SessionsController {
   @Get('establishments/:establishmentId/reserved')
   async findReservedByEstablishment(
     @Param('establishmentId') establishmentId: string,
+    @Query('date') date?: Date,
   ): Promise<Session[]> {
     return await this.sessionsService.findByEstablishment(
       establishmentId,
+      date,
       true,
     );
   }

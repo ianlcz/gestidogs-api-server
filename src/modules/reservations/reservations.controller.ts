@@ -164,7 +164,7 @@ export class ReservationsController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** and **Managers** can delete a session',
+      'Unauthorized because only **Administrators** and **Managers** can delete a reservation',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

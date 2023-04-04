@@ -4,10 +4,12 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { User } from '../users/user.schema';
 
 import { UsersService } from '../users/users.service';
 
@@ -47,6 +49,44 @@ export class EstablishmentsService {
         {
           cause: error,
         },
+      );
+    }
+  }
+
+  async addEmployee(
+    establishmentId: string,
+    newEmployeeId: string,
+  ): Promise<User[]> {
+    const { employees }: { employees: User[] } =
+      await this.establishmentModel.findById(establishmentId);
+    if (!employees) {
+      throw new NotFoundException(
+        `Employees of establishment '${establishmentId}' not found`,
+      );
+    }
+
+    const newEmployee = await this.usersService.findOne(newEmployeeId);
+    if (!newEmployeeId) {
+      throw new NotFoundException(`Employee '${newEmployeeId}' not found`);
+    }
+
+    try {
+      const newEmployees: User[] = [...employees, newEmployee];
+
+      await this.establishmentModel.findOneAndUpdate(
+        { _id: establishmentId },
+        {
+          $set: { employees: newEmployees },
+        },
+        { returnOriginal: false },
+      );
+
+      return newEmployees;
+    } catch (error) {
+      throw new HttpException(
+        { status: HttpStatus.BAD_REQUEST, error },
+        HttpStatus.BAD_REQUEST,
+        { cause: error },
       );
     }
   }

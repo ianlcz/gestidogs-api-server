@@ -39,31 +39,30 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  await app.listen(8080);
+  await app.listen(8080, '0.0.0.0');
 
   // get the swagger json file (if app is running in development mode)
   if (process.env.NODE_ENV === 'development') {
     // write swagger ui files
-    get(`${await app.getUrl()}/docs/swagger-ui-bundle.js`, function (response) {
-      response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js'));
-    });
+    get(`${await app.getUrl()}/docs/swagger-ui-bundle.js`, (response) =>
+      response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js')),
+    );
 
-    get(`${await app.getUrl()}/docs/swagger-ui-init.js`, function (response) {
-      response.pipe(createWriteStream('swagger-static/swagger-ui-init.js'));
-    });
+    get(`${await app.getUrl()}/docs/swagger-ui-init.js`, (response) =>
+      response.pipe(createWriteStream('swagger-static/swagger-ui-init.js')),
+    );
 
     get(
       `${await app.getUrl()}/docs/swagger-ui-standalone-preset.js`,
-      function (response) {
+      (response) =>
         response.pipe(
           createWriteStream('swagger-static/swagger-ui-standalone-preset.js'),
-        );
-      },
+        ),
     );
 
-    get(`${await app.getUrl()}/docs/swagger-ui.css`, function (response) {
-      response.pipe(createWriteStream('swagger-static/swagger-ui.css'));
-    });
+    get(`${await app.getUrl()}/docs/swagger-ui.css`, (response) =>
+      response.pipe(createWriteStream('swagger-static/swagger-ui.css')),
+    );
   }
 }
 bootstrap();
