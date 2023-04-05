@@ -154,14 +154,14 @@ export class SessionsService {
         (reservation) => reservation.session,
       );
       // Filter Session by establishment
-      if(date != null) {
+      if (date != null) {
         sessionsReserved.filter(
           (session) =>
             session.activity.establishment.toString() == establishmentId &&
             session.beginDate >= date &&
             session.endDate < tomorrow,
         );
-      }else{
+      } else {
         sessionsReserved.filter(
           (session) =>
             session.activity.establishment._id.toString() == establishmentId &&
@@ -169,7 +169,6 @@ export class SessionsService {
         );
       }
       return sessionsReserved;
-
     } else {
       return date
         ? await this.sessionModel.find({
