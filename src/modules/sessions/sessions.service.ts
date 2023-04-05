@@ -153,19 +153,24 @@ export class SessionsService {
       const sessionsReserved = reservations.map(
         (reservation) => reservation.session,
       );
-
+      console.log(sessionsReserved);
       // Filter Session by establishment
-      return date
-        ? sessionsReserved.filter(
-            (session) =>
-              session.activity.establishment.toString() === establishmentId &&
-              session.beginDate >= date &&
-              session.endDate < tomorrow,
-          )
-        : sessionsReserved.filter(
-            (session) =>
-              session.activity.establishment.toString() === establishmentId,
-          );
+      if(date != null) {
+        sessionsReserved.filter(
+          (session) =>
+            session.activity.establishment.toString() == establishmentId &&
+            session.beginDate >= date &&
+            session.endDate < tomorrow,
+        );
+      }else{
+        sessionsReserved.filter(
+          (session) =>
+            session.activity.establishment._id.toString() == establishmentId &&
+            session.establishment._id.toString() == establishmentId,
+        );
+      }
+      return sessionsReserved;
+
     } else {
       return date
         ? await this.sessionModel.find({
