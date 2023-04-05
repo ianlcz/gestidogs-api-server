@@ -153,7 +153,6 @@ export class SessionsService {
       const sessionsReserved = reservations.map(
         (reservation) => reservation.session,
       );
-      console.log(sessionsReserved);
       // Filter Session by establishment
       if(date != null) {
         sessionsReserved.filter(
