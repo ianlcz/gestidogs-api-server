@@ -33,16 +33,24 @@ export class User {
   @ApiProperty({ type: String, uniqueItems: true, required: true })
   emailAddress: string;
 
+  @Prop({ type: String })
+  @ApiPropertyOptional({ type: String })
+  phoneNumber: string;
+
   @Prop({ type: String, required: true })
   password: string;
 
   @Prop({ type: Date })
   @ApiPropertyOptional({ type: Date })
-  birthDate: Date;
+  birthDate?: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Activity' }], default: [] })
   @ApiPropertyOptional({ type: [Activity], default: [] })
   activities: Activity[];
+
+  @Prop({ type: String, required: false })
+  @ApiPropertyOptional({ type: String, required: false })
+  stripeId?: string;
 
   @Prop({ type: Date, default: new Date() })
   @ApiProperty({ type: Date })

@@ -2114,11 +2114,53 @@ window.onload = function() {
           ]
         }
       },
-      "/payments": {
+      "/payments/card": {
         "post": {
-          "operationId": "PaymentsController_createPayments",
-          "summary": "Create a Payment",
+          "operationId": "PaymentsController_createCard",
+          "summary": "Add a card as payment method",
           "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Card payment method successfully added"
+            },
+            "401": {
+              "description": "Unauthorized because only **Clients** can add their card as payment method"
+            }
+          },
+          "tags": [
+            "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/payments/{paymentMethodId}": {
+        "post": {
+          "operationId": "PaymentsController_createPaymentIntent",
+          "summary": "Make a payment intent",
+          "parameters": [
+            {
+              "name": "paymentMethodId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "requestBody": {
             "required": true,
             "content": {
@@ -2131,20 +2173,42 @@ window.onload = function() {
           },
           "responses": {
             "201": {
-              "description": "Payment successfully created",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "string"
-                  }
-                }
-              }
+              "description": "Payment intent successfully done"
             },
             "401": {
-              "description": "Unauthorized because only **Client** can create a Payment"
+              "description": "Unauthorized because only **Clients** can do a payment intent"
+            }
+          },
+          "tags": [
+            "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/payments/users/{stripeId}": {
+        "get": {
+          "operationId": "PaymentsController_findPaymentMethodsByStripeId",
+          "summary": "Find all user's payment methods",
+          "parameters": [
+            {
+              "name": "stripeId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of user's payment methods"
             },
-            "502": {
-              "description": "Bad Request"
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find all user payment methods"
             }
           },
           "tags": [
@@ -2599,6 +2663,9 @@ window.onload = function() {
               "type": "string",
               "uniqueItems": true
             },
+            "phoneNumber": {
+              "type": "string"
+            },
             "birthDate": {
               "format": "date-time",
               "type": "string"
@@ -2609,6 +2676,9 @@ window.onload = function() {
               "items": {
                 "$ref": "#/components/schemas/Activity"
               }
+            },
+            "stripeId": {
+              "type": "string"
             },
             "registeredAt": {
               "format": "date-time",
@@ -2742,6 +2812,9 @@ window.onload = function() {
             "emailAddress": {
               "type": "string"
             },
+            "phoneNumber": {
+              "type": "string"
+            },
             "password": {
               "type": "string"
             },
@@ -2783,6 +2856,9 @@ window.onload = function() {
               "type": "string"
             },
             "emailAddress": {
+              "type": "string"
+            },
+            "phoneNumber": {
               "type": "string"
             },
             "password": {
@@ -3116,6 +3192,29 @@ window.onload = function() {
             "dog"
           ]
         },
+        "CardDto": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "string"
+            },
+            "expMonth": {
+              "type": "number"
+            },
+            "expYear": {
+              "type": "number"
+            },
+            "cvc": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "number",
+            "expMonth",
+            "expYear",
+            "cvc"
+          ]
+        },
         "PaymentDto": {
           "type": "object",
           "properties": {
@@ -3157,7 +3256,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-03T21:16:40.795Z"
+              "default": "2023-04-05T14:47:05.639Z"
             },
             "__v": {
               "type": "number"

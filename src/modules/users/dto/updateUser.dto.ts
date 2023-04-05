@@ -1,32 +1,35 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsEmail, IsOptional, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsPhoneNumber, MinLength } from 'class-validator';
 
 import { Activity } from '../../activities/activity.schema';
-import { Dog } from '../../dogs/dog.schema';
 
 export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
-  lastname: string;
+  lastname?: string;
 
   @ApiProperty()
   @IsOptional()
-  firstname: string;
+  firstname?: string;
 
   @ApiProperty()
   @IsOptional()
   @IsEmail()
-  emailAddress: string;
+  emailAddress?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsPhoneNumber('FR')
+  phoneNumber?: string;
 
   @ApiProperty()
   @IsOptional()
   @MinLength(8)
-  password: string;
+  password?: string;
 
   @ApiPropertyOptional()
-  avatarUrl: string;
+  avatarUrl?: string;
 
-  dogs: Dog[];
-  activities: Activity[];
+  stripeId?: string;
+  activities?: Activity[];
 }
