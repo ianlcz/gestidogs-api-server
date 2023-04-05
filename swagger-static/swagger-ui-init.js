@@ -2117,6 +2117,7 @@ window.onload = function() {
       "/payments/card": {
         "post": {
           "operationId": "PaymentsController_createCard",
+          "summary": "Add a card as payment method",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -2130,17 +2131,26 @@ window.onload = function() {
           },
           "responses": {
             "201": {
-              "description": ""
+              "description": "Card payment method successfully added"
+            },
+            "401": {
+              "description": "Unauthorized because only **Clients** can add their card as payment method"
             }
           },
           "tags": [
             "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       },
       "/payments/{paymentMethodId}": {
         "post": {
           "operationId": "PaymentsController_createPaymentIntent",
+          "summary": "Make a payment intent",
           "parameters": [
             {
               "name": "paymentMethodId",
@@ -2163,17 +2173,26 @@ window.onload = function() {
           },
           "responses": {
             "201": {
-              "description": ""
+              "description": "Payment intent successfully done"
+            },
+            "401": {
+              "description": "Unauthorized because only **Clients** can do a payment intent"
             }
           },
           "tags": [
             "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       },
       "/payments/users/{stripeId}": {
         "get": {
           "operationId": "PaymentsController_findPaymentMethodsByStripeId",
+          "summary": "Find all user's payment methods",
           "parameters": [
             {
               "name": "stripeId",
@@ -2186,11 +2205,19 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": ""
+              "description": "List of user's payment methods"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find all user payment methods"
             }
           },
           "tags": [
             "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       },
@@ -3229,7 +3256,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-04T20:43:10.362Z"
+              "default": "2023-04-05T14:47:05.639Z"
             },
             "__v": {
               "type": "number"
