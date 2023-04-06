@@ -174,7 +174,7 @@ export class ReservationsService {
       );
     }
   }
-  
+
   async deleteOne(reservationId: string): Promise<Reservation> {
     try {
       return await this.reservationModel

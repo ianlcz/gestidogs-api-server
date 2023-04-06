@@ -81,7 +81,7 @@ export class SessionsService {
   }
 
   async findByEducator(educatorId: string): Promise<Session[]> {
-    return await this.sessionModel.find({ educatorId }).populate([
+    return await this.sessionModel.find({ educator: educatorId }).populate([
       {
         path: 'activity',
         model: 'Activity',
@@ -127,7 +127,7 @@ export class SessionsService {
   }
 
   async findByActivity(activityId: string): Promise<Session[]> {
-    return await this.sessionModel.find({ activityId }).populate([
+    return await this.sessionModel.find({ activity: activityId }).populate([
       {
         path: 'activity',
         model: 'Activity',
@@ -252,13 +252,15 @@ export class SessionsService {
 
   async deleteByEducator(educatorId: string): Promise<void> {
     try {
-      await this.sessionModel.findOneAndDelete({ educatorId }).populate([
-        {
-          path: 'activity',
-          model: 'Activity',
-        },
-        { path: 'educator', model: 'User' },
-      ]);
+      await this.sessionModel
+        .findOneAndDelete({ educator: educatorId })
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+          },
+          { path: 'educator', model: 'User' },
+        ]);
     } catch (error) {
       throw new HttpException(
         {
@@ -275,13 +277,15 @@ export class SessionsService {
 
   async deleteByActivity(activityId: string): Promise<void> {
     try {
-      await this.sessionModel.findByIdAndDelete({ activityId }).populate([
-        {
-          path: 'activity',
-          model: 'Activity',
-        },
-        { path: 'educator', model: 'User' },
-      ]);
+      await this.sessionModel
+        .findByIdAndDelete({ activity: activityId })
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+          },
+          { path: 'educator', model: 'User' },
+        ]);
     } catch (error) {
       throw new HttpException(
         {

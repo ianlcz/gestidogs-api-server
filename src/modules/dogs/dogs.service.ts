@@ -105,7 +105,7 @@ export class DogsService {
   }
 
   async findByOwner(ownerId: string): Promise<Dog[]> {
-    return await this.dogModel.find({ ownerId }).populate([
+    return await this.dogModel.find({ owner: ownerId }).populate([
       {
         path: 'owner',
         model: 'User',
@@ -122,20 +122,22 @@ export class DogsService {
   }
 
   async findByEstablishment(establishmentId: string): Promise<Dog[]> {
-    return await this.dogModel.find({ establishmentId }).populate([
-      {
-        path: 'owner',
-        model: 'User',
-      },
-      {
-        path: 'establishment',
-        model: 'Establishment',
-        populate: [
-          { path: 'owner', model: 'User' },
-          { path: 'employees', model: 'User' },
-        ],
-      },
-    ]);
+    return await this.dogModel
+      .find({ establishment: establishmentId })
+      .populate([
+        {
+          path: 'owner',
+          model: 'User',
+        },
+        {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      ]);
   }
 
   async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {

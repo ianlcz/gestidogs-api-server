@@ -151,7 +151,7 @@ export class EstablishmentsService {
       );
     }
   }
-  
+
   async deleteOne(establishmentId: string): Promise<Establishment> {
     try {
       return await this.establishmentModel
