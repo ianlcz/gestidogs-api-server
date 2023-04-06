@@ -130,28 +130,6 @@ export class ObservationsController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Remove all dog observations' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Remove all dog observations',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can remove all dog observations',
-  })
-  @Delete()
-  async deleteAll(@Res() response: Response): Promise<void> {
-    await this.observationsService.deleteAll();
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'observations' Collection`,
-    });
-  }
-
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete a dog observation' })
   @ApiResponse({

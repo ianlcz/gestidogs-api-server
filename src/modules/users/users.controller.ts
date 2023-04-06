@@ -183,28 +183,6 @@ export class UsersController {
 
   @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Remove all users' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Remove all users',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can remove all users',
-  })
-  @Delete()
-  async deleteAll(@Res() response: Response) {
-    await this.usersService.deleteAll();
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'users' Collection`,
-    });
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({
     status: HttpStatus.OK,

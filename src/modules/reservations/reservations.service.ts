@@ -174,11 +174,7 @@ export class ReservationsService {
       );
     }
   }
-
-  async deleteAll(): Promise<void> {
-    await this.reservationModel.deleteMany();
-  }
-
+  
   async deleteOne(reservationId: string): Promise<Reservation> {
     try {
       return await this.reservationModel

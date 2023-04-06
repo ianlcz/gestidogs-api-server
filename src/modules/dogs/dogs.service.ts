@@ -199,18 +199,6 @@ export class DogsService {
     }
   }
 
-  async deleteAll(): Promise<void> {
-    const owners = await this.usersService.findAll();
-    owners.map(
-      async (owner) =>
-        await this.usersService.updateOne(owner._id.toString(), {
-          ...owner,
-        }),
-    );
-
-    await this.dogModel.deleteMany();
-  }
-
   async deleteOne(dogId: string): Promise<Dog> {
     try {
       const dog = await this.dogModel

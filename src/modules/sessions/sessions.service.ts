@@ -223,10 +223,6 @@ export class SessionsService {
     }
   }
 
-  async deleteAll(): Promise<void> {
-    await this.sessionModel.deleteMany();
-  }
-
   async deleteOne(sessionId: string): Promise<Session> {
     try {
       return await this.sessionModel

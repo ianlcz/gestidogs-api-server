@@ -170,28 +170,6 @@ export class EstablishmentsController {
 
   @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Remove all establishments' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Remove all establishments',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can remove all establishments',
-  })
-  @Delete()
-  async deleteAll(@Res() response: Response): Promise<void> {
-    await this.establishmentsService.deleteAll();
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'establishments' Collection`,
-    });
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Delete an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
