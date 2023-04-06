@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { Types } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 
 import { User } from '../users/user.schema';
 
+export type HolidayDocument = HydratedDocument<Holiday>;
 @Schema()
 export class Holiday {
   _id: Types.ObjectId;
