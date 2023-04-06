@@ -8,7 +8,6 @@ import {
   Post,
   Put,
   Query,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -19,7 +18,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Response } from 'express';
 import { Roles } from '../../decorators/roles.decorator';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
@@ -80,19 +78,6 @@ export class ActivitiesController {
   }*/
 
   @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find an activity' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'The found activity',
-    type: Activity,
-  })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
-  @Get(':activityId')
-  async findOne(@Param('activityId') activityId: string): Promise<Activity> {
-    return await this.activitiesService.findOne(activityId);
-  }
-
-  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find activities of an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -104,11 +89,24 @@ export class ActivitiesController {
     type: String,
     required: true,
   })
-  @Get('/')
+  @Get()
   async findByEstablishment(
     @Query('establishmentId') establishmentId: string,
   ): Promise<Activity[]> {
     return await this.activitiesService.findByEstablishment(establishmentId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find an activity' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The found activity',
+    type: Activity,
+  })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @Get(':activityId')
+  async findOne(@Param('activityId') activityId: string): Promise<Activity> {
+    return await this.activitiesService.findOne(activityId);
   }
 
   @UseGuards(AccessTokenGuard)

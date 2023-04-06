@@ -79,26 +79,6 @@ export class DogsController {
   }*/
 
   @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find a dog' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'The found dog',
-    type: Dog,
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Unauthorized if the **Client** is not the owner of the dog',
-  })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
-  @Get(':dogId')
-  async findOne(
-    @Param('dogId') dogId: string,
-    @Req() req: Request,
-  ): Promise<Dog> {
-    return await this.dogsService.findOne(dogId, req.user);
-  }
-
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Find dogs by owner' })
   @ApiResponse({
@@ -116,9 +96,29 @@ export class DogsController {
     type: String,
     required: true,
   })
-  @Get('/')
+  @Get()
   async findByOwner(@Query('ownerId') ownerId: string): Promise<Dog[]> {
     return await this.dogsService.findByOwner(ownerId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find a dog' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The found dog',
+    type: Dog,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Unauthorized if the **Client** is not the owner of the dog',
+  })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @Get(':dogId')
+  async findOne(
+    @Param('dogId') dogId: string,
+    @Req() req: Request,
+  ): Promise<Dog> {
+    return await this.dogsService.findOne(dogId, req.user);
   }
 
   @ApiOperation({ summary: 'Find dogs by establishment' })
@@ -207,7 +207,7 @@ export class DogsController {
     required: true,
   })
   @Delete('/')
-  async deleteByOwner(  
+  async deleteByOwner(
     @Query('ownerId') ownerId: string,
     @Res() response: Response,
   ): Promise<void> {

@@ -7,12 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -93,7 +95,7 @@ export class EstablishmentsController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
+  /* @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.CLIENT)
   @ApiOperation({ summary: 'Find all establishments' })
   @ApiResponse({
@@ -109,6 +111,25 @@ export class EstablishmentsController {
   @Get()
   async findAll(): Promise<Establishment[]> {
     return await this.establishmentsService.findAll();
+  } */
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find establishments by owner' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of owner-managed establishments',
+    type: [Establishment],
+  })
+  @ApiQuery({
+    name: 'ownerId',
+    type: String,
+    required: true,
+  })
+  @Get()
+  async findByOwner(
+    @Query('ownerId') ownerId: string,
+  ): Promise<Establishment[]> {
+    return await this.establishmentsService.findByOwner(ownerId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -124,20 +145,6 @@ export class EstablishmentsController {
     @Param('establishmentId') establishmentId: string,
   ): Promise<Establishment> {
     return await this.establishmentsService.findOne(establishmentId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find establishments by owner' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of owner-managed establishments',
-    type: [Establishment],
-  })
-  @Get('/owners/:ownerId')
-  async findByOwner(
-    @Param('ownerId') ownerId: string,
-  ): Promise<Establishment[]> {
-    return await this.establishmentsService.findByOwner(ownerId);
   }
 
   @UseGuards(AccessTokenGuard)

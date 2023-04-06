@@ -7,17 +7,16 @@ import {
   Param,
   Post,
   Put,
-  Res,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-
-import { Response } from 'express';
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
@@ -57,7 +56,7 @@ export class ObservationsController {
     return await this.observationsService.create(createObservationDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  /* @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all dog observations' })
   @ApiResponse({
@@ -73,6 +72,23 @@ export class ObservationsController {
   @Get()
   async findAll(): Promise<Observation[]> {
     return await this.observationsService.findAll();
+  } */
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find all observations of a dog' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of all observations of a dog',
+    type: [Observation],
+  })
+  @ApiQuery({
+    name: 'dogId',
+    type: String,
+    required: true,
+  })
+  @Get()
+  async findByDog(@Query('dogId') dogId: string): Promise<Observation[]> {
+    return await this.observationsService.findByDog(dogId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -88,18 +104,6 @@ export class ObservationsController {
     @Param('observationId') observationId: string,
   ): Promise<Observation> {
     return await this.observationsService.findOne(observationId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find all observations of a dog' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of all observations of a dog',
-    type: [Observation],
-  })
-  @Get('dogs/:dogId')
-  async findByDog(@Param('dogId') dogId: string): Promise<Observation[]> {
-    return await this.observationsService.findByDog(dogId);
   }
 
   @UseGuards(AccessTokenGuard)

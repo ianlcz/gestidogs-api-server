@@ -7,9 +7,10 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { HolidaysService } from './holidays.service';
 import { CreateHolidayDto } from './dto/createHoliday.dto';
@@ -47,7 +48,7 @@ export class HolidaysController {
     return await this.holidaysService.create(createHolidayDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  /* @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all holidays' })
   @ApiResponse({
@@ -63,6 +64,25 @@ export class HolidaysController {
   @Get()
   async findAll(): Promise<Holiday[]> {
     return await this.holidaysService.findAll();
+  } */
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find by employee' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of employee holidays',
+    type: [Holiday],
+  })
+  @ApiQuery({
+    name: 'employeeId',
+    type: String,
+    required: true,
+  })
+  @Get()
+  async findByEmployee(
+    @Query('employeeId') employeeId: string,
+  ): Promise<Holiday[]> {
+    return await this.holidaysService.findByEmployee(employeeId);
   }
 
   @UseGuards(AccessTokenGuard)
