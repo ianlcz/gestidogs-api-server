@@ -7,12 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -59,7 +61,7 @@ export class ActivitiesController {
     return await this.activitiesService.create(createActivityDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  /*@UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all activities' })
   @ApiResponse({
@@ -75,7 +77,7 @@ export class ActivitiesController {
   @Get()
   async findAll(): Promise<Activity[]> {
     return await this.activitiesService.findAll();
-  }
+  }*/
 
   @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find an activity' })
@@ -97,9 +99,14 @@ export class ActivitiesController {
     description: 'List of activities of an establishment',
     type: [Activity],
   })
-  @Get('/establishments/:establishmentId')
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: true,
+  })
+  @Get('/')
   async findByEstablishment(
-    @Param('establishmentId') establishmentId: string,
+    @Query('establishmentId') establishmentId: string,
   ): Promise<Activity[]> {
     return await this.activitiesService.findByEstablishment(establishmentId);
   }

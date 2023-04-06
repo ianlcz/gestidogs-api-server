@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -14,6 +15,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -58,7 +60,7 @@ export class DogsController {
     return await this.dogsService.create(createDogDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  /*@UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all dogs' })
   @ApiResponse({
@@ -74,7 +76,7 @@ export class DogsController {
   @Get()
   async findAll(): Promise<Dog[]> {
     return await this.dogsService.findAll();
-  }
+  }*/
 
   @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find a dog' })
@@ -109,8 +111,13 @@ export class DogsController {
     description:
       'Unauthorized because only **Administrators** and **Managers** can find dogs by their owner',
   })
-  @Get('/owners/:ownerId')
-  async findByOwner(@Param('ownerId') ownerId: string): Promise<Dog[]> {
+  @ApiQuery({
+    name: 'ownerId',
+    type: String,
+    required: true,
+  })
+  @Get('/')
+  async findByOwner(@Query('ownerId') ownerId: string): Promise<Dog[]> {
     return await this.dogsService.findByOwner(ownerId);
   }
 
@@ -120,9 +127,14 @@ export class DogsController {
     description: 'List of dogs by establishment',
     type: [Dog],
   })
-  @Get('/establishments/:establishmentId')
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: true,
+  })
+  @Get('/')
   async findByEstablishment(
-    @Param('establishmentId') establishmentId: string,
+    @Query('establishmentId') establishmentId: string,
   ): Promise<Dog[]> {
     return await this.dogsService.findByEstablishment(establishmentId);
   }
@@ -189,9 +201,14 @@ export class DogsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Not found',
   })
-  @Delete('/owners/:ownerId')
-  async deleteByOwner(
-    @Param('ownerId') ownerId: string,
+  @ApiQuery({
+    name: 'ownerId',
+    type: String,
+    required: true,
+  })
+  @Delete('/')
+  async deleteByOwner(  
+    @Query('ownerId') ownerId: string,
     @Res() response: Response,
   ): Promise<void> {
     await this.dogsService.deleteByOwner(ownerId);
