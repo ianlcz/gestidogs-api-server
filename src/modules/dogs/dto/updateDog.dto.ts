@@ -1,4 +1,3 @@
-import { Prop } from '@nestjs/mongoose';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Establishment } from '../../establishments/establishment.schema';
@@ -11,7 +10,6 @@ export class UpdateDogDto {
   @ApiProperty({ type: String })
   establishment: Establishment;
 
-  @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
   nationalId: string;
 
@@ -26,11 +24,9 @@ export class UpdateDogDto {
 
   birthDate: Date;
 
-  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
   weight: number;
 
-  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
   height: number;
 }
