@@ -22,6 +22,7 @@ import { SessionsModule } from './modules/sessions/sessions.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { ObservationsModule } from './modules/observations/observations.module';
+import { HolidaysModule } from './modules/holidays/holidays.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ObservationsModule } from './modules/observations/observations.module';
     ReservationsModule,
     PaymentsModule,
     ObservationsModule,
+    HolidaysModule,
   ],
   controllers: [AppController, SessionsController],
   providers: [
