@@ -95,7 +95,12 @@ export class PaymentsController {
     description:
       'Unauthorized because only **Administrators** and **Managers** can find all user payment methods',
   })
-  @Get('users/:stripeId')
+  @ApiQuery({
+    name: 'stripeId',
+    type: String,
+    required: true,
+  })
+  @Get()
   async findPaymentMethodsByStripeId(
     @Param('stripeId') stripeId: string,
   ): Promise<Stripe.Response<Stripe.ApiList<Stripe.PaymentMethod>>> {

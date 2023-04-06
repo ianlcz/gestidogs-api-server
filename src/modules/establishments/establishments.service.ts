@@ -91,8 +91,8 @@ export class EstablishmentsService {
     }
   }
 
-  async findAll(): Promise<Establishment[]> {
-    return await this.establishmentModel.find().populate([
+  async find(ownerId?: string): Promise<Establishment[]> {
+    return await this.establishmentModel.find({ owner: ownerId }).populate([
       { path: 'owner', model: 'User' },
       { path: 'employees', model: 'User' },
     ]);
@@ -111,13 +111,6 @@ export class EstablishmentsService {
         { cause: error },
       );
     }
-  }
-
-  async findByOwner(ownerId: string): Promise<Establishment[]> {
-    return await this.establishmentModel.find({ owner: ownerId }).populate([
-      { path: 'owner', model: 'User' },
-      { path: 'employees', model: 'User' },
-    ]);
   }
 
   async updateOne(
@@ -151,7 +144,7 @@ export class EstablishmentsService {
       );
     }
   }
-  
+
   async deleteOne(establishmentId: string): Promise<Establishment> {
     try {
       return await this.establishmentModel

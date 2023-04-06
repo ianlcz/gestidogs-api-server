@@ -48,26 +48,8 @@ export class HolidaysController {
     return await this.holidaysService.create(createHolidayDto);
   }
 
-  /* @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Find all holidays' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of holidays',
-    type: [Holiday],
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can find all holidays',
-  })
-  @Get()
-  async findAll(): Promise<Holiday[]> {
-    return await this.holidaysService.findAll();
-  } */
-
   @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find by employee' })
+  @ApiOperation({ summary: 'Find employee holidays' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of employee holidays',
@@ -76,13 +58,11 @@ export class HolidaysController {
   @ApiQuery({
     name: 'employeeId',
     type: String,
-    required: true,
+    required: false,
   })
   @Get()
-  async findByEmployee(
-    @Query('employeeId') employeeId: string,
-  ): Promise<Holiday[]> {
-    return await this.holidaysService.findByEmployee(employeeId);
+  async find(@Query('employeeId') employeeId?: string): Promise<Holiday[]> {
+    return await this.holidaysService.find(employeeId);
   }
 
   @UseGuards(AccessTokenGuard)

@@ -56,39 +56,21 @@ export class ObservationsController {
     return await this.observationsService.create(createObservationDto);
   }
 
-  /* @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find all dog observations' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'List of observations',
-    type: [Observation],
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can find all observations',
-  })
-  @Get()
-  async findAll(): Promise<Observation[]> {
-    return await this.observationsService.findAll();
-  } */
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find all observations of a dog' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of all observations of a dog',
+    description: 'List of all dog observations',
     type: [Observation],
   })
   @ApiQuery({
     name: 'dogId',
     type: String,
-    required: true,
+    required: false,
   })
   @Get()
-  async findByDog(@Query('dogId') dogId: string): Promise<Observation[]> {
-    return await this.observationsService.findByDog(dogId);
+  async find(@Query('dogId') dogId?: string): Promise<Observation[]> {
+    return await this.observationsService.find(dogId);
   }
 
   @UseGuards(AccessTokenGuard)

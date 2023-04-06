@@ -60,9 +60,9 @@ export class DogsController {
     return await this.dogsService.create(createDogDto);
   }
 
-  /*@UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Find all dogs' })
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @ApiOperation({ summary: 'Find dogs' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of dogs',
@@ -71,34 +71,24 @@ export class DogsController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** can find all dogs',
-  })
-  @Get()
-  async findAll(): Promise<Dog[]> {
-    return await this.dogsService.findAll();
-  }*/
-
-  @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
-  @ApiOperation({ summary: 'Find dogs by owner' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of dogs by their owner',
-    type: [Dog],
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** and **Managers** can find dogs by their owner',
+      'Unauthorized because only **Administrators** and **Managers** can find dogs',
   })
   @ApiQuery({
     name: 'ownerId',
     type: String,
-    required: true,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: false,
   })
   @Get()
-  async findByOwner(@Query('ownerId') ownerId: string): Promise<Dog[]> {
-    return await this.dogsService.findByOwner(ownerId);
+  async find(
+    @Query('ownerId') ownerId?: string,
+    @Query('establishmentId') establishmentId?: string,
+  ): Promise<Dog[]> {
+    return await this.dogsService.find(ownerId, establishmentId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -119,24 +109,6 @@ export class DogsController {
     @Req() req: Request,
   ): Promise<Dog> {
     return await this.dogsService.findOne(dogId, req.user);
-  }
-
-  @ApiOperation({ summary: 'Find dogs by establishment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of dogs by establishment',
-    type: [Dog],
-  })
-  @ApiQuery({
-    name: 'establishmentId',
-    type: String,
-    required: true,
-  })
-  @Get('/')
-  async findByEstablishment(
-    @Query('establishmentId') establishmentId: string,
-  ): Promise<Dog[]> {
-    return await this.dogsService.findByEstablishment(establishmentId);
   }
 
   @UseGuards(AccessTokenGuard)

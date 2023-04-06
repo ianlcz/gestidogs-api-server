@@ -108,9 +108,11 @@ export class UsersController {
     return await this.usersService.getInfos(request.user);
   }
 
-  /* @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Find all users' })
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @ApiOperation({ summary: 'Find users' })
+  @ApiQuery({ name: 'establishmentId', type: String, required: false })
+  @ApiQuery({ name: 'role', enum: Role, required: false })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of users',
@@ -119,34 +121,14 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** can find all users',
+      'Unauthorized because only **Administrators** and **Managers** can find users',
   })
   @Get()
-  async findAll(): Promise<User[]> {
-    return await this.usersService.findAll();
-  } */
-
-  @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
-  @ApiOperation({ summary: 'Find users of an establishment' })
-  @ApiQuery({ name: 'establishmentId', type: String, required: true })
-  @ApiQuery({ name: 'role', enum: Role, required: false })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of users by establishment',
-    type: [User],
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** and **Managers** can find a user',
-  })
-  @Get()
-  async findByEstablishment(
-    @Query('establishmentId') establishmentId: string,
+  async find(
+    @Query('establishmentId') establishmentId?: string,
     @Query('role') role?: Role,
   ): Promise<User[]> {
-    return await this.usersService.findByEstablishment(establishmentId, role);
+    return await this.usersService.find(establishmentId, role);
   }
 
   @UseGuards(AccessTokenGuard)
