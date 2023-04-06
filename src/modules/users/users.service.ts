@@ -253,12 +253,6 @@ export class UsersService {
     }
   }
 
-  async deleteAll(): Promise<void> {
-    await this.userModel.deleteMany();
-    await this.establishmentsService.deleteAll();
-    await this.dogsService.deleteAll();
-  }
-
   async deleteOne(userId: string): Promise<User> {
     try {
       const userToDelete: User = await this.userModel.findOne({ _id: userId });

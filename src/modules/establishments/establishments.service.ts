@@ -151,11 +151,7 @@ export class EstablishmentsService {
       );
     }
   }
-
-  async deleteAll(): Promise<void> {
-    await this.establishmentModel.deleteMany();
-  }
-
+  
   async deleteOne(establishmentId: string): Promise<Establishment> {
     try {
       return await this.establishmentModel

@@ -124,28 +124,6 @@ export class ActivitiesController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Remove all activities' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Remove all activities',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can remove all activities',
-  })
-  @Delete()
-  async deleteAll(@Res() response: Response): Promise<void> {
-    await this.activitiesService.deleteAll();
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'activities' Collection`,
-    });
-  }
-
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete an activity' })
   @ApiResponse({

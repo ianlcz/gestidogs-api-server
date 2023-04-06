@@ -132,28 +132,6 @@ export class ReservationsController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Remove all reservations' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Remove all reservations',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can remove all reservations',
-  })
-  @Delete()
-  async deleteAll(@Res() response: Response): Promise<void> {
-    await this.reservationsService.deleteAll();
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'reservations' Collection`,
-    });
-  }
-
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete a reservation' })
   @ApiResponse({

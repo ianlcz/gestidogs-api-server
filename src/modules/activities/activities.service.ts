@@ -118,10 +118,6 @@ export class ActivitiesService {
     }
   }
 
-  async deleteAll(): Promise<void> {
-    await this.activityTypeModel.deleteMany();
-  }
-
   async deleteOne(activityTypeId: string): Promise<Activity> {
     try {
       const activityType = await this.activityTypeModel

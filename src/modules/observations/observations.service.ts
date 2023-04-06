@@ -92,10 +92,6 @@ export class ObservationsService {
     }
   }
 
-  async deleteAll(): Promise<void> {
-    await this.observationModel.deleteMany();
-  }
-
   async deleteOne(observationId: string): Promise<Observation> {
     try {
       return await this.observationModel

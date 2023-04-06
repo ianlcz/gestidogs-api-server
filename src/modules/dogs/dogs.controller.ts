@@ -152,28 +152,6 @@ export class DogsController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Remove all dogs' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Remove all dogs',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can remove all dogs',
-  })
-  @Delete()
-  async deleteAll(@Res() response: Response): Promise<void> {
-    await this.dogsService.deleteAll();
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'dogs' Collection`,
-    });
-  }
-
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
   @ApiOperation({ summary: 'Delete a dog' })
   @ApiResponse({

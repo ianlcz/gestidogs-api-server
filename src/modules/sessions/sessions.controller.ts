@@ -209,28 +209,6 @@ export class SessionsController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Remove all sessions' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Remove all sessions',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can remove all sessions',
-  })
-  @Delete()
-  async deleteAll(@Res() response: Response): Promise<void> {
-    await this.sessionsService.deleteAll();
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: `Delete all documents in 'sessions' Collection`,
-    });
-  }
-
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Delete a session' })
   @ApiResponse({
