@@ -15,6 +15,9 @@ export class UpdateActivityDto {
   @ApiPropertyOptional({ type: String })
   imageUrl: string;
 
+  @ApiPropertyOptional({ type: String })
+  color: string;
+
   @ApiPropertyOptional({ type: Number })
   duration: number;
 
