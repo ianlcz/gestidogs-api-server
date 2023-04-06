@@ -153,6 +153,7 @@ export class SessionsService {
       const sessionsReserved = reservations.map(
         (reservation) => reservation.session,
       );
+
       // Filter Session by establishment
       if (date != null) {
         sessionsReserved.filter(
@@ -168,15 +169,32 @@ export class SessionsService {
             session.establishment._id.toString() == establishmentId,
         );
       }
+
       return sessionsReserved;
     } else {
       return date
-        ? await this.sessionModel.find({
-            establishment: establishmentId,
-            beginDate: { $gte: date },
-            endDate: { $lt: tomorrow },
-          })
-        : await this.sessionModel.find({ establishment: establishmentId });
+        ? await this.sessionModel
+            .find({
+              establishment: establishmentId,
+              beginDate: { $gte: date },
+              endDate: { $lt: tomorrow },
+            })
+            .populate([
+              {
+                path: 'activity',
+                model: 'Activity',
+              },
+              { path: 'educator', model: 'User' },
+            ])
+        : await this.sessionModel
+            .find({ establishment: establishmentId })
+            .populate([
+              {
+                path: 'activity',
+                model: 'Activity',
+              },
+              { path: 'educator', model: 'User' },
+            ]);
     }
   }
 
