@@ -76,6 +76,27 @@ export class HolidaysService {
     });
   }
 
+  async findByEmployee(employeeId: string): Promise<Holiday[]> {
+    return await this.holidayModel.find({ employee: employeeId }).populate({
+      path: 'employee',
+      model: 'User',
+      populate: {
+        path: 'activities',
+        model: 'Activity',
+        populate: [
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+        ],
+      },
+    });
+  }
+
   async updateOne(holidayId: string, holidayChanges: object): Promise<Holiday> {
     try {
       return await this.holidayModel

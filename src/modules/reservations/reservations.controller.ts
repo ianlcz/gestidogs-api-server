@@ -7,16 +7,16 @@ import {
   Param,
   Post,
   Put,
-  Res,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Response } from 'express';
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
@@ -51,7 +51,7 @@ export class ReservationsController {
     return await this.reservationsService.create(createReservationDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  /* @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all reservations' })
   @ApiResponse({
@@ -67,6 +67,31 @@ export class ReservationsController {
   @Get()
   async findAll(): Promise<Reservation[]> {
     return await this.reservationsService.findAll();
+  } */
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @ApiOperation({ summary: 'Find reservations by session' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of reservations by session',
+    type: [Reservation],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can find reservations by session',
+  })
+  @ApiQuery({
+    name: 'sessionId',
+    type: String,
+    required: true,
+  })
+  @Get()
+  async findBySession(
+    @Query('sessionId') sessionId: string,
+  ): Promise<Reservation[]> {
+    return await this.reservationsService.findBySession(sessionId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -82,26 +107,6 @@ export class ReservationsController {
     @Param('reservationId') reservationId: string,
   ): Promise<Reservation> {
     return await this.reservationsService.findOne(reservationId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR, Role.MANAGER)
-  @ApiOperation({ summary: 'Find reservations by session' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of reservations by session',
-    type: [Reservation],
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** and **Managers** can find reservations by session',
-  })
-  @Get('sessions/:sessionId')
-  async findBySession(
-    @Param('sessionId') sessionId: string,
-  ): Promise<Reservation[]> {
-    return await this.reservationsService.findBySession(sessionId);
   }
 
   @UseGuards(AccessTokenGuard)

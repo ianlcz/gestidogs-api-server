@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -36,6 +38,34 @@ export class PaymentsController {
 
   @UseGuards(AccessTokenGuard)
   @Roles(Role.CLIENT)
+  @ApiOperation({ summary: 'Make a payment intent' })
+  @ApiCreatedResponse({
+    description: 'Payment intent successfully done',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Unauthorized because only **Clients** can do a payment intent',
+  })
+  @ApiQuery({
+    name: 'paymentMethodId',
+    type: String,
+    required: true,
+  })
+  @Post()
+  async createPaymentIntent(
+    @Query('paymentMethodId') paymentMethodId: string,
+    @Req() req: Request,
+    @Body() paymentDto: PaymentDto,
+  ): Promise<Stripe.Response<Stripe.PaymentIntent>> {
+    return await this.paymentsService.createPaymentIntent(
+      paymentMethodId,
+      req.user,
+      paymentDto,
+    );
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Roles(Role.CLIENT)
   @ApiOperation({ summary: 'Add card as payment method' })
   @ApiCreatedResponse({
     description: 'Card payment method successfully added',
@@ -52,29 +82,6 @@ export class PaymentsController {
     return await this.paymentsService.createPaymentMethodCard(
       cardDto,
       req.user,
-    );
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Roles(Role.CLIENT)
-  @ApiOperation({ summary: 'Make a payment intent' })
-  @ApiCreatedResponse({
-    description: 'Payment intent successfully done',
-  })
-  @ApiUnauthorizedResponse({
-    description:
-      'Unauthorized because only **Clients** can do a payment intent',
-  })
-  @Post(':paymentMethodId')
-  async createPaymentIntent(
-    @Param('paymentMethodId') paymentMethodId: string,
-    @Req() req: Request,
-    @Body() paymentDto: PaymentDto,
-  ): Promise<Stripe.Response<Stripe.PaymentIntent>> {
-    return await this.paymentsService.createPaymentIntent(
-      paymentMethodId,
-      req.user,
-      paymentDto,
     );
   }
 

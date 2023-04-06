@@ -7,17 +7,17 @@ import {
   Param,
   Post,
   Put,
-  Res,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Response } from 'express';
 import { Roles } from '../../decorators/roles.decorator';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
@@ -59,7 +59,7 @@ export class ActivitiesController {
     return await this.activitiesService.create(createActivityDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  /*@UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all activities' })
   @ApiResponse({
@@ -75,6 +75,25 @@ export class ActivitiesController {
   @Get()
   async findAll(): Promise<Activity[]> {
     return await this.activitiesService.findAll();
+  }*/
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find activities of an establishment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of activities of an establishment',
+    type: [Activity],
+  })
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: true,
+  })
+  @Get()
+  async findByEstablishment(
+    @Query('establishmentId') establishmentId: string,
+  ): Promise<Activity[]> {
+    return await this.activitiesService.findByEstablishment(establishmentId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -88,20 +107,6 @@ export class ActivitiesController {
   @Get(':activityId')
   async findOne(@Param('activityId') activityId: string): Promise<Activity> {
     return await this.activitiesService.findOne(activityId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find activities of an establishment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of activities of an establishment',
-    type: [Activity],
-  })
-  @Get('/establishments/:establishmentId')
-  async findByEstablishment(
-    @Param('establishmentId') establishmentId: string,
-  ): Promise<Activity[]> {
-    return await this.activitiesService.findByEstablishment(establishmentId);
   }
 
   @UseGuards(AccessTokenGuard)

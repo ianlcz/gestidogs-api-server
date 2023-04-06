@@ -30,8 +30,6 @@ import { UpdateSessionDto } from './dto/updateSession.dto';
 import { Session } from './session.schema';
 import { SessionsService } from './sessions.service';
 
-type sessionEducatorType = { today: Session[]; next: Session[] } | Session[];
-
 @ApiBearerAuth('BearerToken')
 @ApiTags('sessions')
 @Controller('sessions')
@@ -60,7 +58,7 @@ export class SessionsController {
     return await this.sessionsService.create(createSessionDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  /* @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
   @ApiOperation({ summary: 'Find all sessions' })
   @ApiResponse({
@@ -76,6 +74,79 @@ export class SessionsController {
   @Get()
   async findAll(): Promise<Session[]> {
     return await this.sessionsService.findAll();
+  } */
+
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find sessions' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of sessions',
+    type: [Session],
+  })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiQuery({
+    name: 'date',
+    type: Date,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'reserved',
+    type: Boolean,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'educatorId',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'activityId',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: false,
+  })
+  @Get()
+  async find(
+    @Query('date') date?: Date,
+    @Query('reserved') reserved?: boolean,
+    @Query('educatorId') educatorId?: string,
+    @Query('activityId') activityId?: string,
+    @Query('establishmentId') establishmentId?: string,
+  ): Promise<
+    | Session[]
+    | {
+        today: Session[];
+        next: Session[];
+      }
+  > {
+    if (educatorId) {
+      if (date instanceof Date && isFinite(date.getTime())) {
+        return await this.sessionsService.findEducatorSessionsByDate(
+          educatorId,
+          date,
+        );
+      } else {
+        return await this.sessionsService.findByEducator(educatorId);
+      }
+    } else if (activityId) {
+      return await this.sessionsService.findByActivity(activityId);
+    } else if (establishmentId) {
+      if (reserved && date instanceof Date && isFinite(date.getTime())) {
+        return await this.sessionsService.findByEstablishment(
+          establishmentId,
+          date,
+          true,
+        );
+      } else {
+        return await this.sessionsService.findByEstablishment(establishmentId);
+      }
+    } else {
+      return await this.sessionsService.findAll();
+    }
   }
 
   @UseGuards(AccessTokenGuard)
@@ -89,57 +160,6 @@ export class SessionsController {
   @Get(':sessionId')
   async findOne(@Param('sessionId') sessionId: string): Promise<Session> {
     return await this.sessionsService.findOne(sessionId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find sessions by educator' })
-  @ApiQuery({
-    name: 'date',
-    type: Date,
-    required: false,
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of sessions by their educator',
-    type: [Session],
-  })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
-  @Get('/educators/:educatorId')
-  async findByEducator(
-    @Param('educatorId') educatorId: string,
-    @Query('date') date?: Date,
-  ): Promise<sessionEducatorType> {
-    return date instanceof Date && isFinite(date.getTime())
-      ? await this.sessionsService.findEducatorSessionsByDate(educatorId, date)
-      : await this.sessionsService.findByEducator(educatorId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find sessions by activity' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of sessions by activity',
-    type: [Session],
-  })
-  @Get('/activities/:activityId')
-  async findByActivity(
-    @Param('activityId') activityId: string,
-  ): Promise<Session[]> {
-    return await this.sessionsService.findByActivity(activityId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find session by establishment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of sessions by establishments',
-    type: [Session],
-  })
-  @Get('establishments/:establishmentId')
-  async findByEstablishment(
-    @Param('establishmentId') establishmentId: string,
-  ): Promise<Session[]> {
-    return await this.sessionsService.findByEstablishment(establishmentId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -158,30 +178,6 @@ export class SessionsController {
   @Get(':sessionId/remaining-places')
   async findPlacesLeft(@Param('sessionId') sessionId: string): Promise<number> {
     return await this.sessionsService.findPlacesLeft(sessionId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find reserved sessions by establishments' })
-  @ApiQuery({
-    name: 'date',
-    type: Date,
-    required: false,
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of reserved sessions by establishments',
-    type: [Session],
-  })
-  @Get('establishments/:establishmentId/reserved')
-  async findReservedByEstablishment(
-    @Param('establishmentId') establishmentId: string,
-    @Query('date') date?: Date,
-  ): Promise<Session[]> {
-    return await this.sessionsService.findByEstablishment(
-      establishmentId,
-      date,
-      true,
-    );
   }
 
   @UseGuards(AccessTokenGuard)

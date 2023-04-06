@@ -66,9 +66,51 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "SessionsController_findAll",
-          "summary": "Find all sessions",
-          "parameters": [],
+          "operationId": "SessionsController_find",
+          "summary": "Find sessions",
+          "parameters": [
+            {
+              "name": "date",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            {
+              "name": "reserved",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "educatorId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "activityId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "establishmentId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
               "description": "List of sessions",
@@ -83,29 +125,8 @@ window.onload = function() {
                 }
               }
             },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can find all sessions"
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "SessionsController_deleteAll",
-          "summary": "Remove all sessions",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Remove all sessions"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can remove all sessions"
+            "404": {
+              "description": "Not found"
             }
           },
           "tags": [
@@ -247,201 +268,6 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/educators/{educatorId}": {
-        "get": {
-          "operationId": "SessionsController_findByEducator",
-          "summary": "Find sessions by educator",
-          "parameters": [
-            {
-              "name": "educatorId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "date",
-              "required": false,
-              "in": "query",
-              "schema": {
-                "format": "date-time",
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of sessions by their educator",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Session"
-                    }
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Not found"
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "SessionsController_deleteByEducator",
-          "summary": "Delete sessions by educator",
-          "parameters": [
-            {
-              "name": "educatorId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Sessions successfully deleted"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
-            },
-            "404": {
-              "description": "Not found"
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
-      "/sessions/activities/{activityId}": {
-        "get": {
-          "operationId": "SessionsController_findByActivity",
-          "summary": "Find sessions by activity",
-          "parameters": [
-            {
-              "name": "activityId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of sessions by activity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Session"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "SessionsController_deleteByActivity",
-          "summary": "Delete sessions by activity",
-          "parameters": [
-            {
-              "name": "activityId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Sessions successfully deleted"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
-            },
-            "404": {
-              "description": "Not found"
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
-      "/sessions/establishments/{establishmentId}": {
-        "get": {
-          "operationId": "SessionsController_findByEstablishment",
-          "summary": "Find session by establishment",
-          "parameters": [
-            {
-              "name": "establishmentId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of sessions by establishments",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Session"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "tags": [
-            "sessions"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
       "/sessions/{sessionId}/remaining-places": {
         "get": {
           "operationId": "SessionsController_findPlacesLeft",
@@ -481,42 +307,64 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/establishments/{establishmentId}/reserved": {
-        "get": {
-          "operationId": "SessionsController_findReservedByEstablishment",
-          "summary": "Find reserved sessions by establishments",
+      "/sessions/educators/{educatorId}": {
+        "delete": {
+          "operationId": "SessionsController_deleteByEducator",
+          "summary": "Delete sessions by educator",
           "parameters": [
             {
-              "name": "establishmentId",
+              "name": "educatorId",
               "required": true,
               "in": "path",
               "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "date",
-              "required": false,
-              "in": "query",
-              "schema": {
-                "format": "date-time",
                 "type": "string"
               }
             }
           ],
           "responses": {
             "200": {
-              "description": "List of reserved sessions by establishments",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Session"
-                    }
-                  }
-                }
+              "description": "Sessions successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/sessions/activities/{activityId}": {
+        "delete": {
+          "operationId": "SessionsController_deleteByActivity",
+          "summary": "Delete sessions by activity",
+          "parameters": [
+            {
+              "name": "activityId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
               }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Sessions successfully deleted"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
+            },
+            "404": {
+              "description": "Not found"
             }
           },
           "tags": [
@@ -664,12 +512,35 @@ window.onload = function() {
       },
       "/users": {
         "get": {
-          "operationId": "UsersController_findAll",
-          "summary": "Find all users",
-          "parameters": [],
+          "operationId": "UsersController_findByEstablishment",
+          "summary": "Find users of an establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "role",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "enum": [
+                  "Administrator",
+                  "Manager",
+                  "Educator",
+                  "Client"
+                ],
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "List of users",
+              "description": "List of users by establishment",
               "content": {
                 "application/json": {
                   "schema": {
@@ -682,28 +553,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** can find all users"
-            }
-          },
-          "tags": [
-            "users"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "UsersController_deleteAll",
-          "summary": "Remove all users",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Remove all users"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can remove all users"
+              "description": "Unauthorized because only **Administrators** and **Managers** can find a user"
             }
           },
           "tags": [
@@ -842,62 +692,6 @@ window.onload = function() {
           ]
         }
       },
-      "/users/establishments/{establishmentId}": {
-        "get": {
-          "operationId": "UsersController_findByEstablishment",
-          "summary": "Find users of an establishment",
-          "parameters": [
-            {
-              "name": "establishmentId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "role",
-              "required": false,
-              "in": "query",
-              "schema": {
-                "enum": [
-                  "Administrator",
-                  "Manager",
-                  "Educator",
-                  "Client"
-                ],
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of users by establishment",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/User"
-                    }
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find a user"
-            }
-          },
-          "tags": [
-            "users"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
       "/establishments": {
         "post": {
           "operationId": "EstablishmentsController_create",
@@ -941,12 +735,21 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "EstablishmentsController_findAll",
-          "summary": "Find all establishments",
-          "parameters": [],
+          "operationId": "EstablishmentsController_findByOwner",
+          "summary": "Find establishments by owner",
+          "parameters": [
+            {
+              "name": "ownerId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "List of establishments",
+              "description": "List of owner-managed establishments",
               "content": {
                 "application/json": {
                   "schema": {
@@ -957,30 +760,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Clients** can find all establishments"
-            }
-          },
-          "tags": [
-            "establishments"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "EstablishmentsController_deleteAll",
-          "summary": "Remove all establishments",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Remove all establishments"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can remove all establishments"
             }
           },
           "tags": [
@@ -1179,43 +958,6 @@ window.onload = function() {
         }
       },
       "/establishments/owners/{ownerId}": {
-        "get": {
-          "operationId": "EstablishmentsController_findByOwner",
-          "summary": "Find establishments by owner",
-          "parameters": [
-            {
-              "name": "ownerId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of owner-managed establishments",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Establishment"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "tags": [
-            "establishments"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
         "delete": {
           "operationId": "EstablishmentsController_deleteByOwner",
           "summary": "Delete establishments by owner",
@@ -1293,12 +1035,21 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "DogsController_findAll",
-          "summary": "Find all dogs",
-          "parameters": [],
+          "operationId": "DogsController_findByEstablishment",
+          "summary": "Find dogs by establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "List of dogs",
+              "description": "List of dogs by establishment",
               "content": {
                 "application/json": {
                   "schema": {
@@ -1309,9 +1060,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can find all dogs"
             }
           },
           "tags": [
@@ -1324,15 +1072,27 @@ window.onload = function() {
           ]
         },
         "delete": {
-          "operationId": "DogsController_deleteAll",
-          "summary": "Remove all dogs",
-          "parameters": [],
+          "operationId": "DogsController_deleteByOwner",
+          "summary": "Delete dogs by owner",
+          "parameters": [
+            {
+              "name": "ownerId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "Remove all dogs"
+              "description": "Dogs successfully deleted"
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** can remove all dogs"
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete dogs based on their owner"
+            },
+            "404": {
+              "description": "Not found"
             }
           },
           "tags": [
@@ -1477,120 +1237,6 @@ window.onload = function() {
           ]
         }
       },
-      "/dogs/owners/{ownerId}": {
-        "get": {
-          "operationId": "DogsController_findByOwner",
-          "summary": "Find dogs by owner",
-          "parameters": [
-            {
-              "name": "ownerId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of dogs by their owner",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Dog"
-                    }
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find dogs by their owner"
-            }
-          },
-          "tags": [
-            "dogs"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "DogsController_deleteByOwner",
-          "summary": "Delete dogs by owner",
-          "parameters": [
-            {
-              "name": "ownerId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Dogs successfully deleted"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can delete dogs based on their owner"
-            },
-            "404": {
-              "description": "Not found"
-            }
-          },
-          "tags": [
-            "dogs"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
-      "/dogs/establishments/{establishmentId}": {
-        "get": {
-          "operationId": "DogsController_findByEstablishment",
-          "summary": "Find dogs by establishment",
-          "parameters": [
-            {
-              "name": "establishmentId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of dogs by establishment",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Dog"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "tags": [
-            "dogs"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
       "/activities": {
         "post": {
           "operationId": "ActivitiesController_create",
@@ -1634,12 +1280,21 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "ActivitiesController_findAll",
-          "summary": "Find all activities",
-          "parameters": [],
+          "operationId": "ActivitiesController_findByEstablishment",
+          "summary": "Find activities of an establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "List of activities",
+              "description": "List of activities of an establishment",
               "content": {
                 "application/json": {
                   "schema": {
@@ -1650,30 +1305,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can find all activities"
-            }
-          },
-          "tags": [
-            "activities"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "ActivitiesController_deleteAll",
-          "summary": "Remove all activities",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Remove all activities"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can remove all activities"
             }
           },
           "tags": [
@@ -1812,45 +1443,6 @@ window.onload = function() {
           ]
         }
       },
-      "/activities/establishments/{establishmentId}": {
-        "get": {
-          "operationId": "ActivitiesController_findByEstablishment",
-          "summary": "Find activities of an establishment",
-          "parameters": [
-            {
-              "name": "establishmentId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of activities of an establishment",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Activity"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "tags": [
-            "activities"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
       "/reservations": {
         "post": {
           "operationId": "ReservationsController_create",
@@ -1891,12 +1483,21 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "ReservationsController_findAll",
-          "summary": "Find all reservations",
-          "parameters": [],
+          "operationId": "ReservationsController_findBySession",
+          "summary": "Find reservations by session",
+          "parameters": [
+            {
+              "name": "sessionId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "List of reservations",
+              "description": "List of reservations by session",
               "content": {
                 "application/json": {
                   "schema": {
@@ -1909,28 +1510,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** can find all reservations"
-            }
-          },
-          "tags": [
-            "reservations"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "ReservationsController_deleteAll",
-          "summary": "Remove all reservations",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Remove all reservations"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can remove all reservations"
+              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations by session"
             }
           },
           "tags": [
@@ -2072,82 +1652,7 @@ window.onload = function() {
           ]
         }
       },
-      "/reservations/sessions/{sessionId}": {
-        "get": {
-          "operationId": "ReservationsController_findBySession",
-          "summary": "Find reservations by session",
-          "parameters": [
-            {
-              "name": "sessionId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of reservations by session",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Reservation"
-                    }
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations by session"
-            }
-          },
-          "tags": [
-            "reservations"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
-      "/payments/card": {
-        "post": {
-          "operationId": "PaymentsController_createCard",
-          "summary": "Add a card as payment method",
-          "parameters": [],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CardDto"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "Card payment method successfully added"
-            },
-            "401": {
-              "description": "Unauthorized because only **Clients** can add their card as payment method"
-            }
-          },
-          "tags": [
-            "payments"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
-      "/payments/{paymentMethodId}": {
+      "/payments": {
         "post": {
           "operationId": "PaymentsController_createPaymentIntent",
           "summary": "Make a payment intent",
@@ -2155,7 +1660,7 @@ window.onload = function() {
             {
               "name": "paymentMethodId",
               "required": true,
-              "in": "path",
+              "in": "query",
               "schema": {
                 "type": "string"
               }
@@ -2177,6 +1682,39 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized because only **Clients** can do a payment intent"
+            }
+          },
+          "tags": [
+            "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/payments/card": {
+        "post": {
+          "operationId": "PaymentsController_createCard",
+          "summary": "Add card as payment method",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Card payment method successfully added"
+            },
+            "401": {
+              "description": "Unauthorized because only **Clients** can add their card as payment method"
             }
           },
           "tags": [
@@ -2264,12 +1802,21 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "ObservationsController_findAll",
-          "summary": "Find all dog observations",
-          "parameters": [],
+          "operationId": "ObservationsController_findByDog",
+          "summary": "Find all observations of a dog",
+          "parameters": [
+            {
+              "name": "dogId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
-              "description": "List of observations",
+              "description": "List of all observations of a dog",
               "content": {
                 "application/json": {
                   "schema": {
@@ -2280,30 +1827,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can find all observations"
-            }
-          },
-          "tags": [
-            "observations"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "delete": {
-          "operationId": "ObservationsController_deleteAll",
-          "summary": "Remove all dog observations",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Remove all dog observations"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** can remove all dog observations"
             }
           },
           "tags": [
@@ -2445,13 +1968,83 @@ window.onload = function() {
           ]
         }
       },
-      "/observations/dogs/{dogId}": {
+      "/holidays": {
+        "post": {
+          "operationId": "HolidaysController_create",
+          "summary": "Take a vacation",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateHolidayDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Holiday successfully taked",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Holiday"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can take vacations"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "holidays"
+          ]
+        },
         "get": {
-          "operationId": "ObservationsController_findByDog",
-          "summary": "Find all observations of a dog",
+          "operationId": "HolidaysController_findByEmployee",
+          "summary": "Find by employee",
           "parameters": [
             {
-              "name": "dogId",
+              "name": "employeeId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of employee holidays",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Holiday"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "holidays"
+          ]
+        }
+      },
+      "/holidays/{holidayId}": {
+        "get": {
+          "operationId": "HolidaysController_findOne",
+          "summary": "Find a holiday",
+          "parameters": [
+            {
+              "name": "holidayId",
               "required": true,
               "in": "path",
               "schema": {
@@ -2461,26 +2054,104 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of all observations of a dog",
+              "description": "The found holiday",
               "content": {
                 "application/json": {
                   "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Observation"
-                    }
+                    "$ref": "#/components/schemas/Holiday"
                   }
+                }
+              }
+            },
+            "401": {
+              "description": "**Client** not allowed to find a holiday"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "holidays"
+          ]
+        },
+        "put": {
+          "operationId": "HolidaysController_updateOne",
+          "summary": "Update a holiday",
+          "parameters": [
+            {
+              "name": "holidayId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateHolidayDto"
                 }
               }
             }
           },
-          "tags": [
-            "observations"
-          ],
-          "security": [
-            {
-              "BearerToken": []
+          "responses": {
+            "200": {
+              "description": "The modified holiday",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Holiday"
+                  }
+                }
+              }
+            },
+            "304": {
+              "description": "Not Modified"
+            },
+            "401": {
+              "description": "**Client** not allowed to modify a holiday"
             }
+          },
+          "tags": [
+            "holidays"
+          ]
+        },
+        "delete": {
+          "operationId": "HolidaysController_deleteOne",
+          "summary": "Delete a holiday",
+          "parameters": [
+            {
+              "name": "holidayId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The deleted holiday",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Holiday"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can delete a holiday"
+            },
+            "404": {
+              "description": "Not found"
+            }
+          },
+          "tags": [
+            "holidays"
           ]
         }
       }
@@ -2620,6 +2291,9 @@ window.onload = function() {
             "imageUrl": {
               "type": "string"
             },
+            "color": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -2633,6 +2307,7 @@ window.onload = function() {
           "required": [
             "establishment",
             "title",
+            "color",
             "duration",
             "price"
           ]
@@ -3095,6 +2770,9 @@ window.onload = function() {
             "imageUrl": {
               "type": "string"
             },
+            "color": {
+              "type": "string"
+            },
             "duration": {
               "type": "number"
             },
@@ -3105,6 +2783,7 @@ window.onload = function() {
           "required": [
             "establishment",
             "title",
+            "color",
             "duration",
             "price"
           ]
@@ -3122,6 +2801,9 @@ window.onload = function() {
               "type": "string"
             },
             "imageUrl": {
+              "type": "string"
+            },
+            "color": {
               "type": "string"
             },
             "duration": {
@@ -3192,6 +2874,21 @@ window.onload = function() {
             "dog"
           ]
         },
+        "PaymentDto": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ]
+        },
         "CardDto": {
           "type": "object",
           "properties": {
@@ -3213,21 +2910,6 @@ window.onload = function() {
             "expMonth",
             "expYear",
             "cvc"
-          ]
-        },
-        "PaymentDto": {
-          "type": "object",
-          "properties": {
-            "amount": {
-              "type": "number"
-            },
-            "currency": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "amount",
-            "currency"
           ]
         },
         "CreateObservationDto": {
@@ -3256,7 +2938,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-05T14:47:05.639Z"
+              "default": "2023-04-06T14:14:26.860Z"
             },
             "__v": {
               "type": "number"
@@ -3275,6 +2957,79 @@ window.onload = function() {
             },
             "description": {
               "type": "string"
+            }
+          }
+        },
+        "CreateHolidayDto": {
+          "type": "object",
+          "properties": {
+            "employee": {
+              "type": "string"
+            },
+            "beginDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "endDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "isApproved": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "employee",
+            "beginDate",
+            "endDate"
+          ]
+        },
+        "Holiday": {
+          "type": "object",
+          "properties": {
+            "employee": {
+              "$ref": "#/components/schemas/User"
+            },
+            "beginDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "endDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "isApproved": {
+              "type": "boolean",
+              "default": false
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "employee",
+            "beginDate",
+            "endDate"
+          ]
+        },
+        "UpdateHolidayDto": {
+          "type": "object",
+          "properties": {
+            "employee": {
+              "type": "string"
+            },
+            "beginDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "endDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "isApproved": {
+              "type": "boolean",
+              "default": false
             }
           }
         }
