@@ -35,24 +35,26 @@ export class HolidaysService {
   }
 
   async find(employeeId?: string): Promise<Holiday[]> {
-    return await this.holidayModel.find({ employee: employeeId }).populate({
-      path: 'employee',
-      model: 'User',
-      populate: {
-        path: 'activities',
-        model: 'Activity',
-        populate: [
-          {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
-          },
-        ],
-      },
-    });
+    return await this.holidayModel
+      .find({ ...(employeeId && { employee: employeeId }) })
+      .populate({
+        path: 'employee',
+        model: 'User',
+        populate: {
+          path: 'activities',
+          model: 'Activity',
+          populate: [
+            {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          ],
+        },
+      });
   }
 
   async findOne(holidayId: string): Promise<Holiday> {

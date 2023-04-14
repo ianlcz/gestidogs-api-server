@@ -512,12 +512,12 @@ window.onload = function() {
       },
       "/users": {
         "get": {
-          "operationId": "UsersController_findByEstablishment",
-          "summary": "Find users of an establishment",
+          "operationId": "UsersController_find",
+          "summary": "Find users",
           "parameters": [
             {
               "name": "establishmentId",
-              "required": true,
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -540,7 +540,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of users by establishment",
+              "description": "List of users",
               "content": {
                 "application/json": {
                   "schema": {
@@ -553,7 +553,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find a user"
+              "description": "Unauthorized because only **Administrators** and **Managers** can find users"
             }
           },
           "tags": [
@@ -735,12 +735,12 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "EstablishmentsController_findByOwner",
-          "summary": "Find establishments by owner",
+          "operationId": "EstablishmentsController_find",
+          "summary": "Find establishments",
           "parameters": [
             {
               "name": "ownerId",
-              "required": true,
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -749,7 +749,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of owner-managed establishments",
+              "description": "List of establishments",
               "content": {
                 "application/json": {
                   "schema": {
@@ -1035,12 +1035,20 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "DogsController_findByEstablishment",
-          "summary": "Find dogs by establishment",
+          "operationId": "DogsController_find",
+          "summary": "Find dogs",
           "parameters": [
             {
+              "name": "ownerId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
               "name": "establishmentId",
-              "required": true,
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -1049,7 +1057,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of dogs by establishment",
+              "description": "List of dogs",
               "content": {
                 "application/json": {
                   "schema": {
@@ -1060,6 +1068,9 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find dogs"
             }
           },
           "tags": [
@@ -1280,12 +1291,12 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "ActivitiesController_findByEstablishment",
-          "summary": "Find activities of an establishment",
+          "operationId": "ActivitiesController_find",
+          "summary": "Find activities",
           "parameters": [
             {
               "name": "establishmentId",
-              "required": true,
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -1294,7 +1305,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of activities of an establishment",
+              "description": "List of activities",
               "content": {
                 "application/json": {
                   "schema": {
@@ -1483,12 +1494,12 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "ReservationsController_findBySession",
-          "summary": "Find reservations by session",
+          "operationId": "ReservationsController_find",
+          "summary": "Find reservations",
           "parameters": [
             {
               "name": "sessionId",
-              "required": true,
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -1497,7 +1508,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of reservations by session",
+              "description": "List of reservations",
               "content": {
                 "application/json": {
                   "schema": {
@@ -1510,7 +1521,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations by session"
+              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations"
             }
           },
           "tags": [
@@ -1692,6 +1703,36 @@ window.onload = function() {
               "BearerToken": []
             }
           ]
+        },
+        "get": {
+          "operationId": "PaymentsController_findPaymentMethodsByStripeId",
+          "summary": "Find all user's payment methods",
+          "parameters": [
+            {
+              "name": "stripeId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of user's payment methods"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find all user payment methods"
+            }
+          },
+          "tags": [
+            "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
         }
       },
       "/payments/card": {
@@ -1715,38 +1756,6 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized because only **Clients** can add their card as payment method"
-            }
-          },
-          "tags": [
-            "payments"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        }
-      },
-      "/payments/users/{stripeId}": {
-        "get": {
-          "operationId": "PaymentsController_findPaymentMethodsByStripeId",
-          "summary": "Find all user's payment methods",
-          "parameters": [
-            {
-              "name": "stripeId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of user's payment methods"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find all user payment methods"
             }
           },
           "tags": [
@@ -1802,12 +1811,12 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "ObservationsController_findByDog",
-          "summary": "Find all observations of a dog",
+          "operationId": "ObservationsController_find",
+          "summary": "Find all dog observations",
           "parameters": [
             {
               "name": "dogId",
-              "required": true,
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -1816,7 +1825,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "List of all observations of a dog",
+              "description": "List of all dog observations",
               "content": {
                 "application/json": {
                   "schema": {
@@ -2006,12 +2015,12 @@ window.onload = function() {
           ]
         },
         "get": {
-          "operationId": "HolidaysController_findByEmployee",
-          "summary": "Find by employee",
+          "operationId": "HolidaysController_find",
+          "summary": "Find employee holidays",
           "parameters": [
             {
               "name": "employeeId",
-              "required": true,
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -2938,7 +2947,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-06T14:14:26.860Z"
+              "default": "2023-04-14T08:46:20.102Z"
             },
             "__v": {
               "type": "number"

@@ -56,27 +56,29 @@ export class ReservationsService {
   }
 
   async find(sessionId?: string): Promise<Reservation[]> {
-    return await this.reservationModel.find({ session: sessionId }).populate([
-      {
-        path: 'session',
-        model: 'Session',
-        populate: [
-          {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User' },
-        ],
-      },
-      {
-        path: 'dog',
-        model: 'Dog',
-        populate: {
-          path: 'owner',
-          model: 'User',
+    return await this.reservationModel
+      .find({ ...(sessionId && { session: sessionId }) })
+      .populate([
+        {
+          path: 'session',
+          model: 'Session',
+          populate: [
+            {
+              path: 'activity',
+              model: 'Activity',
+            },
+            { path: 'educator', model: 'User' },
+          ],
         },
-      },
-    ]);
+        {
+          path: 'dog',
+          model: 'Dog',
+          populate: {
+            path: 'owner',
+            model: 'User',
+          },
+        },
+      ]);
   }
 
   async findOne(reservationId: string): Promise<Reservation> {

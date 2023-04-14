@@ -39,7 +39,7 @@ export class ActivitiesService {
   async find(establishmentId?: string): Promise<Activity[]> {
     return await this.activityTypeModel
       .find({
-        establishment: establishmentId,
+        ...(establishmentId && { establishment: establishmentId }),
       })
       .populate({
         path: 'establishment',
