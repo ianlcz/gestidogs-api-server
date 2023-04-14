@@ -49,7 +49,10 @@ export class DogsService {
 
   async find(ownerId?: string, establishmentId?: string): Promise<Dog[]> {
     return await this.dogModel
-      .find({ owner: ownerId, establishment: establishmentId })
+      .find({
+        ...(ownerId && { owner: ownerId }),
+        ...(establishmentId && { establishment: establishmentId }),
+      })
       .populate([
         {
           path: 'owner',

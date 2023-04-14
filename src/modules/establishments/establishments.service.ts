@@ -92,10 +92,12 @@ export class EstablishmentsService {
   }
 
   async find(ownerId?: string): Promise<Establishment[]> {
-    return await this.establishmentModel.find({ owner: ownerId }).populate([
-      { path: 'owner', model: 'User' },
-      { path: 'employees', model: 'User' },
-    ]);
+    return await this.establishmentModel
+      .find({ ...(ownerId && { owner: ownerId }) })
+      .populate([
+        { path: 'owner', model: 'User' },
+        { path: 'employees', model: 'User' },
+      ]);
   }
 
   async findOne(establishmentId: string): Promise<Establishment> {

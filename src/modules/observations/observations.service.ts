@@ -39,11 +39,13 @@ export class ObservationsService {
   }
 
   async find(dogId?: string): Promise<Observation[]> {
-    return await this.observationModel.find({ dog: dogId }).populate({
-      path: 'dog',
-      model: 'Dog',
-      populate: { path: 'owner', model: 'User' },
-    });
+    return await this.observationModel
+      .find({ ...(dogId && { dog: dogId }) })
+      .populate({
+        path: 'dog',
+        model: 'Dog',
+        populate: { path: 'owner', model: 'User' },
+      });
   }
 
   async findOne(observationId: string): Promise<Observation> {
