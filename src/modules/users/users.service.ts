@@ -136,25 +136,26 @@ export class UsersService {
     }
   }
 
-  async findAll(): Promise<User[]> {
-    const users: User[] = await this.userModel.find().populate({
-      path: 'activities',
-      model: 'Activity',
-      populate: [
-        {
-          path: 'establishment',
-          model: 'Establishment',
-          populate: [
-            { path: 'owner', model: 'User' },
-            { path: 'employees', model: 'User' },
-          ],
-        },
-      ],
-    });
+  async find(establishmentId?: string, role?: Role): Promise<User[]> {
+    let employees: User[] = [];
 
-    users.map((user) => (user.password = undefined));
+    if (establishmentId) {
+      // Get All employees of the Establishment
+      employees = (await this.establishmentsService.findOne(establishmentId))
+        .employees;
+    } else {
+      employees = await this.userModel.find();
+    }
 
-    return users;
+    // Get All dog owners
+    const dogs: Dog[] = await this.dogsService.find();
+    const clients: User[] = dogs.map((dog: Dog) => dog.owner);
+
+    return role
+      ? [...new Set([...employees, ...clients])].filter(
+          (user: User) => user.role === role,
+        )
+      : [...new Set([...employees, ...clients])];
   }
 
   async findOne(userId: string): Promise<User> {
@@ -185,25 +186,6 @@ export class UsersService {
         { cause: error },
       );
     }
-  }
-
-  async findByEstablishment(
-    establishmentId: string,
-    role?: Role,
-  ): Promise<User[]> {
-    // Get All employees of the Establishment
-    const { employees }: { employees: User[] } =
-      await this.establishmentsService.findOne(establishmentId);
-
-    // Get All dog owners
-    const dogs: Dog[] = await this.dogsService.findAll();
-    const clients: User[] = dogs.map((dog: Dog) => dog.owner);
-
-    return role
-      ? [...new Set([...employees, ...clients])].filter(
-          (user: User) => user.role === role,
-        )
-      : [...new Set([...employees, ...clients])];
   }
 
   async updateOne(userId: string, userChanges: UpdateUserDto): Promise<User> {
@@ -443,7 +425,7 @@ export class UsersService {
     if (user.role === Role.MANAGER) {
       // Get User logged establishments
       const establishments: Establishment[] =
-        await this.establishmentsService.findByOwner(user._id.toString());
+        await this.establishmentsService.find(user._id.toString());
 
       return { ...user, establishments };
     } else {

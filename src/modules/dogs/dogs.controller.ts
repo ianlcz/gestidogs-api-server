@@ -84,17 +84,11 @@ export class DogsController {
     required: false,
   })
   @Get()
-  async findByOwner(
+  async find(
     @Query('ownerId') ownerId?: string,
     @Query('establishmentId') establishmentId?: string,
   ): Promise<Dog[]> {
-    if (ownerId) {
-      return await this.dogsService.findByOwner(ownerId);
-    } else if (establishmentId) {
-      return await this.dogsService.findByEstablishment(establishmentId);
-    } else {
-      return await this.dogsService.findAll();
-    }
+    return await this.dogsService.find(ownerId, establishmentId);
   }
 
   @UseGuards(AccessTokenGuard)

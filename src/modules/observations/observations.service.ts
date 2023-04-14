@@ -38,8 +38,8 @@ export class ObservationsService {
     }
   }
 
-  async findAll(): Promise<Observation[]> {
-    return await this.observationModel.find().populate({
+  async find(dogId?: string): Promise<Observation[]> {
+    return await this.observationModel.find({ dog: dogId }).populate({
       path: 'dog',
       model: 'Dog',
       populate: { path: 'owner', model: 'User' },
@@ -48,14 +48,6 @@ export class ObservationsService {
 
   async findOne(observationId: string): Promise<Observation> {
     return await this.observationModel.findById(observationId).populate({
-      path: 'dog',
-      model: 'Dog',
-      populate: { path: 'owner', model: 'User' },
-    });
-  }
-
-  async findByDog(dogId: string): Promise<Observation[]> {
-    return await this.observationModel.find({ dog: dogId }).populate({
       path: 'dog',
       model: 'Dog',
       populate: { path: 'owner', model: 'User' },

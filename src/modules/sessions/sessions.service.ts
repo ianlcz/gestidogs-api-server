@@ -146,8 +146,7 @@ export class SessionsService {
 
     if (isReserved) {
       // Get All Reservations
-      const reservations: Reservation[] =
-        await this.reservationsService.findAll();
+      const reservations: Reservation[] = await this.reservationsService.find();
 
       // Get Session of each Reservation
       const sessionsReserved = reservations.map(
@@ -205,9 +204,7 @@ export class SessionsService {
     );
 
     // Get reservations corresponding to the Session
-    const reservations = await this.reservationsService.findBySession(
-      sessionId,
-    );
+    const reservations = await this.reservationsService.find(sessionId);
 
     return maximumCapacity - reservations.length;
   }

@@ -95,41 +95,21 @@ export class EstablishmentsController {
     );
   }
 
-  /* @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR, Role.CLIENT)
-  @ApiOperation({ summary: 'Find all establishments' })
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of establishments',
     type: [Establishment],
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** and **Clients** can find all establishments',
-  })
-  @Get()
-  async findAll(): Promise<Establishment[]> {
-    return await this.establishmentsService.findAll();
-  } */
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find establishments by owner' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of owner-managed establishments',
-    type: [Establishment],
-  })
   @ApiQuery({
     name: 'ownerId',
     type: String,
-    required: true,
+    required: false,
   })
   @Get()
-  async findByOwner(
-    @Query('ownerId') ownerId: string,
-  ): Promise<Establishment[]> {
-    return await this.establishmentsService.findByOwner(ownerId);
+  async find(@Query('ownerId') ownerId?: string): Promise<Establishment[]> {
+    return await this.establishmentsService.find(ownerId);
   }
 
   @UseGuards(AccessTokenGuard)

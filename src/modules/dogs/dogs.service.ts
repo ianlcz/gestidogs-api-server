@@ -47,21 +47,23 @@ export class DogsService {
     }
   }
 
-  async findAll(): Promise<Dog[]> {
-    return await this.dogModel.find().populate([
-      {
-        path: 'owner',
-        model: 'User',
-      },
-      {
-        path: 'establishment',
-        model: 'Establishment',
-        populate: [
-          { path: 'owner', model: 'User' },
-          { path: 'employees', model: 'User' },
-        ],
-      },
-    ]);
+  async find(ownerId?: string, establishmentId?: string): Promise<Dog[]> {
+    return await this.dogModel
+      .find({ owner: ownerId, establishment: establishmentId })
+      .populate([
+        {
+          path: 'owner',
+          model: 'User',
+        },
+        {
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        },
+      ]);
   }
 
   async findOne(dogId: string, user: any): Promise<Dog> {
@@ -102,42 +104,6 @@ export class DogsService {
         );
       }
     }
-  }
-
-  async findByOwner(ownerId: string): Promise<Dog[]> {
-    return await this.dogModel.find({ owner: ownerId }).populate([
-      {
-        path: 'owner',
-        model: 'User',
-      },
-      {
-        path: 'establishment',
-        model: 'Establishment',
-        populate: [
-          { path: 'owner', model: 'User' },
-          { path: 'employees', model: 'User' },
-        ],
-      },
-    ]);
-  }
-
-  async findByEstablishment(establishmentId: string): Promise<Dog[]> {
-    return await this.dogModel
-      .find({ establishment: establishmentId })
-      .populate([
-        {
-          path: 'owner',
-          model: 'User',
-        },
-        {
-          path: 'establishment',
-          model: 'Establishment',
-          populate: [
-            { path: 'owner', model: 'User' },
-            { path: 'employees', model: 'User' },
-          ],
-        },
-      ]);
   }
 
   async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {
@@ -237,7 +203,7 @@ export class DogsService {
 
   async deleteByOwner(ownerId: string): Promise<Dog[]> {
     try {
-      const dogs: Dog[] = await this.findByOwner(ownerId);
+      const dogs: Dog[] = await this.dogModel.find({ owner: ownerId });
 
       dogs.forEach(async (dog) => await this.deleteOne(dog._id.toString()));
 

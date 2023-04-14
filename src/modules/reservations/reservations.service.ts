@@ -55,8 +55,8 @@ export class ReservationsService {
     }
   }
 
-  async findAll(): Promise<Reservation[]> {
-    return await this.reservationModel.find().populate([
+  async find(sessionId?: string): Promise<Reservation[]> {
+    return await this.reservationModel.find({ session: sessionId }).populate([
       {
         path: 'session',
         model: 'Session',
@@ -81,30 +81,6 @@ export class ReservationsService {
 
   async findOne(reservationId: string): Promise<Reservation> {
     return await this.reservationModel.findById(reservationId).populate([
-      {
-        path: 'session',
-        model: 'Session',
-        populate: [
-          {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User' },
-        ],
-      },
-      {
-        path: 'dog',
-        model: 'Dog',
-        populate: {
-          path: 'owner',
-          model: 'User',
-        },
-      },
-    ]);
-  }
-
-  async findBySession(sessionId: string): Promise<Reservation[]> {
-    return await this.reservationModel.find({ session: sessionId }).populate([
       {
         path: 'session',
         model: 'Session',

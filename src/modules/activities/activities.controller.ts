@@ -59,41 +59,23 @@ export class ActivitiesController {
     return await this.activitiesService.create(createActivityDto);
   }
 
-  /*@UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
-  @ApiOperation({ summary: 'Find all activities' })
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Find activities' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of activities',
     type: [Activity],
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** can find all activities',
-  })
-  @Get()
-  async findAll(): Promise<Activity[]> {
-    return await this.activitiesService.findAll();
-  }*/
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Find activities of an establishment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of activities of an establishment',
-    type: [Activity],
-  })
   @ApiQuery({
     name: 'establishmentId',
     type: String,
-    required: true,
+    required: false,
   })
   @Get()
-  async findByEstablishment(
-    @Query('establishmentId') establishmentId: string,
+  async find(
+    @Query('establishmentId') establishmentId?: string,
   ): Promise<Activity[]> {
-    return await this.activitiesService.findByEstablishment(establishmentId);
+    return await this.activitiesService.find(establishmentId);
   }
 
   @UseGuards(AccessTokenGuard)
