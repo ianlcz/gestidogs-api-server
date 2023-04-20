@@ -17,6 +17,9 @@ export class UpdateEstablishmentDto {
   @ApiPropertyOptional({ type: String })
   address: string;
 
+  @ApiPropertyOptional({ type: [Number] })
+  location: number[];
+
   @ApiPropertyOptional({ type: String })
   phoneNumber: string;
 

@@ -27,6 +27,22 @@ export class Establishment {
   @ApiProperty({ type: String, required: true })
   address: string;
 
+  @Prop({
+    type: {
+      type: {
+        type: 'Point',
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
+    required: true,
+  })
+  @ApiProperty({ type: [Number], required: true })
+  location: number[];
+
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
   phoneNumber: string;
