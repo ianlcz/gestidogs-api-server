@@ -23,6 +23,7 @@ import { Response } from 'express';
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateSessionDto } from './dto/createSession.dto';
@@ -36,8 +37,8 @@ import { SessionsService } from './sessions.service';
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Create a session' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -58,8 +59,8 @@ export class SessionsController {
     return await this.sessionsService.create(createSessionDto);
   }
 
-  /* @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
+  /* @Roles(Role.ADMINISTRATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find all sessions' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -76,7 +77,7 @@ export class SessionsController {
     return await this.sessionsService.findAll();
   } */
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find sessions' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -149,7 +150,7 @@ export class SessionsController {
     }
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find a session' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -162,8 +163,8 @@ export class SessionsController {
     return await this.sessionsService.findOne(sessionId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find number of places left in a session' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -180,8 +181,8 @@ export class SessionsController {
     return await this.sessionsService.findPlacesLeft(sessionId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update a session' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -204,8 +205,8 @@ export class SessionsController {
     return await this.sessionsService.updateOne(sessionId, updateSessionDto);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a session' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -226,8 +227,8 @@ export class SessionsController {
     return await this.sessionsService.deleteOne(sessionId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete sessions by educator' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -255,8 +256,8 @@ export class SessionsController {
     });
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete sessions by activity' })
   @ApiResponse({
     status: HttpStatus.OK,

@@ -20,6 +20,7 @@ import {
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateReservationDto } from './dto/createReservation.dto';
@@ -33,7 +34,7 @@ import { ReservationsService } from './reservations.service';
 export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Create a reservation' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -51,8 +52,8 @@ export class ReservationsController {
     return await this.reservationsService.create(createReservationDto);
   }
 
-  /* @UseGuards(AccessTokenGuard)
-  @Roles(Role.ADMINISTRATOR)
+  /* @Roles(Role.ADMINISTRATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find all reservations' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -69,8 +70,8 @@ export class ReservationsController {
     return await this.reservationsService.findAll();
   } */
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find reservations' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -92,7 +93,7 @@ export class ReservationsController {
     return await this.reservationsService.find(sessionId);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find a reservation' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -107,8 +108,8 @@ export class ReservationsController {
     return await this.reservationsService.findOne(reservationId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update a reservation' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -134,8 +135,8 @@ export class ReservationsController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a reservation' })
   @ApiResponse({
     status: HttpStatus.OK,
