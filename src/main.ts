@@ -5,9 +5,11 @@ import { useContainer } from 'class-validator';
 import { createWriteStream } from 'fs';
 import { get } from 'http';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app: NestExpressApplication = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
     .setTitle('GestiDogs')
@@ -24,18 +26,22 @@ async function bootstrap() {
       'BearerToken',
     )
     .build();
+
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.enableCors();
+  app.useGlobalPipes(
+    new ValidationPipe({ transform: true, forbidUnknownValues: false }),
+  );
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, {
+    customSiteTitle: 'GestiDogs API Documentation',
+    customfavIcon: '../favicon.png',
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: 'method',
     },
   });
-
-  app.enableCors();
-  app.useGlobalPipes(
-    new ValidationPipe({ transform: true, forbidUnknownValues: false }),
-  );
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
