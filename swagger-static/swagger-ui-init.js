@@ -772,7 +772,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/{establishmentId}/employees/{newEmployeeId}": {
+      "/establishments/{establishmentId}/newEmployee": {
         "post": {
           "operationId": "EstablishmentsController_addEmployee",
           "summary": "Add a new employee in establishment",
@@ -784,16 +784,18 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
-            },
-            {
-              "name": "newEmployeeId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
             }
           ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          },
           "responses": {
             "201": {
               "description": "Establishment employees",
@@ -2947,7 +2949,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-14T08:46:20.102Z"
+              "default": "2023-04-20T08:50:57.214Z"
             },
             "__v": {
               "type": "number"
