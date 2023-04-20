@@ -2012,6 +2012,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         },
         "get": {
@@ -2040,10 +2045,18 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "**Clients** not allowed to find all employee holidays"
             }
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       },
@@ -2073,7 +2086,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "**Client** not allowed to find a holiday"
+              "description": "**Clients** not allowed to find an employee holiday"
             },
             "404": {
               "description": "Not found"
@@ -2081,6 +2094,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         },
         "put": {
@@ -2126,6 +2144,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         },
         "delete": {
@@ -2161,6 +2184,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       }
@@ -2947,7 +2975,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-14T08:46:20.102Z"
+              "default": "2023-04-20T09:34:25.943Z"
             },
             "__v": {
               "type": "number"

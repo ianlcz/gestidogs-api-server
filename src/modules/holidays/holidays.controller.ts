@@ -10,7 +10,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { HolidaysService } from './holidays.service';
 import { CreateHolidayDto } from './dto/createHoliday.dto';
@@ -21,6 +27,7 @@ import { AccessTokenGuard } from '../../guards/accessToken.guard';
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
 
+@ApiBearerAuth('BearerToken')
 @ApiTags('holidays')
 @Controller('holidays')
 export class HolidaysController {
@@ -49,11 +56,16 @@ export class HolidaysController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @ApiOperation({ summary: 'Find employee holidays' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of employee holidays',
     type: [Holiday],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: '**Clients** not allowed to find all employee holidays',
   })
   @ApiQuery({
     name: 'employeeId',
@@ -75,7 +87,7 @@ export class HolidaysController {
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description: '**Client** not allowed to find a holiday',
+    description: '**Clients** not allowed to find an employee holiday',
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
   @Get(':holidayId')
