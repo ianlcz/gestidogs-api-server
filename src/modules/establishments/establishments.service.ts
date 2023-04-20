@@ -15,6 +15,7 @@ import { UsersService } from '../users/users.service';
 
 import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
 import { Establishment, EstablishmentDocument } from './establishment.schema';
+import { CreateUserDto } from '../users/dto/createUser.dto';
 
 @Injectable()
 export class EstablishmentsService {
@@ -55,22 +56,26 @@ export class EstablishmentsService {
 
   async addEmployee(
     establishmentId: string,
-    newEmployeeId: string,
+    newEmployeeDto: CreateUserDto,
   ): Promise<User[]> {
-    const { employees }: { employees: User[] } =
-      await this.establishmentModel.findById(establishmentId);
-    if (!employees) {
-      throw new NotFoundException(
-        `Employees of establishment '${establishmentId}' not found`,
-      );
-    }
-
-    const newEmployee = await this.usersService.findOne(newEmployeeId);
-    if (!newEmployeeId) {
-      throw new NotFoundException(`Employee '${newEmployeeId}' not found`);
-    }
-
     try {
+      // Get establishment employees
+      const { employees }: { employees: User[] } =
+        await this.establishmentModel.findById(establishmentId);
+      if (!employees) {
+        throw new NotFoundException(
+          `Employees of establishment '${establishmentId}' not found`,
+        );
+      }
+
+      // Set default password when it's not defined by Manager
+      if (!newEmployeeDto.password) newEmployeeDto.password = 'GestiDogs23';
+
+      // Create new employee
+      const newEmployee: User = (
+        await this.usersService.register(newEmployeeDto)
+      ).user;
+
       const newEmployees: User[] = [...employees, newEmployee];
 
       await this.establishmentModel.findOneAndUpdate(

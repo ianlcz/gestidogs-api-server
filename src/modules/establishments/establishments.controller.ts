@@ -32,6 +32,7 @@ import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
 
 import { User } from '../users/user.schema';
+import { CreateUserDto } from '../users/dto/createUser.dto';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('establishments')
@@ -84,14 +85,14 @@ export class EstablishmentsController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad Request',
   })
-  @Post(':establishmentId/employees/:newEmployeeId')
+  @Post(':establishmentId/newEmployee')
   async addEmployee(
     @Param('establishmentId') establishmentId: string,
-    @Param('newEmployeeId') newEmployeeId: string,
+    @Body() newEmployeeDto: CreateUserDto,
   ): Promise<User[]> {
     return await this.establishmentsService.addEmployee(
       establishmentId,
-      newEmployeeId,
+      newEmployeeDto,
     );
   }
 

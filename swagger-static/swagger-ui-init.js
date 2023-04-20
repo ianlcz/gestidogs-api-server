@@ -772,7 +772,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/{establishmentId}/employees/{newEmployeeId}": {
+      "/establishments/{establishmentId}/newEmployee": {
         "post": {
           "operationId": "EstablishmentsController_addEmployee",
           "summary": "Add a new employee in establishment",
@@ -784,16 +784,18 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
-            },
-            {
-              "name": "newEmployeeId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
             }
           ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          },
           "responses": {
             "201": {
               "description": "Establishment employees",
@@ -2012,6 +2014,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         },
         "get": {
@@ -2040,10 +2047,18 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "**Clients** not allowed to find all employee holidays"
             }
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       },
@@ -2073,7 +2088,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "**Client** not allowed to find a holiday"
+              "description": "**Clients** not allowed to find an employee holiday"
             },
             "404": {
               "description": "Not found"
@@ -2081,6 +2096,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         },
         "put": {
@@ -2126,6 +2146,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         },
         "delete": {
@@ -2161,6 +2186,11 @@ window.onload = function() {
           },
           "tags": [
             "holidays"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
           ]
         }
       }
@@ -2947,7 +2977,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-20T08:27:33.162Z"
+              "default": "2023-04-20T11:52:48.680Z"
             },
             "__v": {
               "type": "number"
