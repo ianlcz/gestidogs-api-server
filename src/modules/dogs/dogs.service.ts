@@ -1,8 +1,6 @@
 import {
-  forwardRef,
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -13,8 +11,6 @@ import { Model } from 'mongoose';
 import { Dog, DogDocument } from './dog.schema';
 import { CreateDogDto } from './dto/createDog.dto';
 
-import { UsersService } from '../users/users.service';
-
 import { Role } from '../../enums/role.enum';
 
 @Injectable()
@@ -22,8 +18,6 @@ export class DogsService {
   constructor(
     @InjectModel(Dog.name)
     private readonly dogModel: Model<DogDocument>,
-    @Inject(forwardRef(() => UsersService))
-    private readonly usersService: UsersService,
   ) {}
 
   async create(createDogDto: CreateDogDto): Promise<Dog> {
@@ -86,7 +80,7 @@ export class DogsService {
         },
       ]);
 
-      if (user.role === Role.CLIENT && user._id !== dog.owner._id) {
+      if (user && user.role === Role.CLIENT && user._id !== dog.owner._id) {
         throw new UnauthorizedException();
       }
 

@@ -21,14 +21,15 @@ import {
 import { Request } from 'express';
 import Stripe from 'stripe';
 
+import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
+
 import { PaymentsService } from './payments.service';
 import { PaymentDto } from './dto/payment.dto';
 
 import { CardDto } from './dto/card.dto';
-import { AccessTokenGuard } from '../../guards/accessToken.guard';
-
-import { Roles } from '../../decorators/roles.decorator';
-import { Role } from '../../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('payments')
@@ -36,8 +37,8 @@ import { Role } from '../../enums/role.enum';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.CLIENT)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Make a payment intent' })
   @ApiCreatedResponse({
     description: 'Payment intent successfully done',
@@ -64,8 +65,8 @@ export class PaymentsController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.CLIENT)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Add card as payment method' })
   @ApiCreatedResponse({
     description: 'Card payment method successfully added',
@@ -85,8 +86,8 @@ export class PaymentsController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: "Find all user's payment methods" })
   @ApiOkResponse({
     description: "List of user's payment methods",

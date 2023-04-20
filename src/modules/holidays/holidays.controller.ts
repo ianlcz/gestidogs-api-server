@@ -18,14 +18,15 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
+
 import { HolidaysService } from './holidays.service';
 import { CreateHolidayDto } from './dto/createHoliday.dto';
 import { UpdateHolidayDto } from './dto/updateHoliday.dto';
 import { Holiday } from './holiday.schema';
-
-import { AccessTokenGuard } from '../../guards/accessToken.guard';
-import { Roles } from '../../decorators/roles.decorator';
-import { Role } from '../../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('holidays')
@@ -33,8 +34,8 @@ import { Role } from '../../enums/role.enum';
 export class HolidaysController {
   constructor(private readonly holidaysService: HolidaysService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Take a vacation' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -55,8 +56,8 @@ export class HolidaysController {
     return await this.holidaysService.create(createHolidayDto);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find employee holidays' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -77,8 +78,8 @@ export class HolidaysController {
     return await this.holidaysService.find(employeeId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find a holiday' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -95,8 +96,8 @@ export class HolidaysController {
     return await this.holidaysService.findOne(holidayId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update a holiday' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -119,8 +120,8 @@ export class HolidaysController {
     return await this.holidaysService.updateOne(holidayId, updateHolidayDto);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a holiday' })
   @ApiResponse({
     status: HttpStatus.OK,

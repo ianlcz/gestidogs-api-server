@@ -21,15 +21,15 @@ import {
 
 import { Response } from 'express';
 
+import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
 import { UpdateEstablishmentDto } from './dto/updateEstablishment.dto';
 import { Establishment } from './establishment.schema';
 import { EstablishmentsService } from './establishments.service';
-
-import { Roles } from '../../decorators/roles.decorator';
-import { Role } from '../../enums/role.enum';
 
 import { User } from '../users/user.schema';
 import { CreateUserDto } from '../users/dto/createUser.dto';
@@ -40,8 +40,8 @@ import { CreateUserDto } from '../users/dto/createUser.dto';
 export class EstablishmentsController {
   constructor(private readonly establishmentsService: EstablishmentsService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Create an establishment' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -64,8 +64,8 @@ export class EstablishmentsController {
     return await this.establishmentsService.create(createEstablishmentDto);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Add a new employee in establishment' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -96,7 +96,7 @@ export class EstablishmentsController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find establishments' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -113,7 +113,7 @@ export class EstablishmentsController {
     return await this.establishmentsService.find(ownerId);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -128,8 +128,8 @@ export class EstablishmentsController {
     return await this.establishmentsService.findOne(establishmentId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -156,8 +156,8 @@ export class EstablishmentsController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete an establishment' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -180,8 +180,8 @@ export class EstablishmentsController {
     return await this.establishmentsService.deleteOne(establishmentId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete establishments by owner' })
   @ApiResponse({
     status: HttpStatus.OK,

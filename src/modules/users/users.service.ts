@@ -148,7 +148,7 @@ export class UsersService {
     }
 
     // Get All dog owners
-    const dogs: Dog[] = await this.dogsService.find();
+    const dogs: Dog[] = await this.dogsService.find(undefined, establishmentId);
     const clients: User[] = dogs.map((dog: Dog) => dog.owner);
 
     return role

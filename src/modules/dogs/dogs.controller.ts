@@ -22,15 +22,15 @@ import {
 
 import { Request, Response } from 'express';
 
+import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
+import { AccessTokenGuard } from '../../guards/accessToken.guard';
+
 import { CreateDogDto } from './dto/createDog.dto';
 import { UpdateDogDto } from './dto/updateDog.dto';
 import { Dog } from './dog.schema';
 import { DogsService } from './dogs.service';
-
-import { AccessTokenGuard } from '../../guards/accessToken.guard';
-
-import { Roles } from '../../decorators/roles.decorator';
-import { Role } from '../../enums/role.enum';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('dogs')
@@ -38,8 +38,8 @@ import { Role } from '../../enums/role.enum';
 export class DogsController {
   constructor(private readonly dogsService: DogsService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Create a dog' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -60,8 +60,8 @@ export class DogsController {
     return await this.dogsService.create(createDogDto);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find dogs' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -91,7 +91,7 @@ export class DogsController {
     return await this.dogsService.find(ownerId, establishmentId);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find a dog' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -111,7 +111,7 @@ export class DogsController {
     return await this.dogsService.findOne(dogId, req.user);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update a dog' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -135,8 +135,8 @@ export class DogsController {
     return await this.dogsService.updateOne(dogId, updateDogDto, req.user);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a dog' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -157,8 +157,8 @@ export class DogsController {
     return await this.dogsService.deleteOne(dogId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete dogs by owner' })
   @ApiResponse({
     status: HttpStatus.OK,

@@ -19,6 +19,8 @@ import {
 } from '@nestjs/swagger';
 
 import { Roles } from '../../decorators/roles.decorator';
+import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { Activity } from './activity.schema';
@@ -27,16 +29,14 @@ import { ActivitiesService } from './activities.service';
 import { CreateActivityDto } from './dto/createActivity.dto';
 import { UpdateActivityDto } from './dto/updateActivity.dto';
 
-import { Role } from '../../enums/role.enum';
-
 @ApiBearerAuth('BearerToken')
 @ApiTags('activities')
 @Controller('activities')
 export class ActivitiesController {
   constructor(private readonly activitiesService: ActivitiesService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Create an activity' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -59,7 +59,7 @@ export class ActivitiesController {
     return await this.activitiesService.create(createActivityDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find activities' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -78,7 +78,7 @@ export class ActivitiesController {
     return await this.activitiesService.find(establishmentId);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find an activity' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -91,7 +91,7 @@ export class ActivitiesController {
     return await this.activitiesService.findOne(activityId);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update an activity' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -110,8 +110,8 @@ export class ActivitiesController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete an activity' })
   @ApiResponse({
     status: HttpStatus.OK,

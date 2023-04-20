@@ -20,6 +20,7 @@ import {
 
 import { Roles } from '../../decorators/roles.decorator';
 import { Role } from '../../enums/role.enum';
+import { RolesGuard } from '../../guards/roles.guard';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateObservationDto } from './dto/createObservation.dto';
@@ -33,8 +34,8 @@ import { ObservationsService } from './observations.service';
 export class ObservationsController {
   constructor(private readonly observationsService: ObservationsService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Create a dog observation' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -56,7 +57,7 @@ export class ObservationsController {
     return await this.observationsService.create(createObservationDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find all dog observations' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -73,7 +74,7 @@ export class ObservationsController {
     return await this.observationsService.find(dogId);
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find a dog observation' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -88,8 +89,8 @@ export class ObservationsController {
     return await this.observationsService.findOne(observationId);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update a dog observation' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -115,8 +116,8 @@ export class ObservationsController {
     );
   }
 
-  @UseGuards(AccessTokenGuard)
   @Roles(Role.ADMINISTRATOR, Role.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a dog observation' })
   @ApiResponse({
     status: HttpStatus.OK,

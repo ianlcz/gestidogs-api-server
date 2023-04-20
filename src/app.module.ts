@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -15,7 +14,6 @@ import { DogsModule } from './modules/dogs/dogs.module';
 
 import { LoggerMiddleware } from './middleware/logger.middleware';
 
-import { RolesGuard } from './guards/roles.guard';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { SessionsController } from './modules/sessions/sessions.controller';
 import { SessionsModule } from './modules/sessions/sessions.module';
@@ -43,13 +41,7 @@ import { HolidaysModule } from './modules/holidays/holidays.module';
     HolidaysModule,
   ],
   controllers: [AppController, SessionsController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
