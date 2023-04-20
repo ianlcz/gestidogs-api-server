@@ -30,15 +30,16 @@ export class Establishment {
   @Prop({
     type: {
       type: {
-        type: 'Point',
+        type: String,
+        enum: ['Point'],
         required: true,
       },
       coordinates: {
         type: [Number],
         required: true,
+        unique: true,
       },
     },
-    required: true,
   })
   @ApiProperty({ type: [Number], required: true })
   location: number[];

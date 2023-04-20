@@ -2277,6 +2277,12 @@ window.onload = function() {
             "address": {
               "type": "string"
             },
+            "location": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
             "phoneNumber": {
               "type": "string"
             },
@@ -2312,6 +2318,7 @@ window.onload = function() {
             "owner",
             "name",
             "address",
+            "location",
             "schedules"
           ]
         },
@@ -2604,6 +2611,12 @@ window.onload = function() {
             "address": {
               "type": "string"
             },
+            "location": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
             "phoneNumber": {
               "type": "string"
             },
@@ -2633,6 +2646,7 @@ window.onload = function() {
             "owner",
             "name",
             "address",
+            "location",
             "emailAddress",
             "schedules"
           ]
@@ -2651,6 +2665,12 @@ window.onload = function() {
             },
             "address": {
               "type": "string"
+            },
+            "location": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
             },
             "phoneNumber": {
               "type": "string"
@@ -2977,7 +2997,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-20T14:55:07.171Z"
+              "default": "2023-04-20T21:10:52.614Z"
             },
             "__v": {
               "type": "number"
