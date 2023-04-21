@@ -15,7 +15,7 @@ import { UsersService } from '../users/users.service';
 
 import { CreateEstablishmentDto } from './dto/createEstablishment.dto';
 import { Establishment, EstablishmentDocument } from './establishment.schema';
-import { CreateUserDto } from '../users/dto/createUser.dto';
+import { NewEmployeeDto } from '../users/dto/newEmployee.dto';
 
 @Injectable()
 export class EstablishmentsService {
@@ -56,7 +56,7 @@ export class EstablishmentsService {
 
   async addEmployee(
     establishmentId: string,
-    newEmployeeDto: CreateUserDto,
+    newEmployeeDto: NewEmployeeDto,
   ): Promise<User[]> {
     try {
       // Get establishment employees
