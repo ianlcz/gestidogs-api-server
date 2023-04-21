@@ -2198,7 +2198,7 @@ window.onload = function() {
     "info": {
       "title": "GestiDogs",
       "description": "Backend of a dog training center management application",
-      "version": "0.0.1",
+      "version": "1.0.0",
       "contact": {}
     },
     "tags": [],
@@ -3030,7 +3030,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-21T08:50:16.919Z"
+              "default": "2023-04-21T17:37:31.537Z"
             },
             "__v": {
               "type": "number"

@@ -14,7 +14,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('GestiDogs')
     .setDescription('Backend of a dog training center management application')
-    .setVersion('0.0.1')
+    .setVersion('1.0.0')
     .addBearerAuth(
       {
         description: 'Default JWT Authorization',
