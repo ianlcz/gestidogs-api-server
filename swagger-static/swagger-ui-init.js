@@ -791,7 +791,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateUserDto"
+                  "$ref": "#/components/schemas/NewEmployeeDto"
                 }
               }
             }
@@ -2642,6 +2642,48 @@ window.onload = function() {
             "schedules"
           ]
         },
+        "NewEmployeeDto": {
+          "type": "object",
+          "properties": {
+            "lastname": {
+              "type": "string"
+            },
+            "firstname": {
+              "type": "string"
+            },
+            "avatarUrl": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "Manager",
+                "Educator"
+              ],
+              "default": "Educator"
+            },
+            "emailAddress": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "birthDate": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          "required": [
+            "lastname",
+            "firstname",
+            "role",
+            "emailAddress",
+            "password"
+          ]
+        },
         "UpdateEstablishmentDto": {
           "type": "object",
           "properties": {
@@ -2988,7 +3030,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-21T13:34:05.215Z"
+              "default": "2023-04-21T08:50:16.919Z"
             },
             "__v": {
               "type": "number"
