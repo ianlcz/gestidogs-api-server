@@ -27,6 +27,5 @@ export class UpdateSessionDto {
   @ApiPropertyOptional({ type: Date })
   beginDate: Date;
 
-  @ApiPropertyOptional({ type: Date })
   endDate: Date;
 }
