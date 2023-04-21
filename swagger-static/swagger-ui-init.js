@@ -2246,10 +2246,6 @@ window.onload = function() {
             "beginDate": {
               "format": "date-time",
               "type": "string"
-            },
-            "endDate": {
-              "format": "date-time",
-              "type": "string"
             }
           },
           "required": [
@@ -2258,8 +2254,7 @@ window.onload = function() {
             "establishment",
             "status",
             "maximumCapacity",
-            "beginDate",
-            "endDate"
+            "beginDate"
           ]
         },
         "Establishment": {
@@ -2499,10 +2494,6 @@ window.onload = function() {
               "type": "string"
             },
             "beginDate": {
-              "format": "date-time",
-              "type": "string"
-            },
-            "endDate": {
               "format": "date-time",
               "type": "string"
             }
@@ -2997,7 +2988,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-20T21:10:52.614Z"
+              "default": "2023-04-21T13:34:05.215Z"
             },
             "__v": {
               "type": "number"

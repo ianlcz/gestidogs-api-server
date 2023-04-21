@@ -37,7 +37,5 @@ export class CreateSessionDto {
   @IsNotEmpty()
   beginDate: Date;
 
-  @ApiProperty({ type: Date, required: true })
-  @IsNotEmpty()
   endDate: Date;
 }

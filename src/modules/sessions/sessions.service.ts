@@ -13,17 +13,36 @@ import { ReservationsService } from '../reservations/reservations.service';
 
 import { CreateSessionDto } from './dto/createSession.dto';
 import { Session, SessionDocument } from './session.schema';
+import { ActivitiesService } from '../activities/activities.service';
 
 @Injectable()
 export class SessionsService {
   constructor(
     @InjectModel(Session.name)
     private readonly sessionModel: Model<SessionDocument>,
+    private readonly activitiesService: ActivitiesService,
     private readonly reservationsService: ReservationsService,
   ) {}
 
   async create(createSessionDto: CreateSessionDto): Promise<Session> {
     try {
+      // Get the duration of activity session
+      let { duration }: { duration: number } =
+        await this.activitiesService.findOne(
+          createSessionDto.activity.toString(),
+        );
+
+      // Convert duration in millisecond
+      duration *= 60000;
+
+      // Get session begin date and convert it to timestamp
+      const timestampSessionBeginDate: number = new Date(
+        createSessionDto.beginDate,
+      ).getTime();
+
+      // Calculate session endDate
+      createSessionDto.endDate = new Date(duration + timestampSessionBeginDate);
+
       // Instanciate Session Model with createSessionDto
       const sessionToCreate = new this.sessionModel(createSessionDto);
 
@@ -211,6 +230,30 @@ export class SessionsService {
 
   async updateOne(sessionId: string, sessionChanges: object): Promise<Session> {
     try {
+      const editSession: Session = await this.sessionModel
+        .findById(sessionId)
+        .populate({
+          path: 'activity',
+          model: 'Activity',
+          select: ['duration'],
+        });
+
+      // Get the duration of activity session
+      let { duration }: { duration: number } = editSession.activity;
+
+      // Convert duration in millisecond
+      duration *= 60000;
+
+      // Get session begin date and convert it to timestamp
+      const timestampSessionBeginDate: number = new Date(
+        editSession.beginDate,
+      ).getTime();
+
+      // Calculate session endDate
+      sessionChanges['endDate'] = new Date(
+        duration + timestampSessionBeginDate,
+      );
+
       return await this.sessionModel
         .findByIdAndUpdate(
           { _id: sessionId },
