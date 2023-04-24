@@ -2373,6 +2373,12 @@ window.onload = function() {
                 "Educator",
                 "Client"
               ],
+              "examples": [
+                "Administrator",
+                "Manager",
+                "Educator",
+                "Client"
+              ],
               "default": "Client"
             },
             "emailAddress": {
@@ -2514,6 +2520,12 @@ window.onload = function() {
             "role": {
               "type": "string",
               "enum": [
+                "Administrator",
+                "Manager",
+                "Educator",
+                "Client"
+              ],
+              "examples": [
                 "Administrator",
                 "Manager",
                 "Educator",
@@ -2752,8 +2764,12 @@ window.onload = function() {
             "gender": {
               "type": "string",
               "enum": [
-                "MALE",
-                "FEMALE"
+                "Male",
+                "Female"
+              ],
+              "examples": [
+                "Male",
+                "Female"
               ]
             },
             "breed": {
@@ -2797,8 +2813,12 @@ window.onload = function() {
             "gender": {
               "type": "string",
               "enum": [
-                "MALE",
-                "FEMALE"
+                "Male",
+                "Female"
+              ],
+              "examples": [
+                "Male",
+                "Female"
               ]
             },
             "breed": {
@@ -2849,8 +2869,12 @@ window.onload = function() {
             "gender": {
               "type": "string",
               "enum": [
-                "MALE",
-                "FEMALE"
+                "Male",
+                "Female"
+              ],
+              "examples": [
+                "Male",
+                "Female"
               ]
             },
             "breed": {
@@ -3051,7 +3075,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-24T18:42:24.459Z"
+              "default": "2023-04-24T19:30:38.338Z"
             },
             "__v": {
               "type": "number"

@@ -34,8 +34,11 @@ export class Dog {
   imageUrl: string;
 
   @Prop({ type: String, enum: Gender })
-  @ApiPropertyOptional({ enum: Gender })
-  gender: Gender;
+  @ApiPropertyOptional({
+    enum: Gender,
+    examples: [Gender.MALE, Gender.FEMALE],
+  })
+  gender?: Gender;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
