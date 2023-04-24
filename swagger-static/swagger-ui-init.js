@@ -2749,6 +2749,13 @@ window.onload = function() {
             "imageUrl": {
               "type": "string"
             },
+            "gender": {
+              "type": "string",
+              "enum": [
+                "MALE",
+                "FEMALE"
+              ]
+            },
             "breed": {
               "type": "string"
             },
@@ -2786,6 +2793,13 @@ window.onload = function() {
             },
             "imageUrl": {
               "type": "string"
+            },
+            "gender": {
+              "type": "string",
+              "enum": [
+                "MALE",
+                "FEMALE"
+              ]
             },
             "breed": {
               "type": "string"
@@ -2831,6 +2845,13 @@ window.onload = function() {
             },
             "imageUrl": {
               "type": "string"
+            },
+            "gender": {
+              "type": "string",
+              "enum": [
+                "MALE",
+                "FEMALE"
+              ]
             },
             "breed": {
               "type": "string"
@@ -3030,7 +3051,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-21T08:50:16.919Z"
+              "default": "2023-04-24T18:42:24.459Z"
             },
             "__v": {
               "type": "number"
