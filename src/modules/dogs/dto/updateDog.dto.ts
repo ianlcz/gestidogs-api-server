@@ -20,8 +20,11 @@ export class UpdateDogDto {
   @ApiPropertyOptional({ type: String })
   imageUrl: string;
 
-  @ApiPropertyOptional({ enum: Gender })
-  gender: Gender;
+  @ApiPropertyOptional({
+    enum: Gender,
+    examples: [Gender.MALE, Gender.FEMALE],
+  })
+  gender?: Gender;
 
   @ApiPropertyOptional({ type: String })
   breed: string;

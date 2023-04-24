@@ -25,8 +25,11 @@ export class CreateDogDto {
   @ApiPropertyOptional({ type: String })
   imageUrl: string;
 
-  @ApiPropertyOptional({ enum: Gender })
-  gender: Gender;
+  @ApiPropertyOptional({
+    enum: Gender,
+    examples: [Gender.MALE, Gender.FEMALE],
+  })
+  gender?: Gender;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
