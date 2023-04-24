@@ -4,6 +4,7 @@ import { IsNotEmpty } from 'class-validator';
 
 import { User } from '../../users/user.schema';
 import { Establishment } from '../../establishments/establishment.schema';
+import { Gender } from '../../../enums/gender.enum';
 
 export class CreateDogDto {
   @ApiProperty({ type: String, required: true })
@@ -23,6 +24,9 @@ export class CreateDogDto {
 
   @ApiPropertyOptional({ type: String })
   imageUrl: string;
+
+  @ApiPropertyOptional({ enum: Gender })
+  gender: Gender;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()

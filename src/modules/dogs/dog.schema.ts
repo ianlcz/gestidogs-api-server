@@ -5,6 +5,7 @@ import { HydratedDocument, Types } from 'mongoose';
 
 import { User } from '../users/user.schema';
 import { Establishment } from '../establishments/establishment.schema';
+import { Gender } from '../../enums/gender.enum';
 
 export type DogDocument = HydratedDocument<Dog>;
 
@@ -28,9 +29,13 @@ export class Dog {
   @ApiProperty({ type: String, required: true })
   name: string;
 
-  @Prop()
+  @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
   imageUrl: string;
+
+  @Prop({ type: String, enum: Gender })
+  @ApiPropertyOptional({ enum: Gender })
+  gender: Gender;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
