@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Establishment } from '../../establishments/establishment.schema';
 import { User } from '../../users/user.schema';
+import { Gender } from '../../../enums/gender.enum';
 
 export class UpdateDogDto {
   @ApiProperty({ type: String })
@@ -18,6 +19,9 @@ export class UpdateDogDto {
 
   @ApiPropertyOptional({ type: String })
   imageUrl: string;
+
+  @ApiPropertyOptional({ enum: Gender })
+  gender: Gender;
 
   @ApiPropertyOptional({ type: String })
   breed: string;
