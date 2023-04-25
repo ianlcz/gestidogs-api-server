@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { IsNotEmpty } from 'class-validator';
 
@@ -29,9 +29,6 @@ export class CreateSessionDto {
 
   @ApiProperty({ type: Number, required: true, default: 1 })
   maximumCapacity: number;
-
-  @ApiPropertyOptional({ type: String })
-  report: string;
 
   @ApiProperty({ type: Date, required: true })
   @IsNotEmpty()

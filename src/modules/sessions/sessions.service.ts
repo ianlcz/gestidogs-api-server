@@ -14,6 +14,7 @@ import { ReservationsService } from '../reservations/reservations.service';
 import { CreateSessionDto } from './dto/createSession.dto';
 import { Session, SessionDocument } from './session.schema';
 import { ActivitiesService } from '../activities/activities.service';
+import { WriteReportDto } from './dto/writeReport.dto';
 
 @Injectable()
 export class SessionsService {
@@ -62,13 +63,45 @@ export class SessionsService {
     }
   }
 
+  async writeReport(
+    sessionId: string,
+    writeReportDto: WriteReportDto,
+  ): Promise<Session> {
+    try {
+      return await this.sessionModel
+        .findByIdAndUpdate(
+          { _id: sessionId },
+          { $set: { report: writeReportDto.report } },
+          { returnOriginal: false },
+        )
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+          },
+          { path: 'educator', model: 'User', select: '-password' },
+        ]);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          error,
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
   async findAll(): Promise<Session[]> {
     return await this.sessionModel.find().populate([
       {
         path: 'activity',
         model: 'Activity',
       },
-      { path: 'educator', model: 'User' },
+      { path: 'educator', model: 'User', select: '-password' },
     ]);
   }
 
@@ -79,7 +112,7 @@ export class SessionsService {
           path: 'activity',
           model: 'Activity',
         },
-        { path: 'educator', model: 'User' },
+        { path: 'educator', model: 'User', select: '-password' },
       ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -105,7 +138,7 @@ export class SessionsService {
         path: 'activity',
         model: 'Activity',
       },
-      { path: 'educator', model: 'User' },
+      { path: 'educator', model: 'User', select: '-password' },
     ]);
   }
 
@@ -127,7 +160,7 @@ export class SessionsService {
           path: 'activity',
           model: 'Activity',
         },
-        { path: 'educator', model: 'User' },
+        { path: 'educator', model: 'User', select: '-password' },
       ]);
     const nextSessions: Session[] = await this.sessionModel
       .find({
@@ -139,7 +172,7 @@ export class SessionsService {
           path: 'activity',
           model: 'Activity',
         },
-        { path: 'educator', model: 'User' },
+        { path: 'educator', model: 'User', select: '-password' },
       ]);
 
     return { today: todaySessions, next: nextSessions };
@@ -151,7 +184,7 @@ export class SessionsService {
         path: 'activity',
         model: 'Activity',
       },
-      { path: 'educator', model: 'User' },
+      { path: 'educator', model: 'User', select: '-password' },
     ]);
   }
 
@@ -202,7 +235,7 @@ export class SessionsService {
                 path: 'activity',
                 model: 'Activity',
               },
-              { path: 'educator', model: 'User' },
+              { path: 'educator', model: 'User', select: '-password' },
             ])
         : await this.sessionModel
             .find({ establishment: establishmentId })
@@ -211,7 +244,7 @@ export class SessionsService {
                 path: 'activity',
                 model: 'Activity',
               },
-              { path: 'educator', model: 'User' },
+              { path: 'educator', model: 'User', select: '-password' },
             ]);
     }
   }
@@ -235,7 +268,7 @@ export class SessionsService {
         .populate({
           path: 'activity',
           model: 'Activity',
-          select: ['duration'],
+          select: 'duration',
         });
 
       // Get the duration of activity session
@@ -265,7 +298,7 @@ export class SessionsService {
             path: 'activity',
             model: 'Activity',
           },
-          { path: 'educator', model: 'User' },
+          { path: 'educator', model: 'User', select: '-password' },
         ]);
     } catch (error) {
       throw new HttpException(
@@ -292,7 +325,7 @@ export class SessionsService {
             path: 'activity',
             model: 'Activity',
           },
-          { path: 'educator', model: 'User' },
+          { path: 'educator', model: 'User', select: '-password' },
         ]);
     } catch (error) {
       throw new HttpException(
@@ -317,7 +350,7 @@ export class SessionsService {
             path: 'activity',
             model: 'Activity',
           },
-          { path: 'educator', model: 'User' },
+          { path: 'educator', model: 'User', select: '-password' },
         ]);
     } catch (error) {
       throw new HttpException(
@@ -342,7 +375,7 @@ export class SessionsService {
             path: 'activity',
             model: 'Activity',
           },
-          { path: 'educator', model: 'User' },
+          { path: 'educator', model: 'User', select: '-password' },
         ]);
     } catch (error) {
       throw new HttpException(
