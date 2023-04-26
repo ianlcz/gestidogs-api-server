@@ -1,12 +1,24 @@
-# Gestidogs - API Server
+# GestiDogs API Server
+
+The objective of this project is the development of a **RESTful API** to facilitate the management of dog centers.
+
+It was built using [NestJS](https://nestjs.com) framework, which allows building efficient, reliable and scalable server-side applications.
 
 ## Development Team
 
 - **Bordeaux Ynov Campus IT department :**
+
   - [Mathieu CHAMBAUD](https://github.com/FrekiManagarm) - Master2 Expert in Web Development
   - [Dorian FRANÇAIS](https://github.com/DorianFRANCAIS) - Master2 Expert in Web Development
-  - [Corentin GARNIER](https://github.com/CorentinGarnier) - Master2 Expert in Web Development
   - [Yann LE COZ](https://github.com/ianlcz) - Master2 Expert in Web Development
+
+## Built with
+
+- [Mongoose](https://mongoosejs.com/) - An ORM for [MongoDB](https://www.mongodb.com/) object modeling for [Node.js](https://nodejs.org/en/).
+- [NestJS](https://nestjs.com) - A progressive [Node.js](https://nodejs.org/en/) framework.
+- [Stripe](https://stripe.com/fr) - An online payment processing platform.
+- [Vercel](https://vercel.com/) - A hosting service to deploy easily any frontend app.
+- [Visual Studio Code](https://code.visualstudio.com/) - Code editor.
 
 ## Installation
 
