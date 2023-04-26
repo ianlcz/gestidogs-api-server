@@ -47,8 +47,17 @@ export class SessionsService {
       // Instanciate Session Model with createSessionDto
       const sessionToCreate = new this.sessionModel(createSessionDto);
 
-      // Save Session data on MongoDb and return them
-      return await sessionToCreate.save();
+      // Save Session data on MongoDb
+      await sessionToCreate.save();
+
+      // Return the created populated Session
+      return sessionToCreate.populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+        },
+        { path: 'educator', model: 'User', select: '-password' },
+      ]);
     } catch (error) {
       throw new HttpException(
         {
