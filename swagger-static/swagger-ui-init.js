@@ -139,6 +139,58 @@ window.onload = function() {
           ]
         }
       },
+      "/sessions/{sessionId}/report": {
+        "post": {
+          "operationId": "SessionsController_writeReport",
+          "summary": "Write a session report",
+          "parameters": [
+            {
+              "name": "sessionId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WriteReportDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Successfully written session report",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can write a session report"
+            },
+            "422": {
+              "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/sessions/{sessionId}": {
         "get": {
           "operationId": "SessionsController_findOne",
@@ -2240,9 +2292,6 @@ window.onload = function() {
               "type": "number",
               "default": 1
             },
-            "report": {
-              "type": "string"
-            },
             "beginDate": {
               "format": "date-time",
               "type": "string"
@@ -2471,6 +2520,17 @@ window.onload = function() {
             "maximumCapacity",
             "beginDate",
             "endDate"
+          ]
+        },
+        "WriteReportDto": {
+          "type": "object",
+          "properties": {
+            "report": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "report"
           ]
         },
         "UpdateSessionDto": {
@@ -3075,7 +3135,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-04-24T19:30:38.338Z"
+              "default": "2023-04-26T10:19:41.027Z"
             },
             "__v": {
               "type": "number"

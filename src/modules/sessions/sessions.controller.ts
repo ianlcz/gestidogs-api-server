@@ -28,6 +28,8 @@ import { AccessTokenGuard } from '../../guards/accessToken.guard';
 
 import { CreateSessionDto } from './dto/createSession.dto';
 import { UpdateSessionDto } from './dto/updateSession.dto';
+import { WriteReportDto } from './dto/writeReport.dto';
+
 import { Session } from './session.schema';
 import { SessionsService } from './sessions.service';
 
@@ -59,25 +61,32 @@ export class SessionsController {
     return await this.sessionsService.create(createSessionDto);
   }
 
-  /* @Roles(Role.ADMINISTRATOR)
+  @Roles(Role.ADMINISTRATOR, Role.MANAGER, Role.EDUCATOR)
   @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Find all sessions' })
+  @ApiOperation({ summary: 'Write a session report' })
   @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'List of sessions',
-    type: [Session],
+    status: HttpStatus.CREATED,
+    description: 'Successfully written session report',
+    type: Session,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** can find all sessions',
+      'Unauthorized because only **Administrators**, **Managers** and **Educators** can write a session report',
   })
-  @Get()
-  async findAll(): Promise<Session[]> {
-    return await this.sessionsService.findAll();
-  } */
+  @ApiResponse({
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    description: 'Unprocessable Entity',
+  })
+  @Post('/:sessionId/report')
+  async writeReport(
+    @Param('sessionId') sessionId: string,
+    @Body() writeReportDto: WriteReportDto,
+  ): Promise<Session> {
+    return await this.sessionsService.writeReport(sessionId, writeReportDto);
+  }
 
-  @UseGuards(AccessTokenGuard, RolesGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find sessions' })
   @ApiResponse({
     status: HttpStatus.OK,
