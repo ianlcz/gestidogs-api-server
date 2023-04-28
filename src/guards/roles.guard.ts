@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { User } from '../modules/users/user.schema';
+import { User } from '../entities/users/user.schema';
 
 import { Role } from '../enums/role.enum';
 

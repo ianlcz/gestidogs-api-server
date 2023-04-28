@@ -6,7 +6,7 @@ import { User } from '../../users/user.schema';
 import { Activity } from '../../activities/activity.schema';
 
 import { Status } from '../../../enums/status.enum';
-import { Establishment } from 'src/modules/establishments/establishment.schema';
+import { Establishment } from '../../establishments/establishment.schema';
 
 export class CreateSessionDto {
   @ApiProperty({ type: String, required: true })

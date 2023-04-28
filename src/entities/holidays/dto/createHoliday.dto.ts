@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { User } from '../../../modules/users/user.schema';
+import { User } from '../../users/user.schema';
 
 import { IsNotEmpty } from 'class-validator';
 

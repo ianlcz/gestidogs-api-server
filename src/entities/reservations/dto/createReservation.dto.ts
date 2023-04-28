@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-import { Dog } from '../../../modules/dogs/dog.schema';
-import { Session } from '../../../modules/sessions/session.schema';
+import { Dog } from '../../dogs/dog.schema';
+import { Session } from '../../sessions/session.schema';
 
 export class CreateReservationDto {
   @ApiProperty({ type: String, required: true })

@@ -6,21 +6,21 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 import { AppController } from './app.controller';
+import { SessionsController } from './entities/sessions/sessions.controller';
+
 import { AppService } from './app.service';
 
-import { UsersModule } from './modules/users/users.module';
-import { EstablishmentsModule } from './modules/establishments/establishments.module';
-import { DogsModule } from './modules/dogs/dogs.module';
+import { UsersModule } from './entities/users/users.module';
+import { SessionsModule } from './entities/sessions/sessions.module';
 
+import { EstablishmentsModule } from './entities/establishments/establishments.module';
+import { DogsModule } from './entities/dogs/dogs.module';
+import { ActivitiesModule } from './entities/activities/activities.module';
+import { ReservationsModule } from './entities/reservations/reservations.module';
+import { PaymentsModule } from './entities/payments/payments.module';
+import { ObservationsModule } from './entities/observations/observations.module';
+import { HolidaysModule } from './entities/holidays/holidays.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
-
-import { ActivitiesModule } from './modules/activities/activities.module';
-import { SessionsController } from './modules/sessions/sessions.controller';
-import { SessionsModule } from './modules/sessions/sessions.module';
-import { ReservationsModule } from './modules/reservations/reservations.module';
-import { PaymentsModule } from './modules/payments/payments.module';
-import { ObservationsModule } from './modules/observations/observations.module';
-import { HolidaysModule } from './modules/holidays/holidays.module';
 
 @Module({
   imports: [

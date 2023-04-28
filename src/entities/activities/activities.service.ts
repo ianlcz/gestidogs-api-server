@@ -14,14 +14,13 @@ import { CreateActivityDto } from './dto/createActivity.dto';
 @Injectable()
 export class ActivitiesService {
   constructor(
-    @InjectModel(Activity.name)
-    private readonly activityTypeModel: Model<ActivityDocument>,
+    @InjectModel(Activity.name) private activityModel: Model<ActivityDocument>,
   ) {}
 
   async create(createActivityTypeDto: CreateActivityDto): Promise<Activity> {
     try {
       // Instanciate Dog Model with createDogDto
-      const activityTypeToCreate = new this.activityTypeModel(
+      const activityTypeToCreate = new this.activityModel(
         createActivityTypeDto,
       );
 
@@ -37,7 +36,7 @@ export class ActivitiesService {
   }
 
   async find(establishmentId?: string): Promise<Activity[]> {
-    return await this.activityTypeModel
+    return await this.activityModel
       .find({
         ...(establishmentId && { establishment: establishmentId }),
       })
@@ -53,7 +52,7 @@ export class ActivitiesService {
 
   async findOne(activityTypeId: string): Promise<Activity> {
     try {
-      return await this.activityTypeModel.findById(activityTypeId).populate({
+      return await this.activityModel.findById(activityTypeId).populate({
         path: 'establishment',
         model: 'Establishment',
         populate: [
@@ -84,7 +83,7 @@ export class ActivitiesService {
     activityTypeChanges: object,
   ): Promise<Activity> {
     try {
-      return await this.activityTypeModel
+      return await this.activityModel
         .findByIdAndUpdate(
           {
             _id: activityTypeId,
@@ -120,7 +119,7 @@ export class ActivitiesService {
 
   async deleteOne(activityTypeId: string): Promise<Activity> {
     try {
-      const activityType = await this.activityTypeModel
+      const activityType = await this.activityModel
         .findByIdAndDelete({
           _id: activityTypeId,
         })

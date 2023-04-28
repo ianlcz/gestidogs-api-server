@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { Dog } from '../../../modules/dogs/dog.schema';
+import { Dog } from '../../dogs/dog.schema';
 
 export class UpdateObservationDto {
   @ApiPropertyOptional({ type: String })

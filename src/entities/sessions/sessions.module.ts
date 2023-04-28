@@ -14,8 +14,8 @@ import { SessionsService } from './sessions.service';
     ActivitiesModule,
     ReservationsModule,
   ],
-  controllers: [SessionsController],
   providers: [SessionsService],
+  controllers: [SessionsController],
   exports: [SessionsService],
 })
 export class SessionsModule {}
