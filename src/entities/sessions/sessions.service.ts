@@ -161,8 +161,26 @@ export class SessionsService {
     const todaySessions: Session[] = await this.sessionModel
       .find({
         educator: educatorId,
-        beginDate: { $gte: date },
-        endDate: { $lt: tomorrow },
+        $and: [
+          {
+            beginDate: {
+              $gte: new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+              ),
+            },
+          },
+          {
+            endDate: {
+              $lt: new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate() + 1,
+              ),
+            },
+          },
+        ],
       })
       .populate([
         {
@@ -171,10 +189,12 @@ export class SessionsService {
         },
         { path: 'educator', model: 'User', select: '-password' },
       ]);
+
     const nextSessions: Session[] = await this.sessionModel
       .find({
         educator: educatorId,
         beginDate: { $gte: tomorrow },
+        endDate: { $lt: new Date(Date.now() + 31536000000) },
       })
       .populate([
         {
