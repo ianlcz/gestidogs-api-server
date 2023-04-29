@@ -111,7 +111,7 @@ export class ReservationsService {
   ): Promise<Reservation> {
     try {
       return await this.reservationModel
-        .findByIdAndUpdate(
+        .findOneAndUpdate(
           {
             _id: reservationId,
           },
@@ -156,7 +156,7 @@ export class ReservationsService {
   async deleteOne(reservationId: string): Promise<Reservation> {
     try {
       return await this.reservationModel
-        .findByIdAndDelete({
+        .findOneAndDelete({
           _id: reservationId,
         })
         .populate([

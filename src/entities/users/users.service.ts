@@ -345,7 +345,10 @@ export class UsersService {
   }
 
   async logout(userId: string): Promise<void> {
-    await this.userModel.findByIdAndUpdate(userId, { refreshToken: null });
+    await this.userModel.findOneAndUpdate(
+      { _id: userId },
+      { refreshToken: null },
+    );
   }
 
   async updateRefreshToken(

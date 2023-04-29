@@ -125,7 +125,7 @@ export class DogsService {
       }
 
       return await this.dogModel
-        .findByIdAndUpdate(
+        .findOneAndUpdate(
           {
             _id: dogId,
           },
@@ -167,7 +167,7 @@ export class DogsService {
   async deleteOne(dogId: string): Promise<Dog> {
     try {
       const dog = await this.dogModel
-        .findByIdAndDelete({ _id: dogId })
+        .findOneAndDelete({ _id: dogId })
         .populate([
           {
             path: 'owner',

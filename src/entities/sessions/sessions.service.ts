@@ -78,7 +78,7 @@ export class SessionsService {
   ): Promise<Session> {
     try {
       return await this.sessionModel
-        .findByIdAndUpdate(
+        .findOneAndUpdate(
           { _id: sessionId },
           { $set: { report: writeReportDto.report } },
           { returnOriginal: false },
@@ -160,7 +160,7 @@ export class SessionsService {
 
     const todaySessions: Session[] = await this.sessionModel
       .find({
-        educatorId,
+        educator: educatorId,
         beginDate: { $gte: date },
         endDate: { $lt: tomorrow },
       })
@@ -173,7 +173,7 @@ export class SessionsService {
       ]);
     const nextSessions: Session[] = await this.sessionModel
       .find({
-        educatorId,
+        educator: educatorId,
         beginDate: { $gte: tomorrow },
       })
       .populate([
@@ -297,7 +297,7 @@ export class SessionsService {
       );
 
       return await this.sessionModel
-        .findByIdAndUpdate(
+        .findOneAndUpdate(
           { _id: sessionId },
           { $set: { ...sessionChanges }, $inc: { __v: 1 } },
           { returnOriginal: false },
@@ -326,7 +326,7 @@ export class SessionsService {
   async deleteOne(sessionId: string): Promise<Session> {
     try {
       return await this.sessionModel
-        .findByIdAndDelete({
+        .findOneAndDelete({
           _id: sessionId,
         })
         .populate([
@@ -378,7 +378,7 @@ export class SessionsService {
   async deleteByActivity(activityId: string): Promise<void> {
     try {
       await this.sessionModel
-        .findByIdAndDelete({ activity: activityId })
+        .findOneAndDelete({ activity: activityId })
         .populate([
           {
             path: 'activity',

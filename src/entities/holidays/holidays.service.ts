@@ -81,7 +81,7 @@ export class HolidaysService {
   async updateOne(holidayId: string, holidayChanges: object): Promise<Holiday> {
     try {
       return await this.holidayModel
-        .findByIdAndUpdate(
+        .findOneAndUpdate(
           { _id: holidayId },
           { $set: { ...holidayChanges }, $inc: { __v: 1 } },
           { returnOriginal: false },
@@ -121,7 +121,7 @@ export class HolidaysService {
   async deleteOne(holidayId: string): Promise<Holiday> {
     try {
       return await this.holidayModel
-        .findByIdAndDelete({ _id: holidayId })
+        .findOneAndDelete({ _id: holidayId })
         .populate({
           path: 'employee',
           model: 'User',

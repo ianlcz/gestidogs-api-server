@@ -62,7 +62,7 @@ export class ObservationsService {
   ): Promise<Observation> {
     try {
       return await this.observationModel
-        .findByIdAndUpdate(
+        .findOneAndUpdate(
           { _id: observationId },
           { $set: { ...observationChanges }, $inc: { __v: 1 } },
           { returnOriginal: false },
@@ -89,7 +89,7 @@ export class ObservationsService {
   async deleteOne(observationId: string): Promise<Observation> {
     try {
       return await this.observationModel
-        .findByIdAndDelete({
+        .findOneAndDelete({
           _id: observationId,
         })
         .populate({

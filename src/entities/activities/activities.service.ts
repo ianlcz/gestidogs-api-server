@@ -17,15 +17,13 @@ export class ActivitiesService {
     @InjectModel(Activity.name) private activityModel: Model<ActivityDocument>,
   ) {}
 
-  async create(createActivityTypeDto: CreateActivityDto): Promise<Activity> {
+  async create(createActivityDto: CreateActivityDto): Promise<Activity> {
     try {
       // Instanciate Dog Model with createDogDto
-      const activityTypeToCreate = new this.activityModel(
-        createActivityTypeDto,
-      );
+      const activityToCreate = new this.activityModel(createActivityDto);
 
       // Save ActivityType data on MongoDB and return them
-      return await activityTypeToCreate.save();
+      return await activityToCreate.save();
     } catch (error) {
       throw new HttpException(
         { status: HttpStatus.UNPROCESSABLE_ENTITY, error },
@@ -50,9 +48,9 @@ export class ActivitiesService {
       });
   }
 
-  async findOne(activityTypeId: string): Promise<Activity> {
+  async findOne(activityId: string): Promise<Activity> {
     try {
-      return await this.activityModel.findById(activityTypeId).populate({
+      return await this.activityModel.findById(activityId).populate({
         path: 'establishment',
         model: 'Establishment',
         populate: [
@@ -79,16 +77,16 @@ export class ActivitiesService {
   }
 
   async updateOne(
-    activityTypeId: string,
-    activityTypeChanges: object,
+    activityId: string,
+    activityChanges: object,
   ): Promise<Activity> {
     try {
       return await this.activityModel
         .findByIdAndUpdate(
           {
-            _id: activityTypeId,
+            _id: activityId,
           },
-          { $set: { ...activityTypeChanges }, $inc: { __v: 1 } },
+          { $set: { ...activityChanges }, $inc: { __v: 1 } },
           { returnOriginal: false },
         )
         .populate({
@@ -117,11 +115,11 @@ export class ActivitiesService {
     }
   }
 
-  async deleteOne(activityTypeId: string): Promise<Activity> {
+  async deleteOne(activityId: string): Promise<Activity> {
     try {
-      const activityType = await this.activityModel
+      const activity = await this.activityModel
         .findByIdAndDelete({
-          _id: activityTypeId,
+          _id: activityId,
         })
         .populate({
           path: 'establishment',
@@ -132,7 +130,7 @@ export class ActivitiesService {
           ],
         });
 
-      return activityType;
+      return activity;
     } catch (error) {
       throw new HttpException(
         { status: HttpStatus.NOT_FOUND, error },
