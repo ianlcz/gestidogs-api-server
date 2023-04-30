@@ -1,12 +1,14 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+
 import { useContainer } from 'class-validator';
 import { createWriteStream } from 'fs';
 import { get } from 'http';
-import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
@@ -37,6 +39,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document, {
     customSiteTitle: 'GestiDogs API Documentation',
     customfavIcon: '../favicon.png',
+    customCssUrl: '../swagger-dark-mode.css',
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: 'method',
