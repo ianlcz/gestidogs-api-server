@@ -11,7 +11,9 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app: NestExpressApplication = await NestFactory.create(AppModule);
+  const app: NestExpressApplication = await NestFactory.create(AppModule, {
+    cors: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('GestiDogs')
@@ -30,7 +32,6 @@ async function bootstrap() {
     .build();
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({ transform: true, forbidUnknownValues: false }),
   );
