@@ -26,11 +26,11 @@ import { AuthLoginDto } from '../dtos/authLogin.dto';
 import { CreateUserDto } from '../dtos/createUser.dto';
 import { UpdateUserDto } from '../dtos/updateUser.dto';
 
-import { Roles } from 'src/app/common/decorators/roles.decorator';
-import { RoleType } from 'src/app/common/enums/Role.enum';
-import { RolesGuard } from 'src/app/common/guards/roles.guard';
-import { AccessTokenGuard } from 'src/app/common/guards/accessToken.guard';
-import { RefreshTokenGuard } from 'src/app/common/guards/refreshToken.guard';
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { RoleType } from '../../../common/enums/Role.enum';
+import { RolesGuard } from '../../../common/guards/roles.guard';
+import { AccessTokenGuard } from '../../../common/guards/accessToken.guard';
+import { RefreshTokenGuard } from '../../../common/guards/refreshToken.guard';
 
 import { User } from '../schemas/user.schema';
 import { UsersService } from '../services/users.service';

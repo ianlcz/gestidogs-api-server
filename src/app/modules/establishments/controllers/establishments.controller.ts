@@ -21,10 +21,10 @@ import {
 
 import { Response } from 'express';
 
-import { Roles } from 'src/app/common/decorators/roles.decorator';
-import { RoleType } from 'src/app/common/enums/Role.enum';
-import { RolesGuard } from 'src/app/common/guards/roles.guard';
-import { AccessTokenGuard } from 'src/app/common/guards/accessToken.guard';
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { RoleType } from '../../../common/enums/Role.enum';
+import { RolesGuard } from '../../../common/guards/roles.guard';
+import { AccessTokenGuard } from '../../../common/guards/accessToken.guard';
 
 import { CreateEstablishmentDto } from '../dtos/createEstablishment.dto';
 import { UpdateEstablishmentDto } from '../dtos/updateEstablishment.dto';

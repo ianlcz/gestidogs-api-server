@@ -5,7 +5,7 @@ import { IsNotEmpty } from 'class-validator';
 import { User } from '../../users/schemas/user.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
 
-import { StatusType } from 'src/app/common/enums/Status.enum';
+import { StatusType } from '../../../common/enums/Status.enum';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 export class CreateSessionDto {
