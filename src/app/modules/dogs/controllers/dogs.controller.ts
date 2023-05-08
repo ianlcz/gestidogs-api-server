@@ -23,7 +23,7 @@ import {
 import { Request, Response } from 'express';
 
 import { Roles } from '../../../common/decorators/roles.decorator';
-import { RoleType } from '../../../common/enums/Role.enum';
+import { RoleType } from '../../../common/enums/role.enum';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { AccessTokenGuard } from '../../../common/guards/accessToken.guard';
 

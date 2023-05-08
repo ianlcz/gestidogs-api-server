@@ -11,7 +11,7 @@ import { Model } from 'mongoose';
 import { Dog, DogDocument } from '../schemas/dog.schema';
 import { CreateDogDto } from '../dtos/createDog.dto';
 
-import { RoleType } from '../../../common/enums/Role.enum';
+import { RoleType } from '../../../common/enums/role.enum';
 
 @Injectable()
 export class DogsService {

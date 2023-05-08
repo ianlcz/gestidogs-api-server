@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsEmail, IsNotEmpty, IsPhoneNumber, MinLength } from 'class-validator';
 
-import { RoleType } from '../../../common/enums/Role.enum';
+import { RoleType } from '../../../common/enums/role.enum';
 
 import { Activity } from '../../activities/schemas/activity.schema';
 import { Dog } from '../../dogs/schemas/dog.schema';

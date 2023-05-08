@@ -27,7 +27,7 @@ import { CreateUserDto } from '../dtos/createUser.dto';
 import { UpdateUserDto } from '../dtos/updateUser.dto';
 
 import { Roles } from '../../../common/decorators/roles.decorator';
-import { RoleType } from '../../../common/enums/Role.enum';
+import { RoleType } from '../../../common/enums/role.enum';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { AccessTokenGuard } from '../../../common/guards/accessToken.guard';
 import { RefreshTokenGuard } from '../../../common/guards/refreshToken.guard';
