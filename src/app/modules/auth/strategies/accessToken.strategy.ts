@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { RoleType } from '../../../common/enums/Role.enum';
+import { RoleType } from 'app/common/enums/Role.enum';
 
 type JwtPayload = { sub: string; emailAddress: string; role: RoleType };
 
