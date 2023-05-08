@@ -21,17 +21,17 @@ import {
 
 import { Response } from 'express';
 
-import { Roles } from '../../../common/decorators/roles.decorator';
-import { RoleType } from '../../../common/enums/Role.enum';
-import { RolesGuard } from '../../../common/guards/roles.guard';
-import { AccessTokenGuard } from '../../../common/guards/accessToken.guard';
+import { Roles } from 'src/app/common/decorators/roles.decorator';
+import { RoleType } from 'src/app/common/enums/Role.enum';
+import { AccessTokenGuard } from 'src/app/common/guards/accessToken.guard';
+import { RolesGuard } from 'src/app/common/guards/roles.guard';
+
+import { SessionsService } from '../services/sessions.service';
+import { Session } from '../schemas/session.schema';
 
 import { CreateSessionDto } from '../dtos/createSession.dto';
-import { UpdateSessionDto } from '../dtos/updateSession.dto';
 import { WriteReportDto } from '../dtos/writeReport.dto';
-
-import { Session } from '../schemas/session.schema';
-import { SessionsService } from '../services/sessions.service';
+import { UpdateSessionDto } from '../dtos/updateSession.dto';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('sessions')

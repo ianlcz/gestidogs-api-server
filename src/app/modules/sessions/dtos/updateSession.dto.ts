@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { StatusType } from '../../../common/enums/Status.enum';
+import { StatusType } from 'src/app/common/enums/Status.enum';
 
 import { User } from '../../users/schemas/user.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
