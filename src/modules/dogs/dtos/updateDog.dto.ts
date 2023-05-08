@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { User } from '../../users/schemas/user.schema';
-import { GenderType } from '../../../common/enums/Gender.enum';
+import { GenderType } from '../../../enums/Gender.enum';
 
 export class UpdateDogDto {
   @ApiProperty({ type: String })

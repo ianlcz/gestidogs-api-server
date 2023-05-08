@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
-import { StatusType } from '../../../common/enums/Status.enum';
+import { StatusType } from '../../../enums/Status.enum';
 
 import { Activity } from '../../activities/schemas/activity.schema';
 import { User } from '../../users/schemas/user.schema';

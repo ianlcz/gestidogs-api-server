@@ -23,7 +23,7 @@ import { EstablishmentsService } from '../../establishments/services/establishme
 import { DogsService } from '../../dogs/services/dogs.service';
 import { UpdateUserDto } from '../dtos/updateUser.dto';
 
-import { RoleType } from '../../../common/enums/Role.enum';
+import { RoleType } from '../../../enums/Role.enum';
 import { Dog } from '../../dogs/schemas/dog.schema';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 

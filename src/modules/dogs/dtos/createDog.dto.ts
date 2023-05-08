@@ -4,7 +4,7 @@ import { IsNotEmpty } from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
-import { GenderType } from '../../../common/enums/Gender.enum';
+import { GenderType } from '../../../enums/Gender.enum';
 
 export class CreateDogDto {
   @ApiProperty({ type: String, required: true })

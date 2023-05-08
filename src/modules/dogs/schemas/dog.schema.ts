@@ -5,7 +5,7 @@ import { HydratedDocument, Types } from 'mongoose';
 
 import { User } from '../../users/schemas/user.schema';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
-import { GenderType } from '../../../common/enums/Gender.enum';
+import { GenderType } from '../../../enums/Gender.enum';
 
 export type DogDocument = HydratedDocument<Dog>;
 
