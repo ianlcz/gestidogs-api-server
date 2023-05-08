@@ -8,7 +8,7 @@ import { createWriteStream } from 'fs';
 import { get } from 'http';
 import { join } from 'path';
 
-import { AppModule } from './app.module';
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule, {
