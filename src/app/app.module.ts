@@ -28,7 +28,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MongooseModule.forRoot(process.env.GESTIDOGS_MONGO_URI),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'swagger-static'),
+      rootPath: join(__dirname, '../..', 'swagger-static'),
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/docs',
     }),
     UsersModule,
