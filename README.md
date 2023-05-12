@@ -1,4 +1,4 @@
-# Gestidogs - API Server
+# Gestidogs API Server
 
 ## Development Team
 
