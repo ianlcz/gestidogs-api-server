@@ -49,7 +49,7 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  await app.listen(8080);
+  await app.listen(8080, '0.0.0.0');
 
   // get the swagger json file (if app is running in development mode)
   if (process.env.NODE_ENV === 'development') {

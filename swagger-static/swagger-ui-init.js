@@ -2248,7 +2248,7 @@ window.onload = function() {
       }
     },
     "info": {
-      "title": "GestiDogs",
+      "title": "GestiDogs API Server",
       "description": "Backend of a dog training center management application",
       "version": "0.0.1",
       "contact": {}
@@ -3135,7 +3135,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-05-12T13:20:38.210Z"
+              "default": "2023-05-12T17:06:25.681Z"
             },
             "__v": {
               "type": "number"
