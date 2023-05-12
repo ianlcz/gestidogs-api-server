@@ -8,7 +8,7 @@ export class AppService {
   } {
     return {
       app: {
-        name: 'Gestidogs - API Server',
+        name: 'Gestidogs API Server',
         github: 'https://github.com/ianlcz/gestidogs-api-server',
       },
       developpers: [

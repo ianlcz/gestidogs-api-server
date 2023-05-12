@@ -43,7 +43,27 @@ export class ReservationsService {
       );
 
       // Save Reservation data on MongoDB and return them
-      return await reservationToCreate.save();
+      return (await reservationToCreate.save()).populate([
+        {
+          path: 'session',
+          model: 'Session',
+          populate: [
+            {
+              path: 'activity',
+              model: 'Activity',
+            },
+            { path: 'educator', model: 'User' },
+          ],
+        },
+        {
+          path: 'dog',
+          model: 'Dog',
+          populate: {
+            path: 'owner',
+            model: 'User',
+          },
+        },
+      ]);
     } catch (error) {
       throw new HttpException(
         {
