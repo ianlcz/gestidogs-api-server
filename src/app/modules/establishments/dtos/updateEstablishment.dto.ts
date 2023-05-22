@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsArray } from 'class-validator';
+import { IsArray, IsOptional, IsPhoneNumber } from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 
@@ -21,6 +21,8 @@ export class UpdateEstablishmentDto {
   location: number[];
 
   @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  @IsPhoneNumber('FR')
   phoneNumber: string;
 
   @ApiPropertyOptional({ type: String })

@@ -1,6 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsEmail, IsNotEmpty, IsPhoneNumber, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsPhoneNumber,
+  MinLength,
+} from 'class-validator';
 
 import { RoleType } from '../../../common/enums/role.enum';
 
@@ -33,6 +39,7 @@ export class NewEmployeeDto {
   emailAddress: string;
 
   @ApiPropertyOptional({ type: String })
+  @IsOptional()
   @IsPhoneNumber('FR')
   phoneNumber?: string;
 
