@@ -1,6 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsArray, IsEmail, IsNotEmpty } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsPhoneNumber,
+} from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 
@@ -25,7 +31,9 @@ export class CreateEstablishmentDto {
   location: number[];
 
   @ApiPropertyOptional({ type: String })
-  phoneNumber: string;
+  @IsOptional()
+  @IsPhoneNumber('FR')
+  phoneNumber?: string;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
