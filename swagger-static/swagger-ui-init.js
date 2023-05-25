@@ -433,6 +433,7 @@ window.onload = function() {
         "post": {
           "operationId": "UsersController_register",
           "summary": "Register a user",
+          "description": "Create a new user account within GestiDogs application. It allows users to register and gain access to the application's features and resources.",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -466,6 +467,7 @@ window.onload = function() {
         "post": {
           "operationId": "UsersController_login",
           "summary": "Login a user",
+          "description": "Authenticate a user and obtain an access token for subsequent API requests. It handles the login process by verifying the user's credentials.",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -499,6 +501,7 @@ window.onload = function() {
         "post": {
           "operationId": "UsersController_logout",
           "summary": "Logout a user",
+          "description": "Log out a currently authenticated user. It invalidates the user's access token, effectively terminating their session.",
           "parameters": [],
           "responses": {
             "201": {
@@ -519,6 +522,7 @@ window.onload = function() {
         "get": {
           "operationId": "UsersController_refreshTokens",
           "summary": "Refresh a user",
+          "description": "Refresh an access token for an authenticated user. This route is typically used when an access token is about to expire or has expired, and the user needs to obtain a new valid access token to continue accessing protected resources.",
           "parameters": [],
           "responses": {
             "200": {
@@ -539,6 +543,7 @@ window.onload = function() {
         "get": {
           "operationId": "UsersController_getInfos",
           "summary": "Get user logged informations",
+          "description": "Retrieve information about the currently authenticated user. It allows users to access their own user profile or retrieve relevant data associated with their account.",
           "parameters": [],
           "responses": {
             "200": {
@@ -566,11 +571,14 @@ window.onload = function() {
         "get": {
           "operationId": "UsersController_find",
           "summary": "Find users",
+          "description": "Retrieve a list of users from the GestiDogs application. It allows administrator and manager users to view and retrieve information about all users in the application.",
           "parameters": [
             {
               "name": "establishmentId",
               "required": false,
               "in": "query",
+              "description": "Unique id of an establishment",
+              "example": "64046ee9b75c105a1d7e7fe3",
               "schema": {
                 "type": "string"
               }
@@ -579,6 +587,7 @@ window.onload = function() {
               "name": "role",
               "required": false,
               "in": "query",
+              "description": "Role of logged-in user",
               "schema": {
                 "enum": [
                   "Administrator",
@@ -622,11 +631,14 @@ window.onload = function() {
         "get": {
           "operationId": "UsersController_findOne",
           "summary": "Find a user",
+          "description": "Retrieve information about a specific user. It allows users to fetch the details of a particular user by specifying their unique `userId` parameter in the route.",
           "parameters": [
             {
               "name": "userId",
               "required": true,
-              "in": "path",
+              "in": "query",
+              "description": "Unique user id that corresponds to the user you want to retrieve information",
+              "example": "63cc452807b1d06248d742e0",
               "schema": {
                 "type": "string"
               }
@@ -659,11 +671,14 @@ window.onload = function() {
         "put": {
           "operationId": "UsersController_updateOne",
           "summary": "Update user informations",
+          "description": "Edit information for a specific user. It allows users to modify the details or attributes of a particular user's account by specifying their unique `userId` parameter in the route.",
           "parameters": [
             {
               "name": "userId",
               "required": true,
-              "in": "path",
+              "in": "query",
+              "description": "Unique user id that corresponds to the user you want to edit information",
+              "example": "63cc452807b1d06248d742e0",
               "schema": {
                 "type": "string"
               }
@@ -706,11 +721,14 @@ window.onload = function() {
         "delete": {
           "operationId": "UsersController_deleteOne",
           "summary": "Delete a user",
+          "description": "Delete a specific user from the GestiDogs application. It allows only administrator users to remove a particular user's account and associated data by specifying their unique `userId` parameter in the route.",
           "parameters": [
             {
               "name": "userId",
               "required": true,
-              "in": "path",
+              "in": "query",
+              "description": "Unique user id that corresponds to the user you want to delete from the application",
+              "example": "63cc452807b1d06248d742e0",
               "schema": {
                 "type": "string"
               }
@@ -3135,7 +3153,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-05-22T19:58:54.194Z"
+              "default": "2023-05-25T21:25:41.881Z"
             },
             "__v": {
               "type": "number"
