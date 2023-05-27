@@ -10,7 +10,6 @@ import {
   Put,
   Query,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -21,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
 import { AuthLoginDto } from '../dtos/authLogin.dto';
 import { CreateUserDto } from '../dtos/createUser.dto';
@@ -86,6 +85,7 @@ export class UsersController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully logged out',
@@ -96,10 +96,8 @@ export class UsersController {
       "Log out a currently authenticated user. It invalidates the user's access token, effectively terminating their session.",
   })
   @Post('logout')
-  logout(@Req() req: Request, @Res() res: Response) {
+  logout(@Req() req: Request) {
     this.usersService.logout(req.user['sub']);
-
-    res.status(HttpStatus.OK);
   }
 
   @UseGuards(RefreshTokenGuard)

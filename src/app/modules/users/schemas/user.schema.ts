@@ -23,7 +23,7 @@ export class User {
 
   @Prop()
   @ApiPropertyOptional({ type: String })
-  avatarUrl: string;
+  avatarUrl?: string;
 
   @Prop({
     type: String,
@@ -49,7 +49,7 @@ export class User {
 
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @Prop({ type: String, required: true })
   password: string;
@@ -72,14 +72,14 @@ export class User {
 
   @Prop()
   @ApiPropertyOptional({ type: Date })
-  lastConnectionAt: Date;
+  lastConnectionAt?: Date;
 
   @Prop()
   refreshToken: string;
 
   @Prop()
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

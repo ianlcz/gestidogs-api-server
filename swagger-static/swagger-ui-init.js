@@ -504,8 +504,8 @@ window.onload = function() {
           "description": "Log out a currently authenticated user. It invalidates the user's access token, effectively terminating their session.",
           "parameters": [],
           "responses": {
-            "201": {
-              "description": ""
+            "200": {
+              "description": "User successfully logged out"
             }
           },
           "tags": [
@@ -3153,7 +3153,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-05-25T21:25:41.881Z"
+              "default": "2023-05-27T15:17:36.447Z"
             },
             "__v": {
               "type": "number"
