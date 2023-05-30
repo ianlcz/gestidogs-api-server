@@ -58,10 +58,20 @@ export class ReservationsService {
         {
           path: 'dog',
           model: 'Dog',
-          populate: {
-            path: 'owner',
-            model: 'User',
-          },
+          populate: [
+            {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+            {
+              path: 'owner',
+              model: 'User',
+            },
+          ],
         },
       ]);
     } catch (error) {
@@ -96,10 +106,20 @@ export class ReservationsService {
         {
           path: 'dog',
           model: 'Dog',
-          populate: {
-            path: 'owner',
-            model: 'User',
-          },
+          populate: [
+            {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+            {
+              path: 'owner',
+              model: 'User',
+            },
+          ],
         },
       ]);
   }
@@ -120,10 +140,20 @@ export class ReservationsService {
       {
         path: 'dog',
         model: 'Dog',
-        populate: {
-          path: 'owner',
-          model: 'User',
-        },
+        populate: [
+          {
+            path: 'establishment',
+            model: 'Establishment',
+            populate: [
+              { path: 'owner', model: 'User' },
+              { path: 'employees', model: 'User' },
+            ],
+          },
+          {
+            path: 'owner',
+            model: 'User',
+          },
+        ],
       },
     ]);
   }
@@ -156,10 +186,20 @@ export class ReservationsService {
           {
             path: 'dog',
             model: 'Dog',
-            populate: {
-              path: 'owner',
-              model: 'User',
-            },
+            populate: [
+              {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
+              {
+                path: 'owner',
+                model: 'User',
+              },
+            ],
           },
         ]);
     } catch (error) {
@@ -197,10 +237,20 @@ export class ReservationsService {
           {
             path: 'dog',
             model: 'Dog',
-            populate: {
-              path: 'owner',
-              model: 'User',
-            },
+            populate: [
+              {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
+              {
+                path: 'owner',
+                model: 'User',
+              },
+            ],
           },
         ]);
     } catch (error) {
