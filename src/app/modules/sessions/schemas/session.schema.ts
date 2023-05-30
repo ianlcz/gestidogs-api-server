@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
-import { StatusType } from '../../../common/enums/status.enum';
+import { StatusSessionType } from '../../../common/enums/statusSession.enum';
 
 import { Activity } from '../../activities/schemas/activity.schema';
 import { User } from '../../users/schemas/user.schema';
@@ -29,16 +29,16 @@ export class Session {
 
   @Prop({
     type: String,
-    enum: StatusType,
+    enum: StatusSessionType,
     required: true,
-    default: StatusType.PENDING,
+    default: StatusSessionType.PENDING,
   })
   @ApiProperty({
-    enum: StatusType,
+    enum: StatusSessionType,
     required: true,
-    default: StatusType.PENDING,
+    default: StatusSessionType.PENDING,
   })
-  status: StatusType;
+  status: StatusSessionType;
 
   @Prop({ type: Number, required: true, default: 1 })
   @ApiProperty({ type: Number, required: true, default: 1 })
