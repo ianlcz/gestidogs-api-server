@@ -1,8 +1,9 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-
-import { User } from '../../users/schemas/user.schema';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { IsNotEmpty } from 'class-validator';
+
+import { User } from '../../users/schemas/user.schema';
+import { StatusHolidayType } from '../../../common/enums/statusHoliday.enum';
 
 export class CreateHolidayDto {
   @ApiProperty({ type: String, required: true })
@@ -17,6 +18,11 @@ export class CreateHolidayDto {
   @IsNotEmpty()
   endDate: Date;
 
-  @ApiPropertyOptional({ type: Boolean, default: false })
-  isApproved: boolean;
+  @ApiProperty({
+    enum: StatusHolidayType,
+    default: StatusHolidayType.PENDING,
+  })
+  status: StatusHolidayType;
+
+  isApproved?: boolean;
 }

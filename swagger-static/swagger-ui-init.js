@@ -2281,10 +2281,10 @@ window.onload = function() {
             "status": {
               "type": "string",
               "enum": [
+                "Canceled",
                 "Online",
                 "Pending",
-                "Postponed",
-                "Canceled"
+                "Postponed"
               ],
               "default": "Pending"
             },
@@ -2486,10 +2486,10 @@ window.onload = function() {
             "status": {
               "type": "string",
               "enum": [
+                "Canceled",
                 "Online",
                 "Pending",
-                "Postponed",
-                "Canceled"
+                "Postponed"
               ],
               "default": "Pending"
             },
@@ -2545,10 +2545,10 @@ window.onload = function() {
             "status": {
               "type": "string",
               "enum": [
+                "Canceled",
                 "Online",
                 "Pending",
-                "Postponed",
-                "Canceled"
+                "Postponed"
               ],
               "default": "Pending"
             },
@@ -3135,7 +3135,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-05-30T15:49:17.122Z"
+              "default": "2023-05-30T20:33:44.700Z"
             },
             "__v": {
               "type": "number"
@@ -3171,15 +3171,21 @@ window.onload = function() {
               "format": "date-time",
               "type": "string"
             },
-            "isApproved": {
-              "type": "boolean",
-              "default": false
+            "status": {
+              "type": "string",
+              "enum": [
+                "Approved",
+                "Pending",
+                "Refused"
+              ],
+              "default": "Pending"
             }
           },
           "required": [
             "employee",
             "beginDate",
-            "endDate"
+            "endDate",
+            "status"
           ]
         },
         "Holiday": {
@@ -3196,6 +3202,15 @@ window.onload = function() {
               "format": "date-time",
               "type": "string"
             },
+            "status": {
+              "type": "string",
+              "enum": [
+                "Approved",
+                "Pending",
+                "Refused"
+              ],
+              "default": "Pending"
+            },
             "isApproved": {
               "type": "boolean",
               "default": false
@@ -3207,7 +3222,8 @@ window.onload = function() {
           "required": [
             "employee",
             "beginDate",
-            "endDate"
+            "endDate",
+            "status"
           ]
         },
         "UpdateHolidayDto": {
@@ -3223,6 +3239,15 @@ window.onload = function() {
             "endDate": {
               "format": "date-time",
               "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "Approved",
+                "Pending",
+                "Refused"
+              ],
+              "default": "Pending"
             },
             "isApproved": {
               "type": "boolean",
