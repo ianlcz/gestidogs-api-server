@@ -5,7 +5,7 @@ import { IsNotEmpty } from 'class-validator';
 import { User } from '../../users/schemas/user.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
 
-import { StatusType } from '../../../common/enums/status.enum';
+import { StatusSessionType } from '../../../common/enums/statusSession.enum';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 export class CreateSessionDto {
@@ -22,10 +22,10 @@ export class CreateSessionDto {
   establishment: Establishment;
 
   @ApiProperty({
-    enum: StatusType,
-    default: StatusType.PENDING,
+    enum: StatusSessionType,
+    default: StatusSessionType.PENDING,
   })
-  status: StatusType;
+  status: StatusSessionType;
 
   @ApiProperty({ type: Number, required: true, default: 1 })
   maximumCapacity: number;

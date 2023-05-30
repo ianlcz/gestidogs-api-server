@@ -4,6 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { HydratedDocument, Types } from 'mongoose';
 
 import { User } from '../../users/schemas/user.schema';
+import { StatusHolidayType } from '../../../common/enums/statusHoliday.enum';
 
 export type HolidayDocument = HydratedDocument<Holiday>;
 @Schema()
@@ -22,9 +23,22 @@ export class Holiday {
   @ApiProperty({ type: Date, required: true })
   endDate: Date;
 
+  @Prop({
+    type: String,
+    enum: StatusHolidayType,
+    required: true,
+    default: StatusHolidayType.PENDING,
+  })
+  @ApiProperty({
+    enum: StatusHolidayType,
+    required: true,
+    default: StatusHolidayType.PENDING,
+  })
+  status: StatusHolidayType;
+
   @Prop({ type: Boolean, default: false })
   @ApiPropertyOptional({ type: Boolean, default: false })
-  isApproved: boolean;
+  isApproved?: boolean;
 
   @Prop()
   @ApiPropertyOptional({ type: Number })

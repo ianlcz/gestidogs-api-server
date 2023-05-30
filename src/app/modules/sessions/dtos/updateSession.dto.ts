@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { StatusType } from '../../../common/enums/status.enum';
+import { StatusSessionType } from '../../../common/enums/statusSession.enum';
 
 import { User } from '../../users/schemas/user.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
@@ -13,10 +13,10 @@ export class UpdateSessionDto {
   activity: Activity;
 
   @ApiPropertyOptional({
-    enum: StatusType,
-    default: StatusType.PENDING,
+    enum: StatusSessionType,
+    default: StatusSessionType.PENDING,
   })
-  status: StatusType;
+  status: StatusSessionType;
 
   @ApiPropertyOptional({ type: Number, default: 1 })
   maximumCapacity: number;
