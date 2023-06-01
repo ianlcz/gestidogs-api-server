@@ -51,8 +51,8 @@ export class UsersController {
     description: 'User successfully registered',
   })
   @ApiResponse({
-    status: HttpStatus.UNPROCESSABLE_ENTITY,
-    description: 'Unprocessable Entity',
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
   })
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto): Promise<{

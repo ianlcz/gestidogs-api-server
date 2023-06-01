@@ -310,10 +310,10 @@ export class UsersService {
     } catch (error) {
       throw new HttpException(
         {
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          status: HttpStatus.BAD_REQUEST,
           error,
         },
-        HttpStatus.UNPROCESSABLE_ENTITY,
+        HttpStatus.BAD_REQUEST,
         {
           cause: error,
         },

@@ -449,8 +449,8 @@ window.onload = function() {
             "201": {
               "description": "User successfully registered"
             },
-            "422": {
-              "description": "Unprocessable Entity"
+            "400": {
+              "description": "Bad Request"
             }
           },
           "tags": [
@@ -3153,7 +3153,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-05-30T20:42:08.442Z"
+              "default": "2023-06-01T22:40:51.986Z"
             },
             "__v": {
               "type": "number"

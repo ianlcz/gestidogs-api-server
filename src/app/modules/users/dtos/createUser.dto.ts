@@ -37,7 +37,7 @@ export class CreateUserDto {
     ],
     default: RoleType.CLIENT,
   })
-  role: RoleType;
+  role?: RoleType;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
@@ -59,7 +59,7 @@ export class CreateUserDto {
 
   activities?: Activity[];
   dogs?: Dog[];
-  registeredAt: Date;
-  lastConnectionAt: Date;
-  refreshToken: string;
+  registeredAt?: Date;
+  lastConnectionAt?: Date;
+  refreshToken?: string;
 }
