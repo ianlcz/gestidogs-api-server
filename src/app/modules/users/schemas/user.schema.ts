@@ -11,7 +11,7 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  _id: Types.ObjectId;
+  _id: Types.ObjectId | string;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
@@ -41,7 +41,7 @@ export class User {
     ],
     default: RoleType.CLIENT,
   })
-  role: RoleType;
+  role?: RoleType;
 
   @Prop({ type: String, lowercase: true, unique: true, required: true })
   @ApiProperty({ type: String, uniqueItems: true, required: true })
@@ -60,7 +60,7 @@ export class User {
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Activity' }], default: [] })
   @ApiPropertyOptional({ type: [Activity], default: [] })
-  activities: Activity[];
+  activities?: Activity[];
 
   @Prop({ type: String, required: false })
   @ApiPropertyOptional({ type: String, required: false })
@@ -68,7 +68,7 @@ export class User {
 
   @Prop({ type: Date, default: new Date() })
   @ApiProperty({ type: Date })
-  registeredAt: Date;
+  registeredAt?: Date;
 
   @Prop()
   @ApiPropertyOptional({ type: Date })
