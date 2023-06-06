@@ -2,7 +2,7 @@
   "name": "gestidogs-api-server",
   "version": "0.0.1",
   "description": "Backend of a dog training center management application",
-  "author": "Yann LE COZ",
+  "author": "Yann Le Coz",
   "private": false,
   "license": "MIT",
   "scripts": {

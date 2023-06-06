@@ -1,7 +1,9 @@
-import { ValidationPipe } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+
+import * as packageJSON from '../package.json';
 
 import { useContainer } from 'class-validator';
 import { createWriteStream } from 'fs';
@@ -14,11 +16,14 @@ async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule, {
     cors: true,
   });
+  app.setGlobalPrefix(`v${packageJSON.version.split('.')[0]}`, {
+    exclude: [{ path: '/', method: RequestMethod.ALL }],
+  });
 
   const config = new DocumentBuilder()
     .setTitle('GestiDogs API Server')
     .setDescription('Backend of a dog training center management application')
-    .setVersion('0.0.1')
+    .setVersion(packageJSON.version)
     .addBearerAuth(
       {
         description: 'Default JWT Authorization',
