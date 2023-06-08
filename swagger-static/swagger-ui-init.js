@@ -23,7 +23,7 @@ window.onload = function() {
           }
         }
       },
-      "/sessions": {
+      "/v0/sessions": {
         "post": {
           "operationId": "SessionsController_create",
           "summary": "Create a session",
@@ -139,7 +139,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/{sessionId}/report": {
+      "/v0/sessions/{sessionId}/report": {
         "post": {
           "operationId": "SessionsController_writeReport",
           "summary": "Write a session report",
@@ -191,7 +191,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/{sessionId}": {
+      "/v0/sessions/{sessionId}": {
         "get": {
           "operationId": "SessionsController_findOne",
           "summary": "Find a session",
@@ -320,7 +320,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/{sessionId}/remaining-places": {
+      "/v0/sessions/{sessionId}/remaining-places": {
         "get": {
           "operationId": "SessionsController_findPlacesLeft",
           "summary": "Find number of places left in a session",
@@ -359,7 +359,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/educators/{educatorId}": {
+      "/v0/sessions/educators/{educatorId}": {
         "delete": {
           "operationId": "SessionsController_deleteByEducator",
           "summary": "Delete sessions by educator",
@@ -394,7 +394,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/activities/{activityId}": {
+      "/v0/sessions/activities/{activityId}": {
         "delete": {
           "operationId": "SessionsController_deleteByActivity",
           "summary": "Delete sessions by activity",
@@ -429,7 +429,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/register": {
+      "/v0/users/register": {
         "post": {
           "operationId": "UsersController_register",
           "summary": "Register a user",
@@ -462,7 +462,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/login": {
+      "/v0/users/login": {
         "post": {
           "operationId": "UsersController_login",
           "summary": "Login a user",
@@ -495,7 +495,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/logout": {
+      "/v0/users/logout": {
         "post": {
           "operationId": "UsersController_logout",
           "summary": "Logout a user",
@@ -515,7 +515,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/refresh": {
+      "/v0/users/refresh": {
         "get": {
           "operationId": "UsersController_refreshTokens",
           "summary": "Refresh a user",
@@ -535,7 +535,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/me": {
+      "/v0/users/me": {
         "get": {
           "operationId": "UsersController_getInfos",
           "summary": "Get user logged informations",
@@ -562,7 +562,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users": {
+      "/v0/users": {
         "get": {
           "operationId": "UsersController_find",
           "summary": "Find users",
@@ -618,7 +618,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/{userId}": {
+      "/v0/users/{userId}": {
         "get": {
           "operationId": "UsersController_findOne",
           "summary": "Find a user",
@@ -744,7 +744,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments": {
+      "/v0/establishments": {
         "post": {
           "operationId": "EstablishmentsController_create",
           "summary": "Create an establishment",
@@ -824,7 +824,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/{establishmentId}/newEmployee": {
+      "/v0/establishments/{establishmentId}/newEmployee": {
         "post": {
           "operationId": "EstablishmentsController_addEmployee",
           "summary": "Add a new employee in establishment",
@@ -882,7 +882,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/{establishmentId}": {
+      "/v0/establishments/{establishmentId}": {
         "get": {
           "operationId": "EstablishmentsController_findOne",
           "summary": "Find an establishment",
@@ -1011,7 +1011,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/owners/{ownerId}": {
+      "/v0/establishments/owners/{ownerId}": {
         "delete": {
           "operationId": "EstablishmentsController_deleteByOwner",
           "summary": "Delete establishments by owner",
@@ -1046,7 +1046,7 @@ window.onload = function() {
           ]
         }
       },
-      "/dogs": {
+      "/v0/dogs": {
         "post": {
           "operationId": "DogsController_create",
           "summary": "Create a dog",
@@ -1170,7 +1170,7 @@ window.onload = function() {
           ]
         }
       },
-      "/dogs/{dogId}": {
+      "/v0/dogs/{dogId}": {
         "get": {
           "operationId": "DogsController_findOne",
           "summary": "Find a dog",
@@ -1302,7 +1302,7 @@ window.onload = function() {
           ]
         }
       },
-      "/activities": {
+      "/v0/activities": {
         "post": {
           "operationId": "ActivitiesController_create",
           "summary": "Create an activity",
@@ -1382,7 +1382,7 @@ window.onload = function() {
           ]
         }
       },
-      "/activities/{activityId}": {
+      "/v0/activities/{activityId}": {
         "get": {
           "operationId": "ActivitiesController_findOne",
           "summary": "Find an activity",
@@ -1508,7 +1508,7 @@ window.onload = function() {
           ]
         }
       },
-      "/reservations": {
+      "/v0/reservations": {
         "post": {
           "operationId": "ReservationsController_create",
           "summary": "Create a reservation",
@@ -1588,7 +1588,7 @@ window.onload = function() {
           ]
         }
       },
-      "/reservations/{reservationId}": {
+      "/v0/reservations/{reservationId}": {
         "get": {
           "operationId": "ReservationsController_findOne",
           "summary": "Find a reservation",
@@ -1717,7 +1717,7 @@ window.onload = function() {
           ]
         }
       },
-      "/payments": {
+      "/v0/payments": {
         "post": {
           "operationId": "PaymentsController_createPaymentIntent",
           "summary": "Make a payment intent",
@@ -1789,7 +1789,7 @@ window.onload = function() {
           ]
         }
       },
-      "/payments/card": {
+      "/v0/payments/card": {
         "post": {
           "operationId": "PaymentsController_createCard",
           "summary": "Add card as payment method",
@@ -1822,7 +1822,7 @@ window.onload = function() {
           ]
         }
       },
-      "/observations": {
+      "/v0/observations": {
         "post": {
           "operationId": "ObservationsController_create",
           "summary": "Create a dog observation",
@@ -1902,7 +1902,7 @@ window.onload = function() {
           ]
         }
       },
-      "/observations/{observationId}": {
+      "/v0/observations/{observationId}": {
         "get": {
           "operationId": "ObservationsController_findOne",
           "summary": "Find a dog observation",
@@ -2031,7 +2031,7 @@ window.onload = function() {
           ]
         }
       },
-      "/holidays": {
+      "/v0/holidays": {
         "post": {
           "operationId": "HolidaysController_create",
           "summary": "Take a vacation",
@@ -2114,7 +2114,7 @@ window.onload = function() {
           ]
         }
       },
-      "/holidays/{holidayId}": {
+      "/v0/holidays/{holidayId}": {
         "get": {
           "operationId": "HolidaysController_findOne",
           "summary": "Find a holiday",
@@ -3135,7 +3135,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-05-30T20:33:44.700Z"
+              "default": "2023-06-06T22:52:01.057Z"
             },
             "__v": {
               "type": "number"
