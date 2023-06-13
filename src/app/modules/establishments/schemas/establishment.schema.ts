@@ -9,6 +9,7 @@ export type EstablishmentDocument = HydratedDocument<Establishment>;
 
 @Schema()
 export class Establishment {
+  @ApiProperty({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
@@ -73,9 +74,9 @@ export class Establishment {
   })
   schedules: [{ startTime: string; endTime: string }][];
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const EstablishmentSchema = SchemaFactory.createForClass(Establishment);

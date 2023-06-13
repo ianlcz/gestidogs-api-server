@@ -13,6 +13,7 @@ export type SessionDocument = HydratedDocument<Session>;
 
 @Schema()
 export class Session {
+  @ApiProperty({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
@@ -56,9 +57,9 @@ export class Session {
   @ApiProperty({ type: Date, required: true })
   endDate: Date;
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const SessionSchema = SchemaFactory.createForClass(Session);

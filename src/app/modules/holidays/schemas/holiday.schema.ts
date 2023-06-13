@@ -9,6 +9,7 @@ import { StatusHolidayType } from '../../../common/enums/statusHoliday.enum';
 export type HolidayDocument = HydratedDocument<Holiday>;
 @Schema()
 export class Holiday {
+  @ApiProperty({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
@@ -40,9 +41,9 @@ export class Holiday {
   @ApiPropertyOptional({ type: Boolean, default: false })
   isApproved?: boolean;
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const HolidaySchema = SchemaFactory.createForClass(Holiday);

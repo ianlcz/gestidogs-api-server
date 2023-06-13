@@ -11,6 +11,7 @@ export type DogDocument = HydratedDocument<Dog>;
 
 @Schema()
 export class Dog {
+  @ApiProperty({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
@@ -56,9 +57,9 @@ export class Dog {
   @ApiProperty({ type: Number })
   height: number;
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const DogSchema = SchemaFactory.createForClass(Dog);

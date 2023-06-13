@@ -2309,6 +2309,9 @@ window.onload = function() {
         "Establishment": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "owner": {
               "$ref": "#/components/schemas/User"
             },
@@ -2359,6 +2362,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "owner",
             "name",
             "address",
@@ -2369,6 +2373,9 @@ window.onload = function() {
         "Activity": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "establishment": {
               "$ref": "#/components/schemas/Establishment"
             },
@@ -2395,6 +2402,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "establishment",
             "title",
             "color",
@@ -2405,6 +2413,9 @@ window.onload = function() {
         "User": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "lastname": {
               "type": "string"
             },
@@ -2464,6 +2475,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "lastname",
             "firstname",
             "role",
@@ -2474,6 +2486,9 @@ window.onload = function() {
         "Session": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "educator": {
               "$ref": "#/components/schemas/User"
             },
@@ -2513,6 +2528,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "educator",
             "activity",
             "establishment",
@@ -2855,6 +2871,9 @@ window.onload = function() {
         "Dog": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "owner": {
               "$ref": "#/components/schemas/User"
             },
@@ -2899,6 +2918,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "owner",
             "establishment",
             "nationalId",
@@ -3033,6 +3053,9 @@ window.onload = function() {
         "Reservation": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "session": {
               "$ref": "#/components/schemas/Session"
             },
@@ -3048,6 +3071,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "session",
             "dog"
           ]
@@ -3126,6 +3150,9 @@ window.onload = function() {
         "Observation": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "dog": {
               "$ref": "#/components/schemas/Dog"
             },
@@ -3135,13 +3162,14 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-06-06T22:52:01.057Z"
+              "default": "2023-06-13T21:10:21.938Z"
             },
             "__v": {
               "type": "number"
             }
           },
           "required": [
+            "_id",
             "dog",
             "createdAt"
           ]
@@ -3191,6 +3219,9 @@ window.onload = function() {
         "Holiday": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "employee": {
               "$ref": "#/components/schemas/User"
             },
@@ -3220,6 +3251,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "employee",
             "beginDate",
             "endDate",

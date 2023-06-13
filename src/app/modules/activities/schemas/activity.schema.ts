@@ -9,6 +9,9 @@ export type ActivityDocument = HydratedDocument<Activity>;
 
 @Schema()
 export class Activity {
+  @ApiProperty({ type: String })
+  _id: Types.ObjectId;
+
   @Prop({ type: Types.ObjectId, ref: 'Establishment', required: true })
   @ApiProperty({ type: Establishment, required: true })
   establishment: Establishment;
@@ -37,9 +40,9 @@ export class Activity {
   @ApiProperty({ type: Number, required: true })
   price: number;
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);
