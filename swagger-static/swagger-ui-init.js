@@ -421,7 +421,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "Sessions successfully deleted"
             },
             "400": {
@@ -744,7 +744,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted user",
               "content": {
                 "application/json": {
@@ -1023,7 +1023,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted establishment",
               "content": {
                 "application/json": {
@@ -1068,7 +1068,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "Establishments successfully deleted"
             },
             "400": {
@@ -1195,7 +1195,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "Dogs successfully deleted"
             },
             "400": {
@@ -1329,7 +1329,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted dog",
               "content": {
                 "application/json": {
@@ -1550,7 +1550,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted activity",
               "content": {
                 "application/json": {
@@ -1768,7 +1768,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted reservation",
               "content": {
                 "application/json": {
@@ -2094,7 +2094,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted dog observation",
               "content": {
                 "application/json": {
@@ -2318,7 +2318,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted holiday",
               "content": {
                 "application/json": {
@@ -3264,7 +3264,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-06-14T11:03:09.023Z"
+              "default": "2023-06-14T13:46:20.353Z"
             },
             "__v": {
               "type": "number"

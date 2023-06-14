@@ -8,6 +8,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
 
 import { CreateObservationDto } from '../dtos/createObservation.dto';
 import {
@@ -153,6 +154,8 @@ export class ObservationsService {
       if (!observationToDelete) {
         throw new NotFoundException('Observation to delete not found');
       }
+
+      response.status(HttpStatus.NO_CONTENT);
 
       return observationToDelete;
     } catch (error) {

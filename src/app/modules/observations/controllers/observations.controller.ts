@@ -128,7 +128,7 @@ export class ObservationsController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a dog observation' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted dog observation',
     type: Observation,
   })

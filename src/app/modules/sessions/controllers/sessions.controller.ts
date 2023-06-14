@@ -278,7 +278,7 @@ export class SessionsController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete sessions by activity' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'Sessions successfully deleted',
   })
   @ApiResponse({

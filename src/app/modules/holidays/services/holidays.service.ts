@@ -8,6 +8,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
 
 import { Holiday, HolidayDocument } from '../schemas/holiday.schema';
 import { CreateHolidayDto } from '../dtos/createHoliday.dto';
@@ -193,6 +194,8 @@ export class HolidaysService {
       if (!holidayToDelete) {
         throw new NotFoundException('Holiday to delete not found');
       }
+
+      response.status(HttpStatus.NO_CONTENT);
 
       return holidayToDelete;
     } catch (error) {

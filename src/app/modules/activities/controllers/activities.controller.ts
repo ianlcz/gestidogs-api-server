@@ -126,7 +126,7 @@ export class ActivitiesController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete an activity' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted activity',
     type: Activity,
   })

@@ -141,7 +141,7 @@ export class DogsController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a dog' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted dog',
     type: Dog,
   })
@@ -164,7 +164,7 @@ export class DogsController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete dogs by owner' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'Dogs successfully deleted',
   })
   @ApiResponse({

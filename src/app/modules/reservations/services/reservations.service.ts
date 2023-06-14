@@ -10,6 +10,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
+
 import { SessionsService } from '../../sessions/services/sessions.service';
 
 import { CreateReservationDto } from '../dtos/createReservation.dto';
@@ -302,6 +304,8 @@ export class ReservationsService {
       if (!reservationToDelete) {
         throw new NotFoundException('Reservation to delete not found');
       }
+
+      response.status(HttpStatus.NO_CONTENT);
 
       return reservationToDelete;
     } catch (error) {

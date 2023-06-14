@@ -130,7 +130,7 @@ export class HolidaysController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a holiday' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted holiday',
     type: Holiday,
   })

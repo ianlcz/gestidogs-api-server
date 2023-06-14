@@ -211,6 +211,8 @@ export class DogsService {
         throw new NotFoundException('Dog to delete not found');
       }
 
+      response.status(HttpStatus.NO_CONTENT);
+
       return dogToDelete;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -240,8 +242,8 @@ export class DogsService {
 
       dogs.forEach(async (dog) => await this.deleteOne(dog._id.toString()));
 
-      response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
+      response.status(HttpStatus.NO_CONTENT).json({
+        statusCode: HttpStatus.NO_CONTENT,
         message: 'Delete dogs successfully',
       });
 

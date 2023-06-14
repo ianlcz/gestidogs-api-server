@@ -223,6 +223,8 @@ export class EstablishmentsService {
         throw new NotFoundException('Establishment to delete not found');
       }
 
+      response.status(HttpStatus.NO_CONTENT);
+
       return establishmentToDelete;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -250,8 +252,8 @@ export class EstablishmentsService {
     try {
       await this.establishmentModel.deleteMany({ ownerId });
 
-      response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
+      response.status(HttpStatus.NO_CONTENT).json({
+        statusCode: HttpStatus.NO_CONTENT,
         message: 'Delete establishements successfully',
       });
     } catch (error) {

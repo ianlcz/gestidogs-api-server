@@ -162,7 +162,7 @@ export class EstablishmentsController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete an establishment' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted establishment',
     type: Establishment,
   })
@@ -187,7 +187,7 @@ export class EstablishmentsController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete establishments by owner' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'Establishments successfully deleted',
   })
   @ApiResponse({

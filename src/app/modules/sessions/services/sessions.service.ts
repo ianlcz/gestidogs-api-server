@@ -8,6 +8,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
 
 import { Reservation } from '../../reservations/schemas/reservation.schema';
 import { ReservationsService } from '../../reservations/services/reservations.service';
@@ -387,6 +388,8 @@ export class SessionsService {
       if (!sessionToDelete) {
         throw new NotFoundException('Session to delete not found');
       }
+
+      response.status(HttpStatus.NO_CONTENT);
 
       return sessionToDelete;
     } catch (error) {

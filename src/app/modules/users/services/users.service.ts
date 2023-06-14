@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 import { Model } from 'mongoose';
-import { request } from 'express';
+import { request, response } from 'express';
 import * as bcrypt from 'bcryptjs';
 
 import { CreateUserDto } from '../dtos/createUser.dto';
@@ -298,6 +298,8 @@ export class UsersService {
 
       // Hide User password
       userToDelete.password = undefined;
+
+      response.status(HttpStatus.NO_CONTENT);
 
       return userToDelete;
     } catch (error) {

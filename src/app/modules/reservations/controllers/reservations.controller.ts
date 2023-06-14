@@ -145,7 +145,7 @@ export class ReservationsController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a reservation' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted reservation',
     type: Reservation,
   })
