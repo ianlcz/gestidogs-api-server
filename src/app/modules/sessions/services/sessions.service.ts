@@ -2,11 +2,13 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
 
 import { Reservation } from '../../reservations/schemas/reservation.schema';
 import { ReservationsService } from '../../reservations/services/reservations.service';
@@ -116,23 +118,35 @@ export class SessionsService {
 
   async findOne(sessionId: string): Promise<Session> {
     try {
-      return await this.sessionModel.findById(sessionId).populate([
-        {
-          path: 'activity',
-          model: 'Activity',
-        },
-        { path: 'educator', model: 'User', select: '-password' },
-      ]);
+      const session: Session = await this.sessionModel
+        .findById(sessionId)
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+          },
+          { path: 'educator', model: 'User', select: '-password' },
+        ]);
+
+      if (!session) {
+        throw new NotFoundException('Session not found');
+      }
+
+      return session;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Session not found.');
+        throw error;
       } else {
+        console.error('An error occurred:', error);
         throw new HttpException(
           {
-            status: HttpStatus.NOT_FOUND,
+            status: HttpStatus.BAD_REQUEST,
             error,
           },
-          HttpStatus.NOT_FOUND,
+          HttpStatus.BAD_REQUEST,
           {
             cause: error,
           },
@@ -285,7 +299,9 @@ export class SessionsService {
     );
 
     // Get reservations corresponding to the Session
-    const reservations = await this.reservationsService.find(sessionId);
+    const reservations: Reservation[] = await this.reservationsService.find(
+      sessionId,
+    );
 
     return maximumCapacity - reservations.length;
   }
@@ -299,6 +315,10 @@ export class SessionsService {
           model: 'Activity',
           select: 'duration',
         });
+
+      if (!editSession) {
+        throw new NotFoundException('Session to modify not found');
+      }
 
       // Get the duration of activity session
       let { duration }: { duration: number } = editSession.activity;
@@ -330,22 +350,30 @@ export class SessionsService {
           { path: 'educator', model: 'User', select: '-password' },
         ]);
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Session to modify not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
   async deleteOne(sessionId: string): Promise<Session> {
     try {
-      return await this.sessionModel
+      const sessionToDelete = await this.sessionModel
         .findOneAndDelete({
           _id: sessionId,
         })
@@ -356,17 +384,33 @@ export class SessionsService {
           },
           { path: 'educator', model: 'User', select: '-password' },
         ]);
+
+      if (!sessionToDelete) {
+        throw new NotFoundException('Session to delete not found');
+      }
+
+      response.status(HttpStatus.NO_CONTENT);
+
+      return sessionToDelete;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Session to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -382,16 +426,24 @@ export class SessionsService {
           { path: 'educator', model: 'User', select: '-password' },
         ]);
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Sessions to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -407,16 +459,24 @@ export class SessionsService {
           { path: 'educator', model: 'User', select: '-password' },
         ]);
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Sessions to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 }

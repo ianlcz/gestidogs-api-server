@@ -1,7 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
 
 import { Holiday, HolidayDocument } from '../schemas/holiday.schema';
 import { CreateHolidayDto } from '../dtos/createHoliday.dto';
@@ -58,29 +65,58 @@ export class HolidaysService {
   }
 
   async findOne(holidayId: string): Promise<Holiday> {
-    return await this.holidayModel.findById(holidayId).populate({
-      path: 'employee',
-      model: 'User',
-      populate: {
-        path: 'activities',
-        model: 'Activity',
-        populate: [
-          {
-            path: 'establishment',
-            model: 'Establishment',
+    try {
+      const holiday: Holiday = await this.holidayModel
+        .findById(holidayId)
+        .populate({
+          path: 'employee',
+          model: 'User',
+          populate: {
+            path: 'activities',
+            model: 'Activity',
             populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
+              {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
             ],
           },
-        ],
-      },
-    });
+        });
+
+      if (!holiday) {
+        throw new NotFoundException('Holiday not found');
+      }
+
+      return holiday;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Holiday not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
+    }
   }
 
   async updateOne(holidayId: string, holidayChanges: object): Promise<Holiday> {
     try {
-      return await this.holidayModel
+      const holidayToModify: Holiday = await this.holidayModel
         .findOneAndUpdate(
           { _id: holidayId },
           { $set: { ...holidayChanges }, $inc: { __v: 1 } },
@@ -104,23 +140,37 @@ export class HolidaysService {
             ],
           },
         });
+
+      if (!holidayToModify) {
+        throw new NotFoundException('Holiday to modify not found');
+      }
+
+      return holidayToModify;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Holiday to modify not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
   async deleteOne(holidayId: string): Promise<Holiday> {
     try {
-      return await this.holidayModel
+      const holidayToDelete: Holiday = await this.holidayModel
         .findOneAndDelete({ _id: holidayId })
         .populate({
           path: 'employee',
@@ -140,17 +190,33 @@ export class HolidaysService {
             ],
           },
         });
+
+      if (!holidayToDelete) {
+        throw new NotFoundException('Holiday to delete not found');
+      }
+
+      response.status(HttpStatus.NO_CONTENT);
+
+      return holidayToDelete;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Holiday to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 }

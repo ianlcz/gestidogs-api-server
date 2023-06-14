@@ -8,6 +8,7 @@ export type ReservationDocument = HydratedDocument<Reservation>;
 
 @Schema()
 export class Reservation {
+  @ApiProperty({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Session', required: true })
@@ -22,9 +23,9 @@ export class Reservation {
   @ApiPropertyOptional({ type: Boolean, default: false })
   isApproved: boolean;
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);

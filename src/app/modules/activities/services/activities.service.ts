@@ -2,11 +2,13 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
 
 import { Activity, ActivityDocument } from '../schemas/activity.schema';
 import { CreateActivityDto } from '../dtos/createActivity.dto';
@@ -50,24 +52,36 @@ export class ActivitiesService {
 
   async findOne(activityId: string): Promise<Activity> {
     try {
-      return await this.activityModel.findById(activityId).populate({
-        path: 'establishment',
-        model: 'Establishment',
-        populate: [
-          { path: 'owner', model: 'User' },
-          { path: 'employees', model: 'User' },
-        ],
-      });
+      const activity: Activity = await this.activityModel
+        .findById(activityId)
+        .populate({
+          path: 'establishment',
+          model: 'Establishment',
+          populate: [
+            { path: 'owner', model: 'User' },
+            { path: 'employees', model: 'User' },
+          ],
+        });
+
+      if (!activity) {
+        throw new NotFoundException('Activity not found');
+      }
+
+      return activity;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
-        throw new UnauthorizedException();
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('Activity not found.');
+        throw error;
       } else {
+        console.error('An error occurred:', error);
         throw new HttpException(
           {
-            status: HttpStatus.NOT_FOUND,
+            status: HttpStatus.BAD_REQUEST,
             error,
           },
-          HttpStatus.NOT_FOUND,
+          HttpStatus.BAD_REQUEST,
           {
             cause: error,
           },
@@ -81,7 +95,7 @@ export class ActivitiesService {
     activityChanges: object,
   ): Promise<Activity> {
     try {
-      return await this.activityModel
+      const activityToModify: Activity = await this.activityModel
         .findByIdAndUpdate(
           {
             _id: activityId,
@@ -97,16 +111,26 @@ export class ActivitiesService {
             { path: 'employees', model: 'User' },
           ],
         });
+
+      if (!activityToModify) {
+        throw new NotFoundException('Activity to modify not found');
+      }
+
+      return activityToModify;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
-        throw new UnauthorizedException();
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('Activity to modify not found.');
+        throw error;
       } else {
+        console.error('An error occurred:', error);
         throw new HttpException(
           {
-            status: HttpStatus.NOT_MODIFIED,
+            status: HttpStatus.BAD_REQUEST,
             error,
           },
-          HttpStatus.NOT_MODIFIED,
+          HttpStatus.BAD_REQUEST,
           {
             cause: error,
           },
@@ -117,7 +141,7 @@ export class ActivitiesService {
 
   async deleteOne(activityId: string): Promise<Activity> {
     try {
-      const activity = await this.activityModel
+      const activityToDelete = await this.activityModel
         .findByIdAndDelete({
           _id: activityId,
         })
@@ -130,13 +154,32 @@ export class ActivitiesService {
           ],
         });
 
-      return activity;
+      if (!activityToDelete) {
+        throw new NotFoundException('Activity to delete not found');
+      }
+
+      response.status(HttpStatus.NO_CONTENT);
+
+      return activityToDelete;
     } catch (error) {
-      throw new HttpException(
-        { status: HttpStatus.NOT_FOUND, error },
-        HttpStatus.NOT_FOUND,
-        { cause: error },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('Activity to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 }

@@ -9,6 +9,7 @@ export type ObservationDocument = HydratedDocument<Observation>;
 
 @Schema()
 export class Observation {
+  @ApiProperty({ type: String })
   _id: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Dog', required: true })
@@ -23,9 +24,9 @@ export class Observation {
   @ApiProperty({ type: Date, required: true, default: new Date() })
   createdAt: Date;
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
-  __v: number;
+  __v?: number;
 }
 
 export const ObservationSchema = SchemaFactory.createForClass(Observation);
