@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
@@ -90,7 +91,11 @@ export class HolidaysController {
     status: HttpStatus.UNAUTHORIZED,
     description: '**Clients** not allowed to find an employee holiday',
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Holiday not found',
+  })
+  @ApiBadRequestResponse()
   @Get(':holidayId')
   async findOne(@Param('holidayId') holidayId: string): Promise<Holiday> {
     return await this.holidaysService.findOne(holidayId);
@@ -109,9 +114,10 @@ export class HolidaysController {
     description: '**Client** not allowed to modify a holiday',
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.NOT_FOUND,
+    description: 'Holiday to modify not found',
   })
+  @ApiBadRequestResponse()
   @Put(':holidayId')
   async updateOne(
     @Param('holidayId') holidayId: string,
@@ -124,7 +130,7 @@ export class HolidaysController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete a holiday' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted holiday',
     type: Holiday,
   })
@@ -135,8 +141,9 @@ export class HolidaysController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Holiday to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':holidayId')
   async deleteOne(@Param('holidayId') holidayId: string): Promise<Holiday> {
     return await this.holidaysService.deleteOne(holidayId);

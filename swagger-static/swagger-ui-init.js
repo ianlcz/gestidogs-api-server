@@ -23,7 +23,7 @@ window.onload = function() {
           }
         }
       },
-      "/sessions": {
+      "/v0/sessions": {
         "post": {
           "operationId": "SessionsController_create",
           "summary": "Create a session",
@@ -124,9 +124,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "404": {
-              "description": "Not found"
             }
           },
           "tags": [
@@ -139,7 +136,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/{sessionId}/report": {
+      "/v0/sessions/{sessionId}/report": {
         "post": {
           "operationId": "SessionsController_writeReport",
           "summary": "Write a session report",
@@ -191,7 +188,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/{sessionId}": {
+      "/v0/sessions/{sessionId}": {
         "get": {
           "operationId": "SessionsController_findOne",
           "summary": "Find a session",
@@ -216,8 +213,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Session not found"
             }
           },
           "tags": [
@@ -263,11 +266,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a session"
+            },
+            "404": {
+              "description": "Session to modify not found"
             }
           },
           "tags": [
@@ -303,11 +309,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
             },
             "404": {
-              "description": "Not found"
+              "description": "Session to delete not found"
             }
           },
           "tags": [
@@ -320,7 +329,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/{sessionId}/remaining-places": {
+      "/v0/sessions/{sessionId}/remaining-places": {
         "get": {
           "operationId": "SessionsController_findPlacesLeft",
           "summary": "Find number of places left in a session",
@@ -359,7 +368,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/educators/{educatorId}": {
+      "/v0/sessions/educators/{educatorId}": {
         "delete": {
           "operationId": "SessionsController_deleteByEducator",
           "summary": "Delete sessions by educator",
@@ -377,11 +386,14 @@ window.onload = function() {
             "200": {
               "description": "Sessions successfully deleted"
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
             },
             "404": {
-              "description": "Not found"
+              "description": "Sessions to delete not found"
             }
           },
           "tags": [
@@ -394,7 +406,7 @@ window.onload = function() {
           ]
         }
       },
-      "/sessions/activities/{activityId}": {
+      "/v0/sessions/activities/{activityId}": {
         "delete": {
           "operationId": "SessionsController_deleteByActivity",
           "summary": "Delete sessions by activity",
@@ -409,14 +421,17 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "Sessions successfully deleted"
+            },
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
             },
             "404": {
-              "description": "Not found"
+              "description": "Sessions to delete not found"
             }
           },
           "tags": [
@@ -429,7 +444,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/register": {
+      "/v0/users/register": {
         "post": {
           "operationId": "UsersController_register",
           "summary": "Register a user",
@@ -449,8 +464,8 @@ window.onload = function() {
             "201": {
               "description": "User successfully registered"
             },
-            "400": {
-              "description": "Bad Request"
+            "422": {
+              "description": ""
             }
           },
           "tags": [
@@ -463,7 +478,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/login": {
+      "/v0/users/login": {
         "post": {
           "operationId": "UsersController_login",
           "summary": "Login a user",
@@ -484,7 +499,7 @@ window.onload = function() {
               "description": "User successfully logged"
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
             }
           },
           "tags": [
@@ -497,7 +512,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/logout": {
+      "/v0/users/logout": {
         "post": {
           "operationId": "UsersController_logout",
           "summary": "Logout a user",
@@ -518,7 +533,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/refresh": {
+      "/v0/users/refresh": {
         "get": {
           "operationId": "UsersController_refreshTokens",
           "summary": "Refresh a user",
@@ -539,7 +554,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/me": {
+      "/v0/users/me": {
         "get": {
           "operationId": "UsersController_getInfos",
           "summary": "Get user logged informations",
@@ -567,7 +582,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users": {
+      "/v0/users": {
         "get": {
           "operationId": "UsersController_find",
           "summary": "Find users",
@@ -627,7 +642,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/{userId}": {
+      "/v0/users/{userId}": {
         "get": {
           "operationId": "UsersController_findOne",
           "summary": "Find a user",
@@ -646,7 +661,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "The found user",
+              "description": "User successfully found",
               "content": {
                 "application/json": {
                   "schema": {
@@ -655,8 +670,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not Found"
+              "description": "User not found"
             }
           },
           "tags": [
@@ -706,7 +727,13 @@ window.onload = function() {
               }
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
+            "404": {
+              "description": "User to modify not found"
             }
           },
           "tags": [
@@ -735,7 +762,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted user",
               "content": {
                 "application/json": {
@@ -745,11 +772,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** can delete a user"
             },
             "404": {
-              "description": "Not found"
+              "description": "User to delete not found"
             }
           },
           "tags": [
@@ -762,7 +792,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments": {
+      "/v0/establishments": {
         "post": {
           "operationId": "EstablishmentsController_create",
           "summary": "Create an establishment",
@@ -842,7 +872,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/{establishmentId}/newEmployee": {
+      "/v0/establishments/{establishmentId}/newEmployee": {
         "post": {
           "operationId": "EstablishmentsController_addEmployee",
           "summary": "Add a new employee in establishment",
@@ -881,13 +911,13 @@ window.onload = function() {
               }
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can add a new employee"
             },
             "404": {
-              "description": "Not Found"
+              "description": "Employees of establishment not found"
             }
           },
           "tags": [
@@ -900,7 +930,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/{establishmentId}": {
+      "/v0/establishments/{establishmentId}": {
         "get": {
           "operationId": "EstablishmentsController_findOne",
           "summary": "Find an establishment",
@@ -925,8 +955,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Establishment not found"
             }
           },
           "tags": [
@@ -973,10 +1009,13 @@ window.onload = function() {
               }
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can modify an establishment"
+            },
+            "404": {
+              "description": "Establishment to modify not found"
             }
           },
           "tags": [
@@ -1002,7 +1041,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted establishment",
               "content": {
                 "application/json": {
@@ -1012,11 +1051,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** can delete an establishment"
             },
             "404": {
-              "description": "Not found"
+              "description": "Establishment to delete not found"
             }
           },
           "tags": [
@@ -1029,7 +1071,7 @@ window.onload = function() {
           ]
         }
       },
-      "/establishments/owners/{ownerId}": {
+      "/v0/establishments/owners/{ownerId}": {
         "delete": {
           "operationId": "EstablishmentsController_deleteByOwner",
           "summary": "Delete establishments by owner",
@@ -1044,14 +1086,17 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "Establishments successfully deleted"
+            },
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "Unauthorized because only **Administrators** can delete establishments based on their owner"
             },
             "404": {
-              "description": "Not found"
+              "description": "Establishments to delete not found"
             }
           },
           "tags": [
@@ -1064,7 +1109,7 @@ window.onload = function() {
           ]
         }
       },
-      "/dogs": {
+      "/v0/dogs": {
         "post": {
           "operationId": "DogsController_create",
           "summary": "Create a dog",
@@ -1168,14 +1213,17 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "Dogs successfully deleted"
+            },
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete dogs based on their owner"
             },
             "404": {
-              "description": "Not found"
+              "description": "Dogs to delete not found"
             }
           },
           "tags": [
@@ -1188,7 +1236,7 @@ window.onload = function() {
           ]
         }
       },
-      "/dogs/{dogId}": {
+      "/v0/dogs/{dogId}": {
         "get": {
           "operationId": "DogsController_findOne",
           "summary": "Find a dog",
@@ -1213,11 +1261,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized if the **Client** is not the owner of the dog"
             },
             "404": {
-              "description": "Not found"
+              "description": "Dog not found"
             }
           },
           "tags": [
@@ -1263,11 +1314,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "Unauthorized if the **Client** is not the owner of the dog"
+            },
+            "404": {
+              "description": "Dog to modify not found"
             }
           },
           "tags": [
@@ -1293,7 +1347,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted dog",
               "content": {
                 "application/json": {
@@ -1303,11 +1357,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a dog"
             },
             "404": {
-              "description": "Not found"
+              "description": "Dog to delete not found"
             }
           },
           "tags": [
@@ -1320,7 +1377,7 @@ window.onload = function() {
           ]
         }
       },
-      "/activities": {
+      "/v0/activities": {
         "post": {
           "operationId": "ActivitiesController_create",
           "summary": "Create an activity",
@@ -1400,7 +1457,7 @@ window.onload = function() {
           ]
         }
       },
-      "/activities/{activityId}": {
+      "/v0/activities/{activityId}": {
         "get": {
           "operationId": "ActivitiesController_findOne",
           "summary": "Find an activity",
@@ -1425,8 +1482,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Activity not found"
             }
           },
           "tags": [
@@ -1472,8 +1535,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
+            "404": {
+              "description": "Activity to modify not found"
             }
           },
           "tags": [
@@ -1499,7 +1568,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted activity",
               "content": {
                 "application/json": {
@@ -1509,11 +1578,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete an activity"
             },
             "404": {
-              "description": "Not found"
+              "description": "Activity to delete not found"
             }
           },
           "tags": [
@@ -1526,7 +1598,7 @@ window.onload = function() {
           ]
         }
       },
-      "/reservations": {
+      "/v0/reservations": {
         "post": {
           "operationId": "ReservationsController_create",
           "summary": "Create a reservation",
@@ -1606,7 +1678,7 @@ window.onload = function() {
           ]
         }
       },
-      "/reservations/{reservationId}": {
+      "/v0/reservations/{reservationId}": {
         "get": {
           "operationId": "ReservationsController_findOne",
           "summary": "Find a reservation",
@@ -1631,8 +1703,11 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Reservation not found"
             }
           },
           "tags": [
@@ -1678,11 +1753,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a reservation"
+            },
+            "404": {
+              "description": "Reservation to modify not found"
             }
           },
           "tags": [
@@ -1708,7 +1786,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted reservation",
               "content": {
                 "application/json": {
@@ -1718,11 +1796,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a reservation"
             },
             "404": {
-              "description": "Not found"
+              "description": "Reservation to delete not found"
             }
           },
           "tags": [
@@ -1735,7 +1816,7 @@ window.onload = function() {
           ]
         }
       },
-      "/payments": {
+      "/v0/payments": {
         "post": {
           "operationId": "PaymentsController_createPaymentIntent",
           "summary": "Make a payment intent",
@@ -1807,7 +1888,7 @@ window.onload = function() {
           ]
         }
       },
-      "/payments/card": {
+      "/v0/payments/card": {
         "post": {
           "operationId": "PaymentsController_createCard",
           "summary": "Add card as payment method",
@@ -1840,7 +1921,7 @@ window.onload = function() {
           ]
         }
       },
-      "/observations": {
+      "/v0/observations": {
         "post": {
           "operationId": "ObservationsController_create",
           "summary": "Create a dog observation",
@@ -1920,7 +2001,7 @@ window.onload = function() {
           ]
         }
       },
-      "/observations/{observationId}": {
+      "/v0/observations/{observationId}": {
         "get": {
           "operationId": "ObservationsController_findOne",
           "summary": "Find a dog observation",
@@ -1945,8 +2026,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Observation not found"
             }
           },
           "tags": [
@@ -1992,11 +2079,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a dog observation"
+            },
+            "404": {
+              "description": "Observation to modified not found"
             }
           },
           "tags": [
@@ -2022,7 +2112,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted dog observation",
               "content": {
                 "application/json": {
@@ -2032,11 +2122,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a dog observation"
             },
             "404": {
-              "description": "Not found"
+              "description": "Observation to delete not found"
             }
           },
           "tags": [
@@ -2049,7 +2142,7 @@ window.onload = function() {
           ]
         }
       },
-      "/holidays": {
+      "/v0/holidays": {
         "post": {
           "operationId": "HolidaysController_create",
           "summary": "Take a vacation",
@@ -2132,7 +2225,7 @@ window.onload = function() {
           ]
         }
       },
-      "/holidays/{holidayId}": {
+      "/v0/holidays/{holidayId}": {
         "get": {
           "operationId": "HolidaysController_findOne",
           "summary": "Find a holiday",
@@ -2157,11 +2250,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "**Clients** not allowed to find an employee holiday"
             },
             "404": {
-              "description": "Not found"
+              "description": "Holiday not found"
             }
           },
           "tags": [
@@ -2207,11 +2303,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a holiday"
+            },
+            "404": {
+              "description": "Holiday to modify not found"
             }
           },
           "tags": [
@@ -2237,7 +2336,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "200": {
+            "204": {
               "description": "The deleted holiday",
               "content": {
                 "application/json": {
@@ -2247,11 +2346,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a holiday"
             },
             "404": {
-              "description": "Not found"
+              "description": "Holiday to delete not found"
             }
           },
           "tags": [
@@ -2327,6 +2429,9 @@ window.onload = function() {
         "Establishment": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "owner": {
               "$ref": "#/components/schemas/User"
             },
@@ -2377,6 +2482,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "owner",
             "name",
             "address",
@@ -2387,6 +2493,9 @@ window.onload = function() {
         "Activity": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "establishment": {
               "$ref": "#/components/schemas/Establishment"
             },
@@ -2413,6 +2522,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "establishment",
             "title",
             "color",
@@ -2423,6 +2533,9 @@ window.onload = function() {
         "User": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "lastname": {
               "type": "string"
             },
@@ -2482,6 +2595,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "lastname",
             "firstname",
             "role",
@@ -2492,6 +2606,9 @@ window.onload = function() {
         "Session": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "educator": {
               "$ref": "#/components/schemas/User"
             },
@@ -2531,6 +2648,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "educator",
             "activity",
             "establishment",
@@ -2873,6 +2991,9 @@ window.onload = function() {
         "Dog": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "owner": {
               "$ref": "#/components/schemas/User"
             },
@@ -2917,6 +3038,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "owner",
             "establishment",
             "nationalId",
@@ -3051,6 +3173,9 @@ window.onload = function() {
         "Reservation": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "session": {
               "$ref": "#/components/schemas/Session"
             },
@@ -3066,6 +3191,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "session",
             "dog"
           ]
@@ -3144,6 +3270,9 @@ window.onload = function() {
         "Observation": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "dog": {
               "$ref": "#/components/schemas/Dog"
             },
@@ -3153,13 +3282,14 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-06-01T22:40:51.986Z"
+              "default": "2023-06-14T13:57:41.510Z"
             },
             "__v": {
               "type": "number"
             }
           },
           "required": [
+            "_id",
             "dog",
             "createdAt"
           ]
@@ -3209,6 +3339,9 @@ window.onload = function() {
         "Holiday": {
           "type": "object",
           "properties": {
+            "_id": {
+              "type": "string"
+            },
             "employee": {
               "$ref": "#/components/schemas/User"
             },
@@ -3238,6 +3371,7 @@ window.onload = function() {
             }
           },
           "required": [
+            "_id",
             "employee",
             "beginDate",
             "endDate",

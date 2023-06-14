@@ -3,8 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
-import { AccessTokenStrategy } from '../auth/strategies/accessToken.strategy';
-import { RefreshTokenStrategy } from '../auth/strategies/refreshToken.strategy';
+import { AccessTokenStrategy } from '../../common/strategies/accessToken.strategy';
+import { RefreshTokenStrategy } from '../../common/strategies/refreshToken.strategy';
 
 import { User, UserSchema } from './schemas/user.schema';
 import { UsersService } from './services/users.service';

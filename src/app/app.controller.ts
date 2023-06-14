@@ -14,7 +14,7 @@ export class AppController {
     description: 'The GestiDogs API informations',
   })
   initApp(): {
-    app: { name: string; github: string };
+    app: { name: string; version: string; github: string };
     developpers: { name: string; github: string }[];
   } {
     return this.appService.initApp();

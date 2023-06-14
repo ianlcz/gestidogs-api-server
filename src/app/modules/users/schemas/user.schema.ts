@@ -11,6 +11,7 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
+  @ApiProperty({ type: String })
   _id: Types.ObjectId | string;
 
   @Prop({ type: String, required: true })
@@ -77,7 +78,7 @@ export class User {
   @Prop()
   refreshToken: string;
 
-  @Prop()
+  @Prop({ type: Number })
   @ApiPropertyOptional({ type: Number })
   __v?: number;
 }

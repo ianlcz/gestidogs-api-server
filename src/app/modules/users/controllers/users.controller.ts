@@ -13,11 +13,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { Request } from 'express';
@@ -74,10 +76,7 @@ export class UsersController {
     status: HttpStatus.OK,
     description: 'User successfully logged',
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Bad Request',
-  })
+  @ApiBadRequestResponse()
   @Post('login')
   async login(@Body() authLoginDto: AuthLoginDto) {
     return await this.usersService.login(authLoginDto);
@@ -186,10 +185,12 @@ export class UsersController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'The found user',
+    description: 'User successfully found',
     type: User,
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
   @Get(':userId')
   async findOne(@Param('userId') userId: string): Promise<User> {
     return await this.usersService.findOne(userId);
@@ -215,9 +216,11 @@ export class UsersController {
     type: User,
   })
   @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Bad Request',
+    status: HttpStatus.NOT_FOUND,
+    description: 'User to modify not found',
   })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
   @Put(':userId')
   async updateOne(
     @Param('userId') userId: string,
@@ -242,7 +245,7 @@ export class UsersController {
     required: true,
   })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.NO_CONTENT,
     description: 'The deleted user',
     type: User,
   })
@@ -253,8 +256,9 @@ export class UsersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'User to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':userId')
   async deleteOne(@Param('userId') userId: string): Promise<User> {
     return await this.usersService.deleteOne(userId);

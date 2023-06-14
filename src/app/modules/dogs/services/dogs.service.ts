@@ -2,11 +2,13 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
+import { response } from 'express';
 
 import { Dog, DogDocument } from '../schemas/dog.schema';
 import { CreateDogDto } from '../dtos/createDog.dto';
@@ -80,6 +82,10 @@ export class DogsService {
         },
       ]);
 
+      if (!dog) {
+        throw new NotFoundException('Dog not found');
+      }
+
       if (user && user.role === RoleType.CLIENT && user._id !== dog.owner._id) {
         throw new UnauthorizedException();
       }
@@ -87,14 +93,18 @@ export class DogsService {
       return dog;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
-        throw new UnauthorizedException();
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('Dog not found.');
+        throw error;
       } else {
+        console.error('An error occurred:', error);
         throw new HttpException(
           {
-            status: HttpStatus.NOT_FOUND,
+            status: HttpStatus.BAD_REQUEST,
             error,
           },
-          HttpStatus.NOT_FOUND,
+          HttpStatus.BAD_REQUEST,
           {
             cause: error,
           },
@@ -105,7 +115,7 @@ export class DogsService {
 
   async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {
     try {
-      const dog = await this.dogModel.findById(dogId).populate([
+      const dog: Dog = await this.dogModel.findById(dogId).populate([
         {
           path: 'owner',
           model: 'User',
@@ -120,11 +130,15 @@ export class DogsService {
         },
       ]);
 
+      if (!dog) {
+        throw new NotFoundException('Dog not found');
+      }
+
       if (user.role === RoleType.CLIENT && user._id !== dog.owner._id) {
         throw new UnauthorizedException();
       }
 
-      return await this.dogModel
+      const dogToModify: Dog = await this.dogModel
         .findOneAndUpdate(
           {
             _id: dogId,
@@ -146,16 +160,26 @@ export class DogsService {
             ],
           },
         ]);
+
+      if (!dogToModify) {
+        throw new NotFoundException('Dog to modify not found');
+      }
+
+      return dogToModify;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Dog to modify not found.');
+        throw error;
       } else {
+        console.error('An error occurred:', error);
         throw new HttpException(
           {
-            status: HttpStatus.NOT_MODIFIED,
+            status: HttpStatus.BAD_REQUEST,
             error,
           },
-          HttpStatus.NOT_MODIFIED,
+          HttpStatus.BAD_REQUEST,
           {
             cause: error,
           },
@@ -166,7 +190,7 @@ export class DogsService {
 
   async deleteOne(dogId: string): Promise<Dog> {
     try {
-      const dog = await this.dogModel
+      const dogToDelete = await this.dogModel
         .findOneAndDelete({ _id: dogId })
         .populate([
           {
@@ -183,18 +207,32 @@ export class DogsService {
           },
         ]);
 
-      return dog;
+      if (!dogToDelete) {
+        throw new NotFoundException('Dog to delete not found');
+      }
+
+      response.status(HttpStatus.NO_CONTENT);
+
+      return dogToDelete;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Dog to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -204,18 +242,31 @@ export class DogsService {
 
       dogs.forEach(async (dog) => await this.deleteOne(dog._id.toString()));
 
+      response.status(HttpStatus.NO_CONTENT).json({
+        statusCode: HttpStatus.NO_CONTENT,
+        message: 'Delete dogs successfully',
+      });
+
       return dogs;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Dogs to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 }
