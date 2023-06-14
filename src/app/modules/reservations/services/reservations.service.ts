@@ -4,6 +4,8 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -125,37 +127,66 @@ export class ReservationsService {
   }
 
   async findOne(reservationId: string): Promise<Reservation> {
-    return await this.reservationModel.findById(reservationId).populate([
-      {
-        path: 'session',
-        model: 'Session',
-        populate: [
+    try {
+      const reservation: Reservation = await this.reservationModel
+        .findById(reservationId)
+        .populate([
           {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User' },
-        ],
-      },
-      {
-        path: 'dog',
-        model: 'Dog',
-        populate: [
-          {
-            path: 'establishment',
-            model: 'Establishment',
+            path: 'session',
+            model: 'Session',
             populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
+              {
+                path: 'activity',
+                model: 'Activity',
+              },
+              { path: 'educator', model: 'User' },
             ],
           },
           {
-            path: 'owner',
-            model: 'User',
+            path: 'dog',
+            model: 'Dog',
+            populate: [
+              {
+                path: 'establishment',
+                model: 'Establishment',
+                populate: [
+                  { path: 'owner', model: 'User' },
+                  { path: 'employees', model: 'User' },
+                ],
+              },
+              {
+                path: 'owner',
+                model: 'User',
+              },
+            ],
           },
-        ],
-      },
-    ]);
+        ]);
+
+      if (!reservation) {
+        throw new NotFoundException('Reservation not found');
+      }
+
+      return reservation;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Reservation not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
+    }
   }
 
   async updateOne(
@@ -163,7 +194,7 @@ export class ReservationsService {
     reservationChanges: object,
   ): Promise<Reservation> {
     try {
-      return await this.reservationModel
+      const reservationToModify: Reservation = await this.reservationModel
         .findOneAndUpdate(
           {
             _id: reservationId,
@@ -202,23 +233,37 @@ export class ReservationsService {
             ],
           },
         ]);
+
+      if (!reservationToModify) {
+        throw new NotFoundException('Reservation to modify not found');
+      }
+
+      return reservationToModify;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Reservation to modify not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
   async deleteOne(reservationId: string): Promise<Reservation> {
     try {
-      return await this.reservationModel
+      const reservationToDelete: Reservation = await this.reservationModel
         .findOneAndDelete({
           _id: reservationId,
         })
@@ -253,17 +298,31 @@ export class ReservationsService {
             ],
           },
         ]);
+
+      if (!reservationToDelete) {
+        throw new NotFoundException('Reservation to delete not found');
+      }
+
+      return reservationToDelete;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Reservation to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 }

@@ -8,18 +8,17 @@ import {
   Post,
   Put,
   Query,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-
-import { Response } from 'express';
 
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { RoleType } from '../../../common/enums/role.enum';
@@ -79,12 +78,9 @@ export class EstablishmentsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not Found',
+    description: 'Employees of establishment not found',
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Bad Request',
-  })
+  @ApiBadRequestResponse()
   @Post(':establishmentId/newEmployee')
   async addEmployee(
     @Param('establishmentId') establishmentId: string,
@@ -120,7 +116,12 @@ export class EstablishmentsController {
     description: 'The found establishment',
     type: Establishment,
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Establishment not found',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
   @Get(':establishmentId')
   async findOne(
     @Param('establishmentId') establishmentId: string,
@@ -142,9 +143,10 @@ export class EstablishmentsController {
       'Unauthorized because only **Administrators** and **Managers** can modify an establishment',
   })
   @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Bad Request',
+    status: HttpStatus.NOT_FOUND,
+    description: 'Establishment to modify not found',
   })
+  @ApiBadRequestResponse()
   @Put(':establishmentId')
   async updateOne(
     @Param('establishmentId') establishmentId: string,
@@ -171,8 +173,9 @@ export class EstablishmentsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Establishment to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':establishmentId')
   async deleteOne(
     @Param('establishmentId') establishmentId: string,
@@ -194,18 +197,11 @@ export class EstablishmentsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Establishments to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete('/owners/:ownerId')
-  async deleteByOwner(
-    @Param('ownerId') ownerId: string,
-    @Res() response: Response,
-  ): Promise<void> {
+  async deleteByOwner(@Param('ownerId') ownerId: string): Promise<void> {
     await this.establishmentsService.deleteByOwner(ownerId);
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: 'Delete establishements successfully',
-    });
   }
 }

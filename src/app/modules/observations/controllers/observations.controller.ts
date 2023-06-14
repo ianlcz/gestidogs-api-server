@@ -11,11 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { Roles } from '../../../common/decorators/roles.decorator';
@@ -81,7 +83,12 @@ export class ObservationsController {
     description: 'The found dog observation',
     type: Observation,
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Observation not found',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
   @Get(':observationId')
   async findOne(
     @Param('observationId') observationId: string,
@@ -102,9 +109,10 @@ export class ObservationsController {
     description: '**Client** not allowed to modify a dog observation',
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.NOT_FOUND,
+    description: 'Observation to modified not found',
   })
+  @ApiBadRequestResponse()
   @Put(':observationId')
   async updateOne(
     @Param('observationId') observationId: string,
@@ -131,8 +139,9 @@ export class ObservationsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Observation to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':observationId')
   async deleteOne(
     @Param('observationId') observationId: string,

@@ -124,9 +124,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "404": {
-              "description": "Not found"
             }
           },
           "tags": [
@@ -216,8 +213,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Session not found"
             }
           },
           "tags": [
@@ -263,11 +266,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a session"
+            },
+            "404": {
+              "description": "Session to modify not found"
             }
           },
           "tags": [
@@ -303,11 +309,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
             },
             "404": {
-              "description": "Not found"
+              "description": "Session to delete not found"
             }
           },
           "tags": [
@@ -377,11 +386,14 @@ window.onload = function() {
             "200": {
               "description": "Sessions successfully deleted"
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can delete a session"
             },
             "404": {
-              "description": "Not found"
+              "description": "Sessions to delete not found"
             }
           },
           "tags": [
@@ -412,11 +424,14 @@ window.onload = function() {
             "200": {
               "description": "Sessions successfully deleted"
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a session"
             },
             "404": {
-              "description": "Not found"
+              "description": "Sessions to delete not found"
             }
           },
           "tags": [
@@ -482,7 +497,7 @@ window.onload = function() {
               "description": "User successfully logged"
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
             }
           },
           "tags": [
@@ -634,7 +649,7 @@ window.onload = function() {
           ],
           "responses": {
             "200": {
-              "description": "The found user",
+              "description": "User successfully found",
               "content": {
                 "application/json": {
                   "schema": {
@@ -643,8 +658,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not Found"
+              "description": "User not found"
             }
           },
           "tags": [
@@ -691,7 +712,13 @@ window.onload = function() {
               }
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
+            "404": {
+              "description": "User to modify not found"
             }
           },
           "tags": [
@@ -727,11 +754,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** can delete a user"
             },
             "404": {
-              "description": "Not found"
+              "description": "User to delete not found"
             }
           },
           "tags": [
@@ -863,13 +893,13 @@ window.onload = function() {
               }
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can add a new employee"
             },
             "404": {
-              "description": "Not Found"
+              "description": "Employees of establishment not found"
             }
           },
           "tags": [
@@ -907,8 +937,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Establishment not found"
             }
           },
           "tags": [
@@ -955,10 +991,13 @@ window.onload = function() {
               }
             },
             "400": {
-              "description": "Bad Request"
+              "description": ""
             },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can modify an establishment"
+            },
+            "404": {
+              "description": "Establishment to modify not found"
             }
           },
           "tags": [
@@ -994,11 +1033,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** can delete an establishment"
             },
             "404": {
-              "description": "Not found"
+              "description": "Establishment to delete not found"
             }
           },
           "tags": [
@@ -1029,11 +1071,14 @@ window.onload = function() {
             "200": {
               "description": "Establishments successfully deleted"
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** can delete establishments based on their owner"
             },
             "404": {
-              "description": "Not found"
+              "description": "Establishments to delete not found"
             }
           },
           "tags": [
@@ -1153,11 +1198,14 @@ window.onload = function() {
             "200": {
               "description": "Dogs successfully deleted"
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete dogs based on their owner"
             },
             "404": {
-              "description": "Not found"
+              "description": "Dogs to delete not found"
             }
           },
           "tags": [
@@ -1195,11 +1243,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized if the **Client** is not the owner of the dog"
             },
             "404": {
-              "description": "Not found"
+              "description": "Dog not found"
             }
           },
           "tags": [
@@ -1245,11 +1296,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "Unauthorized if the **Client** is not the owner of the dog"
+            },
+            "404": {
+              "description": "Dog to modify not found"
             }
           },
           "tags": [
@@ -1285,11 +1339,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a dog"
             },
             "404": {
-              "description": "Not found"
+              "description": "Dog to delete not found"
             }
           },
           "tags": [
@@ -1407,8 +1464,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Activity not found"
             }
           },
           "tags": [
@@ -1454,8 +1517,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
+            "404": {
+              "description": "Activity to modify not found"
             }
           },
           "tags": [
@@ -1491,11 +1560,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete an activity"
             },
             "404": {
-              "description": "Not found"
+              "description": "Activity to delete not found"
             }
           },
           "tags": [
@@ -1613,8 +1685,11 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Reservation not found"
             }
           },
           "tags": [
@@ -1660,11 +1735,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a reservation"
+            },
+            "404": {
+              "description": "Reservation to modify not found"
             }
           },
           "tags": [
@@ -1700,11 +1778,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a reservation"
             },
             "404": {
-              "description": "Not found"
+              "description": "Reservation to delete not found"
             }
           },
           "tags": [
@@ -1927,8 +2008,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
             "404": {
-              "description": "Not found"
+              "description": "Observation not found"
             }
           },
           "tags": [
@@ -1974,11 +2061,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a dog observation"
+            },
+            "404": {
+              "description": "Observation to modified not found"
             }
           },
           "tags": [
@@ -2014,11 +2104,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a dog observation"
             },
             "404": {
-              "description": "Not found"
+              "description": "Observation to delete not found"
             }
           },
           "tags": [
@@ -2139,11 +2232,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "**Clients** not allowed to find an employee holiday"
             },
             "404": {
-              "description": "Not found"
+              "description": "Holiday not found"
             }
           },
           "tags": [
@@ -2189,11 +2285,14 @@ window.onload = function() {
                 }
               }
             },
-            "304": {
-              "description": "Not Modified"
+            "400": {
+              "description": ""
             },
             "401": {
               "description": "**Client** not allowed to modify a holiday"
+            },
+            "404": {
+              "description": "Holiday to modify not found"
             }
           },
           "tags": [
@@ -2229,11 +2328,14 @@ window.onload = function() {
                 }
               }
             },
+            "400": {
+              "description": ""
+            },
             "401": {
               "description": "Unauthorized because only **Administrators** and **Managers** can delete a holiday"
             },
             "404": {
-              "description": "Not found"
+              "description": "Holiday to delete not found"
             }
           },
           "tags": [
@@ -3162,7 +3264,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-06-13T21:10:21.938Z"
+              "default": "2023-06-14T11:03:09.023Z"
             },
             "__v": {
               "type": "number"

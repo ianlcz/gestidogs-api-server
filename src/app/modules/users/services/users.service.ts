@@ -4,6 +4,8 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
@@ -115,24 +117,37 @@ export class UsersService {
 
   private async setLastConnectionDate(emailAddress: string): Promise<void> {
     try {
-      await this.userModel.findOneAndUpdate(
-        { emailAddress },
-        { lastConnectionAt: new Date() },
-        {
-          returnOriginal: false,
-        },
-      );
+      const userToSetLastConnectionDate: User =
+        await this.userModel.findOneAndUpdate(
+          { emailAddress },
+          { lastConnectionAt: new Date() },
+          {
+            returnOriginal: false,
+          },
+        );
+
+      if (!userToSetLastConnectionDate) {
+        throw new NotFoundException('User not found');
+      }
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_MODIFIED,
-          error,
-        },
-        HttpStatus.NOT_MODIFIED,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('User not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -175,16 +190,33 @@ export class UsersService {
         ],
       });
 
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
       // Hide User password
       user.password = undefined;
 
       return user;
     } catch (error) {
-      throw new HttpException(
-        { status: HttpStatus.NOT_FOUND, error },
-        HttpStatus.NOT_FOUND,
-        { cause: error },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('User not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -217,27 +249,43 @@ export class UsersService {
           ],
         });
 
+      if (!modifyUser) {
+        throw new NotFoundException('User to modify not found');
+      }
+
       // Hide User password
       modifyUser.password = undefined;
 
       return modifyUser;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error,
-        },
-        HttpStatus.BAD_REQUEST,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('User to modify not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
   async deleteOne(userId: string): Promise<User> {
     try {
       const userToDelete: User = await this.userModel.findOne({ _id: userId });
+
+      if (!userToDelete) {
+        throw new NotFoundException('User to delete not found');
+      }
 
       // Delete User dogs
       await this.dogsService.deleteByOwner(userId);
@@ -253,16 +301,24 @@ export class UsersService {
 
       return userToDelete;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('User to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 

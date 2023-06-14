@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
@@ -100,7 +101,11 @@ export class ReservationsController {
     description: 'The found reservation',
     type: Reservation,
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Reservation not found',
+  })
+  @ApiBadRequestResponse()
   @Get(':reservationId')
   async findOne(
     @Param('reservationId') reservationId: string,
@@ -121,9 +126,10 @@ export class ReservationsController {
     description: '**Client** not allowed to modify a reservation',
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.NOT_FOUND,
+    description: 'Reservation to modify not found',
   })
+  @ApiBadRequestResponse()
   @Put(':reservationId')
   async updateOne(
     @Param('reservationId') reservationId: string,
@@ -150,8 +156,9 @@ export class ReservationsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Reservation to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':reservationId')
   async deleteOne(
     @Param('reservationId') reservationId: string,

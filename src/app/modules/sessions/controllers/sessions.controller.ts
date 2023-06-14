@@ -12,11 +12,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { Response } from 'express';
@@ -93,7 +95,6 @@ export class SessionsController {
     description: 'List of sessions',
     type: [Session],
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
   @ApiQuery({
     name: 'date',
     type: Date,
@@ -166,7 +167,12 @@ export class SessionsController {
     description: 'The found session',
     type: Session,
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Session not found',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
   @Get(':sessionId')
   async findOne(@Param('sessionId') sessionId: string): Promise<Session> {
     return await this.sessionsService.findOne(sessionId);
@@ -203,9 +209,10 @@ export class SessionsController {
     description: '**Client** not allowed to modify a session',
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.NOT_FOUND,
+    description: 'Session to modify not found',
   })
+  @ApiBadRequestResponse()
   @Put(':sessionId')
   async updateOne(
     @Param('sessionId') sessionId: string,
@@ -229,8 +236,9 @@ export class SessionsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Session to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':sessionId')
   async deleteOne(@Param('sessionId') sessionId: string): Promise<Session> {
     return await this.sessionsService.deleteOne(sessionId);
@@ -250,8 +258,9 @@ export class SessionsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Sessions to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete('/educators/:educatorId')
   async deleteByEducator(
     @Param('educatorId') educatorId: string,
@@ -279,8 +288,9 @@ export class SessionsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Sessions to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete('/activities/:activityId')
   async deleteByActivity(
     @Param('activityId') activityId: string,

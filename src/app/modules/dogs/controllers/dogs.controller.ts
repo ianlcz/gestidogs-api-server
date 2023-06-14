@@ -9,10 +9,10 @@ import {
   Put,
   Query,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
@@ -20,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { RoleType } from '../../../common/enums/role.enum';
@@ -102,7 +102,8 @@ export class DogsController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Unauthorized if the **Client** is not the owner of the dog',
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Dog not found' })
+  @ApiBadRequestResponse()
   @Get(':dogId')
   async findOne(
     @Param('dogId') dogId: string,
@@ -123,9 +124,10 @@ export class DogsController {
     description: 'Unauthorized if the **Client** is not the owner of the dog',
   })
   @ApiResponse({
-    status: HttpStatus.NOT_MODIFIED,
-    description: 'Not Modified',
+    status: HttpStatus.NOT_FOUND,
+    description: 'Dog to modify not found',
   })
+  @ApiBadRequestResponse()
   @Put(':dogId')
   async updateOne(
     @Param('dogId') dogId: string,
@@ -150,8 +152,9 @@ export class DogsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Dog to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':dogId')
   async deleteOne(@Param('dogId') dogId: string): Promise<Dog> {
     return await this.dogsService.deleteOne(dogId);
@@ -171,23 +174,16 @@ export class DogsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Dogs to delete not found',
   })
+  @ApiBadRequestResponse()
   @ApiQuery({
     name: 'ownerId',
     type: String,
     required: true,
   })
   @Delete('/')
-  async deleteByOwner(
-    @Query('ownerId') ownerId: string,
-    @Res() response: Response,
-  ): Promise<void> {
+  async deleteByOwner(@Query('ownerId') ownerId: string): Promise<void> {
     await this.dogsService.deleteByOwner(ownerId);
-
-    response.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: 'Delete dogs successfully',
-    });
   }
 }

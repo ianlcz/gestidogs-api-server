@@ -11,11 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { Roles } from '../../../common/decorators/roles.decorator';
@@ -85,7 +87,12 @@ export class ActivitiesController {
     description: 'The found activity',
     type: Activity,
   })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Activity not found',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
   @Get(':activityId')
   async findOne(@Param('activityId') activityId: string): Promise<Activity> {
     return await this.activitiesService.findOne(activityId);
@@ -98,7 +105,12 @@ export class ActivitiesController {
     description: 'The modified activity',
     type: Activity,
   })
-  @ApiResponse({ status: HttpStatus.NOT_MODIFIED, description: 'Not Modified' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Activity to modify not found',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
   @Put(':activityId')
   async updateOne(
     @Param('activityId') activityId: string,
@@ -125,8 +137,9 @@ export class ActivitiesController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Not found',
+    description: 'Activity to delete not found',
   })
+  @ApiBadRequestResponse()
   @Delete(':activityId')
   async deleteOne(@Param('activityId') activityId: string): Promise<Activity> {
     return await this.activitiesService.deleteOne(activityId);

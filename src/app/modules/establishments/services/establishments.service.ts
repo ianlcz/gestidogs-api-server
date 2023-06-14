@@ -5,12 +5,14 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
-import { User } from '../../users/schemas/user.schema';
+import { response } from 'express';
 
+import { User } from '../../users/schemas/user.schema';
 import { UsersService } from '../../users/services/users.service';
 
 import { CreateEstablishmentDto } from '../dtos/createEstablishment.dto';
@@ -65,7 +67,8 @@ export class EstablishmentsService {
       // Get establishment employees
       const { employees }: { employees: User[] } =
         await this.establishmentModel.findById(establishmentId);
-      if (!employees) {
+
+      if (employees && employees.length === 0) {
         throw new NotFoundException(
           `Employees of establishment '${establishmentId}' not found`,
         );
@@ -91,11 +94,26 @@ export class EstablishmentsService {
 
       return newEmployees;
     } catch (error) {
-      throw new HttpException(
-        { status: HttpStatus.BAD_REQUEST, error },
-        HttpStatus.BAD_REQUEST,
-        { cause: error },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log(
+          `Employees of establishment '${establishmentId}' not found`,
+        );
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -110,16 +128,37 @@ export class EstablishmentsService {
 
   async findOne(establishmentId: string): Promise<Establishment> {
     try {
-      return await this.establishmentModel.findById(establishmentId).populate([
-        { path: 'owner', model: 'User' },
-        { path: 'employees', model: 'User' },
-      ]);
+      const establishment: Establishment = await this.establishmentModel
+        .findById(establishmentId)
+        .populate([
+          { path: 'owner', model: 'User' },
+          { path: 'employees', model: 'User' },
+        ]);
+
+      if (!establishment) {
+        throw new NotFoundException('Establishment not found');
+      }
+
+      return establishment;
     } catch (error) {
-      throw new HttpException(
-        { status: HttpStatus.NOT_FOUND, error },
-        HttpStatus.NOT_FOUND,
-        { cause: error },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Establishment not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -128,7 +167,7 @@ export class EstablishmentsService {
     establishmentChanges: object,
   ): Promise<Establishment> {
     try {
-      return await this.establishmentModel
+      const establishmentToModify: Establishment = await this.establishmentModel
         .findOneAndUpdate(
           { _id: establishmentId },
           {
@@ -141,23 +180,37 @@ export class EstablishmentsService {
           { path: 'owner', model: 'User' },
           { path: 'employees', model: 'User' },
         ]);
+
+      if (!establishmentToModify) {
+        throw new NotFoundException('Establishment to modify not found');
+      }
+
+      return establishmentToModify;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error,
-        },
-        HttpStatus.BAD_REQUEST,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Establishment to modify not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
   async deleteOne(establishmentId: string): Promise<Establishment> {
     try {
-      return await this.establishmentModel
+      const establishmentToDelete: Establishment = await this.establishmentModel
         .findOneAndDelete({
           _id: establishmentId,
         })
@@ -165,34 +218,61 @@ export class EstablishmentsService {
           { path: 'owner', model: 'User' },
           { path: 'employees', model: 'User' },
         ]);
+
+      if (!establishmentToDelete) {
+        throw new NotFoundException('Establishment to delete not found');
+      }
+
+      return establishmentToDelete;
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Establishment to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 
   async deleteByOwner(ownerId: string): Promise<void> {
     try {
       await this.establishmentModel.deleteMany({ ownerId });
+
+      response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        message: 'Delete establishements successfully',
+      });
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error,
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log('Establishments to delete not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 }
