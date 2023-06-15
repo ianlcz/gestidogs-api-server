@@ -461,36 +461,61 @@ export class UsersService {
   }
 
   async getInfos(token: any) {
-    const user = await this.userModel
-      .findOne({
-        emailAddress: token.emailAddress,
-      })
-      .populate({
-        path: 'activities',
-        model: 'Activity',
-        populate: [
+    try {
+      const user = await this.userModel
+        .findOne({
+          emailAddress: token.emailAddress,
+        })
+        .populate({
+          path: 'activities',
+          model: 'Activity',
+          populate: [
+            {
+              path: 'establishment',
+              model: 'Establishment',
+              populate: [
+                { path: 'owner', model: 'User' },
+                { path: 'employees', model: 'User' },
+              ],
+            },
+          ],
+        });
+
+      // Hide User password
+      user.password = undefined;
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      if (user.role === RoleType.MANAGER) {
+        // Get User logged establishments
+        const establishments: Establishment[] =
+          await this.establishmentsService.find(user._id.toString());
+
+        return { ...user, establishments };
+      } else {
+        return user;
+      }
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else if (error instanceof NotFoundException) {
+        console.log('User not found.');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
           {
-            path: 'establishment',
-            model: 'Establishment',
-            populate: [
-              { path: 'owner', model: 'User' },
-              { path: 'employees', model: 'User' },
-            ],
+            status: HttpStatus.BAD_REQUEST,
+            error,
           },
-        ],
-      });
-
-    // Hide User password
-    user.password = undefined;
-
-    if (user.role === RoleType.MANAGER) {
-      // Get User logged establishments
-      const establishments: Establishment[] =
-        await this.establishmentsService.find(user._id.toString());
-
-      return { ...user, establishments };
-    } else {
-      return user;
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
     }
   }
 }
