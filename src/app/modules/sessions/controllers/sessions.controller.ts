@@ -134,18 +134,7 @@ export class SessionsController {
         next: Session[];
       }
   > {
-    if (educatorId) {
-      if (date instanceof Date && isFinite(date.getTime())) {
-        return await this.sessionsService.findEducatorSessionsByDate(
-          educatorId,
-          date,
-        );
-      } else {
-        return await this.sessionsService.findByEducator(educatorId);
-      }
-    } else if (activityId) {
-      return await this.sessionsService.findByActivity(activityId);
-    } else if (establishmentId) {
+    if (establishmentId) {
       if (reserved && date instanceof Date && isFinite(date.getTime())) {
         return await this.sessionsService.findByEstablishment(
           establishmentId,
@@ -156,7 +145,13 @@ export class SessionsController {
         return await this.sessionsService.findByEstablishment(establishmentId);
       }
     } else {
-      return await this.sessionsService.findAll();
+      return await this.sessionsService.find(
+        date,
+        reserved,
+        educatorId,
+        activityId,
+        establishmentId,
+      );
     }
   }
 
