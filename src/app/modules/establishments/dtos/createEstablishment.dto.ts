@@ -26,9 +26,6 @@ export class CreateEstablishmentDto {
   @IsNotEmpty()
   address: string;
 
-  @ApiPropertyOptional({ type: [Number] })
-  coordinates: number[];
-
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')

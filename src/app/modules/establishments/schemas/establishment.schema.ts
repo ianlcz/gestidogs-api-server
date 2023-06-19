@@ -8,6 +8,12 @@ import { User } from '../../users/schemas/user.schema';
 export type EstablishmentDocument = HydratedDocument<Establishment>;
 
 @Schema()
+export class Location {
+  @Prop({ required: true, unique: true, type: [Number] })
+  coordinates: number[];
+}
+
+@Schema()
 export class Establishment {
   @ApiProperty({ type: String })
   _id: Types.ObjectId;
@@ -27,12 +33,6 @@ export class Establishment {
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
   address: string;
-
-  @Prop({
-    type: [Number],
-  })
-  @ApiPropertyOptional({ type: [Number] })
-  coordinates?: number[];
 
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })

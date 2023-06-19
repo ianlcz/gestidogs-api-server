@@ -17,9 +17,6 @@ export class UpdateEstablishmentDto {
   @ApiPropertyOptional({ type: String })
   address: string;
 
-  @ApiPropertyOptional({ type: [Number] })
-  coordinates: number[];
-
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
