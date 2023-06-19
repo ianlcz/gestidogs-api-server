@@ -29,21 +29,11 @@ export class Establishment {
   address: string;
 
   @Prop({
-    type: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        required: true,
-      },
-      coordinates: {
-        type: [Number],
-        required: true,
-        unique: true,
-      },
-    },
+    type: [Number],
+    required: true,
   })
   @ApiProperty({ type: [Number], required: true })
-  location: number[];
+  coordinates: number[];
 
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
