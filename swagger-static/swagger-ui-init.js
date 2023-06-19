@@ -2444,7 +2444,7 @@ window.onload = function() {
             "address": {
               "type": "string"
             },
-            "location": {
+            "coordinates": {
               "type": "array",
               "items": {
                 "type": "number"
@@ -2486,7 +2486,7 @@ window.onload = function() {
             "owner",
             "name",
             "address",
-            "location",
+            "coordinates",
             "schedules"
           ]
         },
@@ -2810,7 +2810,7 @@ window.onload = function() {
             "address": {
               "type": "string"
             },
-            "location": {
+            "coordinates": {
               "type": "array",
               "items": {
                 "type": "number"
@@ -2845,7 +2845,7 @@ window.onload = function() {
             "owner",
             "name",
             "address",
-            "location",
+            "coordinates",
             "emailAddress",
             "schedules"
           ]
@@ -2907,7 +2907,7 @@ window.onload = function() {
             "address": {
               "type": "string"
             },
-            "location": {
+            "coordinates": {
               "type": "array",
               "items": {
                 "type": "number"
@@ -3282,7 +3282,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-06-14T13:57:41.510Z"
+              "default": "2023-06-19T17:10:55.514Z"
             },
             "__v": {
               "type": "number"

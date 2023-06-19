@@ -27,8 +27,7 @@ export class CreateEstablishmentDto {
   address: string;
 
   @ApiProperty({ type: [Number], required: true })
-  @IsNotEmpty()
-  location: number[];
+  coordinates: number[];
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()

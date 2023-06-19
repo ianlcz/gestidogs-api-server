@@ -82,6 +82,8 @@ export class EstablishmentsService {
         await this.usersService.register(newEmployeeDto)
       ).user;
 
+      newEmployee.password = undefined;
+
       const newEmployees: User[] = [...employees, newEmployee];
 
       await this.establishmentModel.findOneAndUpdate(
@@ -121,8 +123,8 @@ export class EstablishmentsService {
     return await this.establishmentModel
       .find({ ...(ownerId && { owner: ownerId }) })
       .populate([
-        { path: 'owner', model: 'User' },
-        { path: 'employees', model: 'User' },
+        { path: 'owner', model: 'User', select: '-password' },
+        { path: 'employees', model: 'User', select: '-password' },
       ]);
   }
 
@@ -131,8 +133,8 @@ export class EstablishmentsService {
       const establishment: Establishment = await this.establishmentModel
         .findById(establishmentId)
         .populate([
-          { path: 'owner', model: 'User' },
-          { path: 'employees', model: 'User' },
+          { path: 'owner', model: 'User', select: '-password' },
+          { path: 'employees', model: 'User', select: '-password' },
         ]);
 
       if (!establishment) {
@@ -177,8 +179,8 @@ export class EstablishmentsService {
           { returnOriginal: false },
         )
         .populate([
-          { path: 'owner', model: 'User' },
-          { path: 'employees', model: 'User' },
+          { path: 'owner', model: 'User', select: '-password' },
+          { path: 'employees', model: 'User', select: '-password' },
         ]);
 
       if (!establishmentToModify) {
@@ -215,8 +217,8 @@ export class EstablishmentsService {
           _id: establishmentId,
         })
         .populate([
-          { path: 'owner', model: 'User' },
-          { path: 'employees', model: 'User' },
+          { path: 'owner', model: 'User', select: '-password' },
+          { path: 'employees', model: 'User', select: '-password' },
         ]);
 
       if (!establishmentToDelete) {

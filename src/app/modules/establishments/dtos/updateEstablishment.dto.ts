@@ -18,7 +18,7 @@ export class UpdateEstablishmentDto {
   address: string;
 
   @ApiPropertyOptional({ type: [Number] })
-  location: number[];
+  coordinates: number[];
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
