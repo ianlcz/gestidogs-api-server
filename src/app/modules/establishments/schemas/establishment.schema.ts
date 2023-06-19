@@ -30,10 +30,9 @@ export class Establishment {
 
   @Prop({
     type: [Number],
-    required: true,
   })
-  @ApiProperty({ type: [Number], required: true })
-  coordinates: number[];
+  @ApiPropertyOptional({ type: [Number] })
+  coordinates?: number[];
 
   @Prop({ type: String })
   @ApiPropertyOptional({ type: String })
