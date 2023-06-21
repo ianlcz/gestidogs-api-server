@@ -106,14 +106,83 @@ export class SessionsService {
     }
   }
 
-  async findAll(): Promise<Session[]> {
-    return await this.sessionModel.find().populate([
-      {
-        path: 'activity',
-        model: 'Activity',
-      },
-      { path: 'educator', model: 'User', select: '-password' },
-    ]);
+  async find(
+    date?: Date,
+    reserved?: boolean,
+    educatorId?: string,
+    activityId?: string,
+    establishmentId?: string,
+  ): Promise<Session[] | { today: Session[]; next: Session[] }> {
+    if (educatorId && date) {
+      const tomorrow = new Date();
+      tomorrow.setDate(date.getDate() + 1);
+
+      const todaySessions: Session[] = await this.sessionModel
+        .find({
+          educator: educatorId,
+          $and: [
+            {
+              beginDate: {
+                $gte: new Date(
+                  date.getFullYear(),
+                  date.getMonth(),
+                  date.getDate(),
+                ),
+              },
+            },
+            {
+              endDate: {
+                $lt: new Date(
+                  date.getFullYear(),
+                  date.getMonth(),
+                  date.getDate() + 1,
+                ),
+              },
+            },
+          ],
+        })
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+          },
+          { path: 'educator', model: 'User', select: '-password' },
+        ]);
+
+      const nextSessions: Session[] = await this.sessionModel
+        .find({
+          educator: educatorId,
+          beginDate: { $gte: tomorrow },
+          endDate: { $lt: new Date(Date.now() + 31536000000) },
+        })
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+          },
+          { path: 'educator', model: 'User', select: '-password' },
+        ]);
+
+      return { today: todaySessions, next: nextSessions };
+    } else {
+      const sessions: Session[] = await this.sessionModel
+        .find({
+          ...(date && { date }),
+          ...(reserved && { reserved }),
+          ...(educatorId && { educator: educatorId }),
+          ...(activityId && { activity: activityId }),
+          ...(establishmentId && { establishment: establishmentId }),
+        })
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+          },
+          { path: 'educator', model: 'User', select: '-password' },
+        ]);
+
+      return sessions;
+    }
   }
 
   async findOne(sessionId: string): Promise<Session> {
@@ -153,82 +222,6 @@ export class SessionsService {
         );
       }
     }
-  }
-
-  async findByEducator(educatorId: string): Promise<Session[]> {
-    return await this.sessionModel.find({ educator: educatorId }).populate([
-      {
-        path: 'activity',
-        model: 'Activity',
-      },
-      { path: 'educator', model: 'User', select: '-password' },
-    ]);
-  }
-
-  async findEducatorSessionsByDate(
-    educatorId: string,
-    date: Date,
-  ): Promise<{ today: Session[]; next: Session[] }> {
-    const tomorrow = new Date();
-    tomorrow.setDate(date.getDate() + 1);
-
-    const todaySessions: Session[] = await this.sessionModel
-      .find({
-        educator: educatorId,
-        $and: [
-          {
-            beginDate: {
-              $gte: new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-              ),
-            },
-          },
-          {
-            endDate: {
-              $lt: new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate() + 1,
-              ),
-            },
-          },
-        ],
-      })
-      .populate([
-        {
-          path: 'activity',
-          model: 'Activity',
-        },
-        { path: 'educator', model: 'User', select: '-password' },
-      ]);
-
-    const nextSessions: Session[] = await this.sessionModel
-      .find({
-        educator: educatorId,
-        beginDate: { $gte: tomorrow },
-        endDate: { $lt: new Date(Date.now() + 31536000000) },
-      })
-      .populate([
-        {
-          path: 'activity',
-          model: 'Activity',
-        },
-        { path: 'educator', model: 'User', select: '-password' },
-      ]);
-
-    return { today: todaySessions, next: nextSessions };
-  }
-
-  async findByActivity(activityId: string): Promise<Session[]> {
-    return await this.sessionModel.find({ activity: activityId }).populate([
-      {
-        path: 'activity',
-        model: 'Activity',
-      },
-      { path: 'educator', model: 'User', select: '-password' },
-    ]);
   }
 
   async findByEstablishment(
