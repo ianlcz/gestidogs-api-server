@@ -167,7 +167,9 @@ export class SessionsService {
     } else {
       const sessions: Session[] = await this.sessionModel
         .find({
-          ...(date && { date }),
+          ...(date &&
+            date instanceof Date &&
+            date.getTime() && { beginDate: { $gte: date } }),
           ...(reserved && { reserved }),
           ...(educatorId && { educator: educatorId }),
           ...(activityId && { activity: activityId }),
