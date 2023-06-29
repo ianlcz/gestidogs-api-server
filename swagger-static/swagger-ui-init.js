@@ -210,6 +210,14 @@ window.onload = function() {
                 "format": "date-time",
                 "type": "string"
               }
+            },
+            {
+              "name": "establishmentId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
             }
           ],
           "responses": {
@@ -3307,7 +3315,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-06-29T16:54:58.434Z"
+              "default": "2023-06-29T18:55:32.989Z"
             },
             "__v": {
               "type": "number"
