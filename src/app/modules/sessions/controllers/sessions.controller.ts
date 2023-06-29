@@ -169,12 +169,25 @@ export class SessionsController {
       'Unauthorized because only **Administrators**, **Managers** and **Educators** can write a session report',
   })
   @ApiBadRequestResponse()
+  @ApiQuery({
+    name: 'date',
+    type: Date,
+    required: true,
+  })
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: false,
+  })
   @Get('daily')
-  async findDaily(@Query('date') date: Date): Promise<{
+  async findDaily(
+    @Query('date') date: Date,
+    @Query('establishmentId') establishmentId?: string,
+  ): Promise<{
     today: Session[];
     next: Session[];
   }> {
-    return await this.sessionsService.findDaily(date);
+    return await this.sessionsService.findDaily(date, establishmentId);
   }
 
   @UseGuards(AccessTokenGuard, RolesGuard)

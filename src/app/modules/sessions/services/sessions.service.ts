@@ -139,29 +139,32 @@ export class SessionsService {
     return sessions;
   }
 
-  async findDaily(date: Date): Promise<{ today: Session[]; next: Session[] }> {
-    const tomorrow = new Date();
-    tomorrow.setDate(date.getDate() + 1);
+  async findDaily(
+    date: Date,
+    establishmentId?: string,
+  ): Promise<{ today: Session[]; next: Session[] }> {
+    const tomorrow = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1,
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds(),
+    );
 
     const todaySessions: Session[] = await this.sessionModel
       .find({
+        ...(establishmentId && { establishment: establishmentId }),
         $and: [
           {
             beginDate: {
-              $gte: new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-              ),
+              $gte: new Date(date),
             },
           },
           {
             endDate: {
-              $lt: new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate() + 1,
-              ),
+              $lt: new Date(tomorrow),
             },
           },
         ],
@@ -177,8 +180,8 @@ export class SessionsService {
 
     const nextSessions: Session[] = await this.sessionModel
       .find({
+        ...(establishmentId && { establishment: establishmentId }),
         beginDate: { $gte: tomorrow },
-        endDate: { $lt: new Date(Date.now() + 31536000000) },
       })
       .populate([
         {
