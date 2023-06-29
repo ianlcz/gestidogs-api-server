@@ -96,6 +96,11 @@ export class SessionsController {
     type: [Session],
   })
   @ApiQuery({
+    name: 'date',
+    type: Date,
+    required: false,
+  })
+  @ApiQuery({
     name: 'reserved',
     type: Boolean,
     required: false,
@@ -115,24 +120,13 @@ export class SessionsController {
     type: String,
     required: false,
   })
-  @ApiQuery({
-    name: 'beginDate',
-    type: Date,
-    required: false,
-  })
-  @ApiQuery({
-    name: 'endDate',
-    type: Date,
-    required: false,
-  })
   @Get()
   async find(
+    @Query('date') date?: Date,
     @Query('reserved') reserved?: boolean,
     @Query('educatorId') educatorId?: string,
     @Query('activityId') activityId?: string,
     @Query('establishmentId') establishmentId?: string,
-    @Query('beginDate') beginDate?: Date,
-    @Query('endDate') endDate?: Date,
   ): Promise<
     | Session[]
     | {
@@ -141,10 +135,10 @@ export class SessionsController {
       }
   > {
     if (establishmentId) {
-      if (reserved && beginDate instanceof Date && isFinite(beginDate.getTime())) {
+      if (reserved && date instanceof Date && isFinite(date.getTime())) {
         return await this.sessionsService.findByEstablishment(
           establishmentId,
-          beginDate,
+          date,
           true,
         );
       } else {
@@ -152,12 +146,11 @@ export class SessionsController {
       }
     } else {
       return await this.sessionsService.find(
+        date,
         reserved,
         educatorId,
         activityId,
         establishmentId,
-        beginDate,
-        endDate,
       );
     }
   }
