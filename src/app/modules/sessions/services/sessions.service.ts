@@ -107,15 +107,16 @@ export class SessionsService {
   }
 
   async find(
-    date?: Date,
     reserved?: boolean,
     educatorId?: string,
     activityId?: string,
     establishmentId?: string,
+    beginDate?: Date,
+    endDate?: Date,
   ): Promise<Session[] | { today: Session[]; next: Session[] }> {
-    if (educatorId && date) {
+    if (educatorId && beginDate) {
       const tomorrow = new Date();
-      tomorrow.setDate(date.getDate() + 1);
+      tomorrow.setDate(beginDate.getDate() + 1);
 
       const todaySessions: Session[] = await this.sessionModel
         .find({
@@ -124,18 +125,18 @@ export class SessionsService {
             {
               beginDate: {
                 $gte: new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate(),
+                  beginDate.getFullYear(),
+                  beginDate.getMonth(),
+                  beginDate.getDate(),
                 ),
               },
             },
             {
               endDate: {
                 $lt: new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate() + 1,
+                  beginDate.getFullYear(),
+                  beginDate.getMonth(),
+                  beginDate.getDate() + 1,
                 ),
               },
             },
@@ -147,6 +148,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
 
       const nextSessions: Session[] = await this.sessionModel
@@ -161,19 +163,19 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
 
       return { today: todaySessions, next: nextSessions };
     } else {
       const sessions: Session[] = await this.sessionModel
         .find({
-          ...(date &&
-            date instanceof Date &&
-            date.getTime() && { beginDate: { $gte: date } }),
           ...(reserved && { reserved }),
           ...(educatorId && { educator: educatorId }),
           ...(activityId && { activity: activityId }),
           ...(establishmentId && { establishment: establishmentId }),
+          ...(beginDate && { beginDate }),
+          ...(endDate && {endDate}),
         })
         .populate([
           {
@@ -181,6 +183,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
 
       return sessions;
@@ -197,6 +200,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
 
       if (!session) {
@@ -274,6 +278,7 @@ export class SessionsService {
                 model: 'Activity',
               },
               { path: 'educator', model: 'User', select: '-password' },
+              { path: 'establishment', model: 'Establishment' },
             ])
         : await this.sessionModel
             .find({ establishment: establishmentId })
@@ -283,6 +288,7 @@ export class SessionsService {
                 model: 'Activity',
               },
               { path: 'educator', model: 'User', select: '-password' },
+              { path: 'establishment', model: 'Establishment' },
             ]);
     }
   }
@@ -343,6 +349,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -378,6 +385,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
 
       if (!sessionToDelete) {
@@ -419,6 +427,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -452,6 +461,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
