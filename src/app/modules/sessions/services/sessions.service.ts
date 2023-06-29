@@ -107,84 +107,89 @@ export class SessionsService {
   }
 
   async find(
-    date?: Date,
     reserved?: boolean,
     educatorId?: string,
     activityId?: string,
     establishmentId?: string,
-  ): Promise<Session[] | { today: Session[]; next: Session[] }> {
-    if (educatorId && date) {
-      const tomorrow = new Date();
-      tomorrow.setDate(date.getDate() + 1);
+    begin?: Date,
+    end?: Date,
+  ): Promise<Session[]> {
+    const sessions: Session[] = await this.sessionModel
+      .find({
+        ...(reserved && { reserved }),
+        ...(educatorId && { educator: educatorId }),
+        ...(activityId && { activity: activityId }),
+        ...(establishmentId && { establishment: establishmentId }),
+        ...(begin &&
+          begin instanceof Date &&
+          begin.getTime() && { beginDate: { $eq: begin } }),
+        ...(end &&
+          end instanceof Date &&
+          end.getTime() && { endDate: { $eq: end } }),
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+        },
+        { path: 'educator', model: 'User', select: '-password' },
+        { path: 'establishment', model: 'Establishment' },
+      ]);
 
-      const todaySessions: Session[] = await this.sessionModel
-        .find({
-          educator: educatorId,
-          $and: [
-            {
-              beginDate: {
-                $gte: new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate(),
-                ),
-              },
+    return sessions;
+  }
+
+  async findDaily(date: Date): Promise<{ today: Session[]; next: Session[] }> {
+    const tomorrow = new Date();
+    tomorrow.setDate(date.getDate() + 1);
+
+    const todaySessions: Session[] = await this.sessionModel
+      .find({
+        $and: [
+          {
+            beginDate: {
+              $gte: new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+              ),
             },
-            {
-              endDate: {
-                $lt: new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate() + 1,
-                ),
-              },
+          },
+          {
+            endDate: {
+              $lt: new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate() + 1,
+              ),
             },
-          ],
-        })
-        .populate([
-          {
-            path: 'activity',
-            model: 'Activity',
           },
-          { path: 'educator', model: 'User', select: '-password' },
-        ]);
+        ],
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+        },
+        { path: 'educator', model: 'User', select: '-password' },
+        { path: 'establishment', model: 'Establishment' },
+      ]);
 
-      const nextSessions: Session[] = await this.sessionModel
-        .find({
-          educator: educatorId,
-          beginDate: { $gte: tomorrow },
-          endDate: { $lt: new Date(Date.now() + 31536000000) },
-        })
-        .populate([
-          {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User', select: '-password' },
-        ]);
+    const nextSessions: Session[] = await this.sessionModel
+      .find({
+        beginDate: { $gte: tomorrow },
+        endDate: { $lt: new Date(Date.now() + 31536000000) },
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+        },
+        { path: 'educator', model: 'User', select: '-password' },
+        { path: 'establishment', model: 'Establishment' },
+      ]);
 
-      return { today: todaySessions, next: nextSessions };
-    } else {
-      const sessions: Session[] = await this.sessionModel
-        .find({
-          ...(date &&
-            date instanceof Date &&
-            date.getTime() && { beginDate: { $gte: date } }),
-          ...(reserved && { reserved }),
-          ...(educatorId && { educator: educatorId }),
-          ...(activityId && { activity: activityId }),
-          ...(establishmentId && { establishment: establishmentId }),
-        })
-        .populate([
-          {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User', select: '-password' },
-        ]);
-
-      return sessions;
-    }
+    return { today: todaySessions, next: nextSessions };
   }
 
   async findOne(sessionId: string): Promise<Session> {
@@ -197,6 +202,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
 
       if (!session) {
@@ -274,6 +280,7 @@ export class SessionsService {
                 model: 'Activity',
               },
               { path: 'educator', model: 'User', select: '-password' },
+              { path: 'establishment', model: 'Establishment' },
             ])
         : await this.sessionModel
             .find({ establishment: establishmentId })
@@ -283,6 +290,7 @@ export class SessionsService {
                 model: 'Activity',
               },
               { path: 'educator', model: 'User', select: '-password' },
+              { path: 'establishment', model: 'Establishment' },
             ]);
     }
   }
@@ -343,6 +351,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -378,6 +387,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
 
       if (!sessionToDelete) {
@@ -419,6 +429,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -452,6 +463,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
     } catch (error) {
       if (error instanceof UnauthorizedException) {

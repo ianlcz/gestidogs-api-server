@@ -70,15 +70,6 @@ window.onload = function() {
           "summary": "Find sessions",
           "parameters": [
             {
-              "name": "date",
-              "required": false,
-              "in": "query",
-              "schema": {
-                "format": "date-time",
-                "type": "string"
-              }
-            },
-            {
               "name": "reserved",
               "required": false,
               "in": "query",
@@ -107,6 +98,24 @@ window.onload = function() {
               "required": false,
               "in": "query",
               "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "begin",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            {
+              "name": "end",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
                 "type": "string"
               }
             }
@@ -176,6 +185,42 @@ window.onload = function() {
             },
             "422": {
               "description": "Unprocessable Entity"
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/v0/sessions/daily": {
+        "get": {
+          "operationId": "SessionsController_findDaily",
+          "summary": "Find a daily sessions",
+          "parameters": [
+            {
+              "name": "date",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found daily sessions"
+            },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators**, **Managers** and **Educators** can write a session report"
             }
           },
           "tags": [
@@ -3262,7 +3307,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-06-27T18:49:01.024Z"
+              "default": "2023-06-29T16:54:58.434Z"
             },
             "__v": {
               "type": "number"
