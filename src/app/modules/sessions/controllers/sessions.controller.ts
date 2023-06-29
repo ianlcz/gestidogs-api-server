@@ -156,24 +156,6 @@ export class SessionsController {
     }
   }
 
-  @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Find a session' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'The found session',
-    type: Session,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Session not found',
-  })
-  @ApiUnauthorizedResponse()
-  @ApiBadRequestResponse()
-  @Get(':sessionId')
-  async findOne(@Param('sessionId') sessionId: string): Promise<Session> {
-    return await this.sessionsService.findOne(sessionId);
-  }
-
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER, RoleType.EDUCATOR)
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find a daily sessions' })
@@ -193,6 +175,24 @@ export class SessionsController {
     next: Session[];
   }> {
     return await this.sessionsService.findDaily(date);
+  }
+
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @ApiOperation({ summary: 'Find a session' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The found session',
+    type: Session,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Session not found',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
+  @Get(':sessionId')
+  async findOne(@Param('sessionId') sessionId: string): Promise<Session> {
+    return await this.sessionsService.findOne(sessionId);
   }
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER, RoleType.EDUCATOR)
