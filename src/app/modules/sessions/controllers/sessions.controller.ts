@@ -116,12 +116,12 @@ export class SessionsController {
     required: false,
   })
   @ApiQuery({
-    name: 'beginDate',
+    name: 'begin',
     type: Date,
     required: false,
   })
   @ApiQuery({
-    name: 'endDate',
+    name: 'end',
     type: Date,
     required: false,
   })
@@ -131,20 +131,14 @@ export class SessionsController {
     @Query('educatorId') educatorId?: string,
     @Query('activityId') activityId?: string,
     @Query('establishmentId') establishmentId?: string,
-    @Query('beginDate') beginDate?: Date,
-    @Query('endDate') endDate?: Date,
-  ): Promise<
-    | Session[]
-    | {
-        today: Session[];
-        next: Session[];
-      }
-  > {
+    @Query('begin') begin?: Date,
+    @Query('end') end?: Date,
+  ): Promise<Session[]> {
     if (establishmentId) {
-      if (reserved && beginDate instanceof Date && isFinite(beginDate.getTime())) {
+      if (reserved && begin instanceof Date && isFinite(begin.getTime())) {
         return await this.sessionsService.findByEstablishment(
           establishmentId,
-          beginDate,
+          begin,
           true,
         );
       } else {
@@ -156,8 +150,8 @@ export class SessionsController {
         educatorId,
         activityId,
         establishmentId,
-        beginDate,
-        endDate,
+        begin,
+        end,
       );
     }
   }
@@ -178,6 +172,27 @@ export class SessionsController {
   @Get(':sessionId')
   async findOne(@Param('sessionId') sessionId: string): Promise<Session> {
     return await this.sessionsService.findOne(sessionId);
+  }
+
+  @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER, RoleType.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @ApiOperation({ summary: 'Find a daily sessions' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The found daily sessions',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators**, **Managers** and **Educators** can write a session report',
+  })
+  @ApiBadRequestResponse()
+  @Get('daily')
+  async findDaily(@Query('date') date: Date): Promise<{
+    today: Session[];
+    next: Session[];
+  }> {
+    return await this.sessionsService.findDaily(date);
   }
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER, RoleType.EDUCATOR)

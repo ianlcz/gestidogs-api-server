@@ -111,83 +111,32 @@ export class SessionsService {
     educatorId?: string,
     activityId?: string,
     establishmentId?: string,
-    beginDate?: Date,
-    endDate?: Date,
-  ): Promise<Session[] | { today: Session[]; next: Session[] }> {
-    if (educatorId && beginDate) {
-      const tomorrow = new Date();
-      tomorrow.setDate(beginDate.getDate() + 1);
+    begin?: Date,
+    end?: Date,
+  ): Promise<Session[]> {
+    const sessions: Session[] = await this.sessionModel
+      .find({
+        ...(reserved && { reserved }),
+        ...(educatorId && { educator: educatorId }),
+        ...(activityId && { activity: activityId }),
+        ...(establishmentId && { establishment: establishmentId }),
+        ...(begin &&
+          begin instanceof Date &&
+          begin.getTime() && { beginDate: { $eq: begin } }),
+        ...(end &&
+          end instanceof Date &&
+          end.getTime() && { endDate: { $eq: end } }),
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+        },
+        { path: 'educator', model: 'User', select: '-password' },
+        { path: 'establishment', model: 'Establishment' },
+      ]);
 
-      const todaySessions: Session[] = await this.sessionModel
-        .find({
-          educator: educatorId,
-          $and: [
-            {
-              beginDate: {
-                $gte: new Date(
-                  beginDate.getFullYear(),
-                  beginDate.getMonth(),
-                  beginDate.getDate(),
-                ),
-              },
-            },
-            {
-              endDate: {
-                $lt: new Date(
-                  beginDate.getFullYear(),
-                  beginDate.getMonth(),
-                  beginDate.getDate() + 1,
-                ),
-              },
-            },
-          ],
-        })
-        .populate([
-          {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User', select: '-password' },
-          { path: 'establishment', model: 'Establishment' },
-        ]);
-
-      const nextSessions: Session[] = await this.sessionModel
-        .find({
-          educator: educatorId,
-          beginDate: { $gte: tomorrow },
-          endDate: { $lt: new Date(Date.now() + 31536000000) },
-        })
-        .populate([
-          {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User', select: '-password' },
-          { path: 'establishment', model: 'Establishment' },
-        ]);
-
-      return { today: todaySessions, next: nextSessions };
-    } else {
-      const sessions: Session[] = await this.sessionModel
-        .find({
-          ...(reserved && { reserved }),
-          ...(educatorId && { educator: educatorId }),
-          ...(activityId && { activity: activityId }),
-          ...(establishmentId && { establishment: establishmentId }),
-          ...(beginDate && { beginDate }),
-          ...(endDate && {endDate}),
-        })
-        .populate([
-          {
-            path: 'activity',
-            model: 'Activity',
-          },
-          { path: 'educator', model: 'User', select: '-password' },
-          { path: 'establishment', model: 'Establishment' },
-        ]);
-
-      return sessions;
-    }
+    return sessions;
   }
 
   async findOne(sessionId: string): Promise<Session> {
@@ -291,6 +240,59 @@ export class SessionsService {
               { path: 'establishment', model: 'Establishment' },
             ]);
     }
+  }
+
+  async findDaily(date: Date): Promise<{ today: Session[]; next: Session[] }> {
+    const tomorrow = new Date();
+    tomorrow.setDate(date.getDate() + 1);
+
+    const todaySessions: Session[] = await this.sessionModel
+      .find({
+        $and: [
+          {
+            dateDate: {
+              $gte: new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+              ),
+            },
+          },
+          {
+            endDate: {
+              $lt: new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate() + 1,
+              ),
+            },
+          },
+        ],
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+        },
+        { path: 'educator', model: 'User', select: '-password' },
+        { path: 'establishment', model: 'Establishment' },
+      ]);
+
+    const nextSessions: Session[] = await this.sessionModel
+      .find({
+        beginDate: { $gte: tomorrow },
+        endDate: { $lt: new Date(Date.now() + 31536000000) },
+      })
+      .populate([
+        {
+          path: 'activity',
+          model: 'Activity',
+        },
+        { path: 'educator', model: 'User', select: '-password' },
+        { path: 'establishment', model: 'Establishment' },
+      ]);
+
+    return { today: todaySessions, next: nextSessions };
   }
 
   async findPlacesLeft(sessionId: string): Promise<number> {
