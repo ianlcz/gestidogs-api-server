@@ -59,6 +59,7 @@ export class SessionsService {
           model: 'Activity',
         },
         { path: 'educator', model: 'User', select: '-password' },
+        { path: 'establishment', model: 'Establishment' },
       ]);
     } catch (error) {
       throw new HttpException(
@@ -91,6 +92,7 @@ export class SessionsService {
             model: 'Activity',
           },
           { path: 'educator', model: 'User', select: '-password' },
+          { path: 'establishment', model: 'Establishment' },
         ]);
     } catch (error) {
       throw new HttpException(
