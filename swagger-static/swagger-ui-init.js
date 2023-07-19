@@ -827,6 +827,54 @@ window.onload = function() {
           ]
         }
       },
+      "/v0/users/establishments/{establishmentId}": {
+        "get": {
+          "operationId": "UsersController_findClientsByEstablishment",
+          "summary": "Find clients by establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Clients successfully found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": ""
+            },
+            "404": {
+              "description": "Clients not found"
+            }
+          },
+          "tags": [
+            "users"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/v0/establishments": {
         "post": {
           "operationId": "EstablishmentsController_create",
@@ -953,6 +1001,62 @@ window.onload = function() {
             },
             "404": {
               "description": "Employees of establishment not found"
+            }
+          },
+          "tags": [
+            "establishments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/v0/establishments/{establishmentId}/newClient": {
+        "post": {
+          "operationId": "EstablishmentsController_addClients",
+          "summary": "Add a client in establishment",
+          "parameters": [
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "clientId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Establishment client",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can add a new employee"
+            },
+            "404": {
+              "description": "Client of establishment not found"
             }
           },
           "tags": [
@@ -2491,6 +2595,12 @@ window.onload = function() {
                 "$ref": "#/components/schemas/User"
               }
             },
+            "clients": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
             "schedules": {
               "type": "array",
               "items": {
@@ -3297,7 +3407,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-07-18T14:00:43.407Z"
+              "default": "2023-07-19T16:09:41.631Z"
             },
             "__v": {
               "type": "number"
