@@ -103,7 +103,7 @@ export class EstablishmentsController {
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description:
-      'Unauthorized because only **Administrators** and **Managers** can add a new employee',
+      'Unauthorized because only **Administrators** and **Managers** can add a new client',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
