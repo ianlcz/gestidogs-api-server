@@ -31,6 +31,8 @@ export class UpdateUserDto {
   @ApiPropertyOptional()
   avatarUrl?: string;
 
+  @ApiPropertyOptional({ type: String })
   stripeId?: string;
+
   activities?: Activity[];
 }

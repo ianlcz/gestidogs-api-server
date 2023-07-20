@@ -51,6 +51,9 @@ export class NewEmployeeDto {
   @ApiPropertyOptional({ type: Date })
   birthDate?: Date;
 
+  @ApiPropertyOptional({ type: String })
+  stripeId?: string;
+
   activities?: Activity[];
   dogs?: Dog[];
   registeredAt: Date;
