@@ -121,31 +121,39 @@ export class EstablishmentsService {
 
   async addClient(establishmentId: string, clientId: string): Promise<User[]> {
     try {
-      // Get establishment employees
-      const { clients }: { clients: User[] } =
-        await this.establishmentModel.findById(establishmentId);
+      const establishment: Establishment =
+        await this.establishmentModel.findOne({
+          _id: establishmentId,
+        });
+      const client = await this.usersService.findOne(clientId);
 
-      if (clients && clients.length === 0) {
-        throw new NotFoundException(
-          `Clients of establishment '${establishmentId}' not found`,
+      establishment.clients.push(client);
+
+      establishment.clients.map(async (client) => {
+        // Ensure that client.establishments is an array
+        const clientEstablishments = Array.isArray(client.establishments)
+          ? client.establishments
+          : [client.establishments];
+
+        const newEstablishments = [
+          ...new Set([...clientEstablishments, establishment]),
+        ];
+        return await this.usersService.updateOne(clientId, {
+          establishments: newEstablishments,
+        });
+      }),
+        await this.establishmentModel.findOneAndUpdate(
+          { _id: establishmentId },
+          {
+            $set: { clients: [...new Set(establishment.clients)] },
+          },
+          { returnOriginal: false },
         );
-      }
-
-      const establishment = await this.establishmentModel.findOneAndUpdate(
-        { _id: establishmentId },
-        {
-          $set: { clients: [...clientId] },
-        },
-        { returnOriginal: false },
-      );
 
       return establishment.clients;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
-      } else if (error instanceof NotFoundException) {
-        console.log(`Clients of establishment '${establishmentId}' not found`);
-        throw error;
       } else {
         console.error('An error occurred:', error);
         throw new HttpException(
@@ -162,13 +170,15 @@ export class EstablishmentsService {
     }
   }
 
-  async find(ownerId?: string): Promise<Establishment[]> {
-    return await this.establishmentModel
-      .find({ ...(ownerId && { owner: ownerId }) })
-      .populate([
-        { path: 'owner', model: 'User', select: '-password' },
-        { path: 'employees', model: 'User', select: '-password' },
-      ]);
+  async find(ownerId?: string, clientId?: string): Promise<Establishment[]> {
+    return clientId
+      ? (await this.usersService.findOne(clientId)).establishments
+      : await this.establishmentModel
+          .find({ ...(ownerId && { owner: ownerId }) })
+          .populate([
+            { path: 'owner', model: 'User', select: '-password' },
+            { path: 'employees', model: 'User', select: '-password' },
+          ]);
   }
 
   async findOne(establishmentId: string): Promise<Establishment> {

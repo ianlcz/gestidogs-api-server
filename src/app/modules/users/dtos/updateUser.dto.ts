@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsOptional, IsPhoneNumber, MinLength } from 'class-validator';
 
 import { Activity } from '../../activities/schemas/activity.schema';
+import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 export class UpdateUserDto {
   @ApiProperty()
@@ -34,5 +35,6 @@ export class UpdateUserDto {
   @ApiPropertyOptional({ type: String })
   stripeId?: string;
 
+  establishments?: Establishment[];
   activities?: Activity[];
 }

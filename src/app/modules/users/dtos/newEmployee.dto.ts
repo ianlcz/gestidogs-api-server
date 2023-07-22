@@ -12,6 +12,7 @@ import { RoleType } from '../../../common/enums/role.enum';
 
 import { Activity } from '../../activities/schemas/activity.schema';
 import { Dog } from '../../dogs/schemas/dog.schema';
+import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 export class NewEmployeeDto {
   @ApiProperty({ type: String, required: true })
@@ -54,6 +55,7 @@ export class NewEmployeeDto {
   @ApiPropertyOptional({ type: String })
   stripeId?: string;
 
+  establishments?: Establishment[];
   activities?: Activity[];
   dogs?: Dog[];
   registeredAt: Date;

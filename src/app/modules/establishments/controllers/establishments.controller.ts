@@ -113,7 +113,7 @@ export class EstablishmentsController {
   @Post(':establishmentId/newClient')
   async addClients(
     @Param('establishmentId') establishmentId: string,
-    @Param('clientId') clientId: string,
+    @Query('clientId') clientId: string,
   ): Promise<User[]> {
     return await this.establishmentsService.addClient(
       establishmentId,
@@ -133,9 +133,17 @@ export class EstablishmentsController {
     type: String,
     required: false,
   })
+  @ApiQuery({
+    name: 'clientId',
+    type: String,
+    required: false,
+  })
   @Get()
-  async find(@Query('ownerId') ownerId?: string): Promise<Establishment[]> {
-    return await this.establishmentsService.find(ownerId);
+  async find(
+    @Query('ownerId') ownerId?: string,
+    @Query('clientId') clientId?: string,
+  ): Promise<Establishment[]> {
+    return await this.establishmentsService.find(ownerId, clientId);
   }
 
   @UseGuards(AccessTokenGuard, RolesGuard)
