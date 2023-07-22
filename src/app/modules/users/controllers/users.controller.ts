@@ -145,6 +145,27 @@ export class UsersController {
     return await this.usersService.findOne(userId);
   }
 
+  @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER, RoleType.EDUCATOR)
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @ApiOperation({ summary: 'Find clients by establishment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Clients successfully found',
+    type: [User],
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Clients not found',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
+  @Get('establishments/:establishmentId')
+  async findClientsByEstablishment(
+    @Param('establishmentId') establishmentId: string,
+  ): Promise<User[]> {
+    return await this.usersService.findClientsByEstablishment(establishmentId);
+  }
+
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user informations' })
   @ApiResponse({

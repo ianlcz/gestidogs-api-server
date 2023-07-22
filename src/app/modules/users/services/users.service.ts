@@ -220,6 +220,13 @@ export class UsersService {
     }
   }
 
+  async findClientsByEstablishment(establishmentId: string): Promise<User[]> {
+    const { clients }: { clients: User[] } =
+      await this.establishmentsService.findOne(establishmentId);
+
+    return clients;
+  }
+
   async updateOne(userId: string, userChanges: UpdateUserDto): Promise<User> {
     try {
       // Hashing new user password

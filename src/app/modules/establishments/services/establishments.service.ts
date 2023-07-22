@@ -119,6 +119,49 @@ export class EstablishmentsService {
     }
   }
 
+  async addClient(establishmentId: string, clientId: string): Promise<User[]> {
+    try {
+      // Get establishment employees
+      const { clients }: { clients: User[] } =
+        await this.establishmentModel.findById(establishmentId);
+
+      if (clients && clients.length === 0) {
+        throw new NotFoundException(
+          `Clients of establishment '${establishmentId}' not found`,
+        );
+      }
+
+      const establishment = await this.establishmentModel.findOneAndUpdate(
+        { _id: establishmentId },
+        {
+          $set: { clients: [...clientId] },
+        },
+        { returnOriginal: false },
+      );
+
+      return establishment.clients;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof NotFoundException) {
+        console.log(`Clients of establishment '${establishmentId}' not found`);
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
+    }
+  }
+
   async find(ownerId?: string): Promise<Establishment[]> {
     return await this.establishmentModel
       .find({ ...(ownerId && { owner: ownerId }) })

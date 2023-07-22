@@ -92,6 +92,35 @@ export class EstablishmentsController {
     );
   }
 
+  @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @ApiOperation({ summary: 'Add a client in establishment' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Establishment client',
+    type: [User],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can add a new client',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Client of establishment not found',
+  })
+  @ApiBadRequestResponse()
+  @Post(':establishmentId/newClient')
+  async addClients(
+    @Param('establishmentId') establishmentId: string,
+    @Param('clientId') clientId: string,
+  ): Promise<User[]> {
+    return await this.establishmentsService.addClient(
+      establishmentId,
+      clientId,
+    );
+  }
+
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find establishments' })
   @ApiResponse({

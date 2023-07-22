@@ -40,6 +40,10 @@ export class Establishment {
   @ApiPropertyOptional({ type: () => [User] })
   employees: User[];
 
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+  @ApiPropertyOptional({ type: () => [User] })
+  clients: User[];
+
   @Prop({
     type: [[{ startTime: String, endTime: String }]],
     default: [],
