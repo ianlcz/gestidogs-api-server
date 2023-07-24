@@ -928,6 +928,14 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
+            },
+            {
+              "name": "clientId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
             }
           ],
           "responses": {
@@ -1029,7 +1037,7 @@ window.onload = function() {
             {
               "name": "clientId",
               "required": true,
-              "in": "path",
+              "in": "query",
               "schema": {
                 "type": "string"
               }
@@ -1053,7 +1061,7 @@ window.onload = function() {
               "description": ""
             },
             "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can add a new employee"
+              "description": "Unauthorized because only **Administrators** and **Managers** can add a new client"
             },
             "404": {
               "description": "Client of establishment not found"
@@ -2710,6 +2718,13 @@ window.onload = function() {
               "format": "date-time",
               "type": "string"
             },
+            "establishments": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Establishment"
+              }
+            },
             "activities": {
               "default": [],
               "type": "array",
@@ -2879,6 +2894,9 @@ window.onload = function() {
             "birthDate": {
               "format": "date-time",
               "type": "string"
+            },
+            "stripeId": {
+              "type": "string"
             }
           },
           "required": [
@@ -2923,6 +2941,9 @@ window.onload = function() {
               "type": "string"
             },
             "avatarUrl": {
+              "type": "string"
+            },
+            "stripeId": {
               "type": "string"
             }
           },
@@ -3012,6 +3033,9 @@ window.onload = function() {
             },
             "birthDate": {
               "format": "date-time",
+              "type": "string"
+            },
+            "stripeId": {
               "type": "string"
             }
           },
@@ -3407,7 +3431,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-07-19T16:09:41.631Z"
+              "default": "2023-07-22T11:33:58.869Z"
             },
             "__v": {
               "type": "number"

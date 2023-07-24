@@ -229,8 +229,10 @@ export class UsersService {
 
   async updateOne(userId: string, userChanges: UpdateUserDto): Promise<User> {
     try {
-      // Hashing new user password
-      userChanges.password = bcrypt.hashSync(userChanges.password, 12);
+      if (userChanges.password) {
+        // Hashing new user password
+        userChanges.password = bcrypt.hashSync(userChanges.password, 12);
+      }
 
       const modifyUser: User = await this.userModel
         .findOneAndUpdate(
