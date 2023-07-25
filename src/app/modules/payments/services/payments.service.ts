@@ -70,6 +70,15 @@ export class PaymentsService {
     });
   }
 
+  async getClientSecret({ amount, currency }: PaymentDto) {
+    const paymentIntent = await this.stripe.paymentIntents.create({
+      amount: amount * 100, // Default amount in cents
+      currency,
+    });
+
+    return paymentIntent.client_secret;
+  }
+
   async findPaymentMethodsByStripeId(
     stripeId: string,
   ): Promise<Stripe.Response<Stripe.ApiList<Stripe.PaymentMethod>>> {

@@ -86,6 +86,16 @@ export class PaymentsController {
     );
   }
 
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Get client secret of a payment' })
+  @ApiOkResponse({
+    description: 'Client secret of a payment',
+  })
+  @Get('client-secret')
+  async getClientSecret(@Body() paymentDto: PaymentDto) {
+    return await this.getClientSecret(paymentDto);
+  }
+
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
   @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: "Find all user's payment methods" })
