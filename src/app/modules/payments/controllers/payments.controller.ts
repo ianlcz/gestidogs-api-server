@@ -91,7 +91,7 @@ export class PaymentsController {
   @ApiOkResponse({
     description: 'Client secret of a payment',
   })
-  @Get('client-secret')
+  @Post('client-secret')
   async getClientSecret(@Body() paymentDto: PaymentDto) {
     return await this.getClientSecret(paymentDto);
   }
