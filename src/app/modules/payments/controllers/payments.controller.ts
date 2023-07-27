@@ -93,7 +93,7 @@ export class PaymentsController {
   })
   @Post('client-secret')
   async getClientSecret(@Body() paymentDto: PaymentDto) {
-    return await this.getClientSecret(paymentDto);
+    return await this.paymentsService.getClientSecret(paymentDto);
   }
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
