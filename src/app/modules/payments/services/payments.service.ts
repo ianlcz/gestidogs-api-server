@@ -70,13 +70,16 @@ export class PaymentsService {
     });
   }
 
-  async getClientSecret({ amount, currency }: PaymentDto) {
+  async getClientSecret({
+    amount,
+    currency,
+  }: PaymentDto): Promise<{ clientSecret: string }> {
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount: amount * 100, // Default amount in cents
       currency,
     });
 
-    return paymentIntent.client_secret;
+    return { clientSecret: paymentIntent.client_secret };
   }
 
   async findPaymentMethodsByStripeId(

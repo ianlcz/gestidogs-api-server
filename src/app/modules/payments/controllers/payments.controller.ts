@@ -92,7 +92,9 @@ export class PaymentsController {
     description: 'Client secret of a payment',
   })
   @Post('client-secret')
-  async getClientSecret(@Body() paymentDto: PaymentDto) {
+  async getClientSecret(
+    @Body() paymentDto: PaymentDto,
+  ): Promise<{ clientSecret: string }> {
     return await this.paymentsService.getClientSecret(paymentDto);
   }
 
