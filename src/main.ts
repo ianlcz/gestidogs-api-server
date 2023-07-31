@@ -20,6 +20,11 @@ async function bootstrap() {
     exclude: [{ path: '/', method: RequestMethod.ALL }],
   });
 
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  });
+
   const config = new DocumentBuilder()
     .setTitle('GestiDogs API Server')
     .setDescription('Backend of a dog training center management application')
