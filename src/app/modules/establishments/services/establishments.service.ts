@@ -21,6 +21,7 @@ import {
   EstablishmentDocument,
 } from '../schemas/establishment.schema';
 import { NewEmployeeDto } from '../../users/dtos/newEmployee.dto';
+import { RoleType } from 'src/app/common/enums/role.enum';
 
 @Injectable()
 export class EstablishmentsService {
@@ -119,15 +120,21 @@ export class EstablishmentsService {
     }
   }
 
-  async addClient(establishmentId: string, clientId: string): Promise<User[]> {
+  async addClient(
+    establishmentId: string,
+    newClientDto: NewEmployeeDto,
+  ): Promise<User[]> {
     try {
       const establishment: Establishment =
         await this.establishmentModel.findOne({
           _id: establishmentId,
         });
-      const client = await this.usersService.findOne(clientId);
 
-      establishment.clients.push(client);
+      newClientDto.role = RoleType.CLIENT;
+
+      const newClient = (await this.usersService.register(newClientDto)).user;
+
+      establishment.clients.push(newClient);
 
       establishment.clients.map(async (client) => {
         // Ensure that client.establishments is an array
@@ -138,7 +145,7 @@ export class EstablishmentsService {
         const newEstablishments = [
           ...new Set([...clientEstablishments, establishment]),
         ];
-        return await this.usersService.updateOne(clientId, {
+        return await this.usersService.updateOne(newClient._id.toString(), {
           establishments: newEstablishments,
         });
       }),

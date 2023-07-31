@@ -113,11 +113,11 @@ export class EstablishmentsController {
   @Post(':establishmentId/newClient')
   async addClients(
     @Param('establishmentId') establishmentId: string,
-    @Query('clientId') clientId: string,
+    @Body() newClientDto: NewEmployeeDto,
   ): Promise<User[]> {
     return await this.establishmentsService.addClient(
       establishmentId,
-      clientId,
+      newClientDto,
     );
   }
 
