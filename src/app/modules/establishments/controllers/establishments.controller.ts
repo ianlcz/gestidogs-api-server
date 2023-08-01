@@ -32,6 +32,7 @@ import { EstablishmentsService } from '../services/establishments.service';
 
 import { User } from '../../users/schemas/user.schema';
 import { NewEmployeeDto } from '../../users/dtos/newEmployee.dto';
+import { NewClientDto } from '../../users/dtos/newClient.dto';
 
 @ApiBearerAuth('BearerToken')
 @ApiTags('establishments')
@@ -113,7 +114,7 @@ export class EstablishmentsController {
   @Post(':establishmentId/newClient')
   async addClients(
     @Param('establishmentId') establishmentId: string,
-    @Body() newClientDto: NewEmployeeDto,
+    @Body() newClientDto: NewClientDto,
   ): Promise<User[]> {
     return await this.establishmentsService.addClient(
       establishmentId,

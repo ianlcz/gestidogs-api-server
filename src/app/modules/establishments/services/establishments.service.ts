@@ -22,6 +22,7 @@ import {
 } from '../schemas/establishment.schema';
 import { NewEmployeeDto } from '../../users/dtos/newEmployee.dto';
 import { RoleType } from 'src/app/common/enums/role.enum';
+import { NewClientDto } from '../../users/dtos/newClient.dto';
 
 @Injectable()
 export class EstablishmentsService {
@@ -122,7 +123,7 @@ export class EstablishmentsService {
 
   async addClient(
     establishmentId: string,
-    newClientDto: NewEmployeeDto,
+    newClientDto: NewClientDto,
   ): Promise<User[]> {
     try {
       const establishment: Establishment =
