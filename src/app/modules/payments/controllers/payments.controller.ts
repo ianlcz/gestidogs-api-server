@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   Post,
-  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -37,32 +36,21 @@ import { CardDto } from '../dtos/card.dto';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
-  @Roles(RoleType.CLIENT)
-  @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Make a payment intent' })
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Make a payment sheet for a user' })
   @ApiCreatedResponse({
-    description: 'Payment intent successfully done',
+    description: 'Payment sheet successfully done',
   })
-  @ApiUnauthorizedResponse({
-    description:
-      'Unauthorized because only **Clients** can do a payment intent',
-  })
-  @ApiQuery({
-    name: 'paymentMethodId',
-    type: String,
-    required: true,
-  })
-  @Post()
-  async createPaymentIntent(
-    @Query('paymentMethodId') paymentMethodId: string,
-    @Req() req: Request,
+  @Post(':userId')
+  async createPaymentSheet(
+    @Param('userId') userId: string,
     @Body() paymentDto: PaymentDto,
-  ): Promise<Stripe.Response<Stripe.PaymentIntent>> {
-    return await this.paymentsService.createPaymentIntent(
-      paymentMethodId,
-      req.user,
-      paymentDto,
-    );
+  ): Promise<{
+    clientSecret: string;
+    ephemeralKey: string;
+    customerId: string;
+  }> {
+    return this.paymentsService.createPaymentSheet(userId, paymentDto);
   }
 
   @Roles(RoleType.CLIENT)
@@ -84,18 +72,6 @@ export class PaymentsController {
       cardDto,
       req.user,
     );
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @ApiOperation({ summary: 'Get client secret of a payment' })
-  @ApiOkResponse({
-    description: 'Client secret of a payment',
-  })
-  @Post('client-secret')
-  async getClientSecret(
-    @Body() paymentDto: PaymentDto,
-  ): Promise<{ clientSecret: string }> {
-    return await this.paymentsService.getClientSecret(paymentDto);
   }
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
