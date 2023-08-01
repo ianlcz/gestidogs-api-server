@@ -18,6 +18,51 @@ export class PaymentsService {
     });
   }
 
+  async createPaymentSheet(
+    userId: string,
+    { amount, currency }: PaymentDto,
+  ): Promise<{
+    clientSecret: string;
+    ephemeralKey: string;
+    customerId: string;
+  }> {
+    let customer: Stripe.Response<Stripe.Customer>;
+    let user: User = await this.userModel.findById(userId);
+
+    if (user && !user.stripeId) {
+      customer = await this.stripe.customers.create({
+        name: `${user.firstname} ${user.lastname}`,
+        email: user.emailAddress,
+        phone: user?.phoneNumber,
+      });
+
+      user = await this.userModel.findOneAndUpdate(
+        { _id: userId },
+        { $set: { stripeId: customer.id } },
+        { returnOriginal: false },
+      );
+    }
+
+    const ephemeralKey = await this.stripe.ephemeralKeys.create(
+      { customer: user.stripeId },
+      { apiVersion: '2022-11-15' },
+    );
+    const paymentIntent = await this.stripe.paymentIntents.create({
+      amount: amount * 100,
+      currency,
+      customer: user.stripeId,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    return {
+      clientSecret: paymentIntent.client_secret,
+      ephemeralKey: ephemeralKey.secret,
+      customerId: user.stripeId,
+    };
+  }
+
   async createPaymentMethodCard(
     cardDto: CardDto,
     user: any,
@@ -68,18 +113,6 @@ export class PaymentsService {
     return await this.stripe.paymentIntents.confirm(paymentIntent.id, {
       payment_method: paymentMethodId,
     });
-  }
-
-  async getClientSecret({
-    amount,
-    currency,
-  }: PaymentDto): Promise<{ clientSecret: string }> {
-    const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: amount * 100, // Default amount in cents
-      currency,
-    });
-
-    return { clientSecret: paymentIntent.client_secret };
   }
 
   async findPaymentMethodsByStripeId(

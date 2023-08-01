@@ -1033,16 +1033,18 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
-            },
-            {
-              "name": "clientId",
-              "required": true,
-              "in": "query",
-              "schema": {
-                "type": "string"
-              }
             }
           ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewClientDto"
+                }
+              }
+            }
+          },
           "responses": {
             "201": {
               "description": "Establishment client",
@@ -1963,15 +1965,15 @@ window.onload = function() {
           ]
         }
       },
-      "/v0/payments": {
+      "/v0/payments/{userId}": {
         "post": {
-          "operationId": "PaymentsController_createPaymentIntent",
-          "summary": "Make a payment intent",
+          "operationId": "PaymentsController_createPaymentSheet",
+          "summary": "Make a payment sheet",
           "parameters": [
             {
-              "name": "paymentMethodId",
+              "name": "userId",
               "required": true,
-              "in": "query",
+              "in": "path",
               "schema": {
                 "type": "string"
               }
@@ -1989,40 +1991,10 @@ window.onload = function() {
           },
           "responses": {
             "201": {
-              "description": "Payment intent successfully done"
+              "description": "Payment sheet successfully done"
             },
             "401": {
-              "description": "Unauthorized because only **Clients** can do a payment intent"
-            }
-          },
-          "tags": [
-            "payments"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
-        "get": {
-          "operationId": "PaymentsController_findPaymentMethodsByStripeId",
-          "summary": "Find all user's payment methods",
-          "parameters": [
-            {
-              "name": "stripeId",
-              "required": true,
-              "in": "query",
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "List of user's payment methods"
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find all user payment methods"
+              "description": "Unauthorized because only **Clients** can do a payment sheet"
             }
           },
           "tags": [
@@ -2056,6 +2028,38 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized because only **Clients** can add their card as payment method"
+            }
+          },
+          "tags": [
+            "payments"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/v0/payments": {
+        "get": {
+          "operationId": "PaymentsController_findPaymentMethodsByStripeId",
+          "summary": "Find all user's payment methods",
+          "parameters": [
+            {
+              "name": "stripeId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of user's payment methods"
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find all user payment methods"
             }
           },
           "tags": [
@@ -3047,6 +3051,40 @@ window.onload = function() {
             "password"
           ]
         },
+        "NewClientDto": {
+          "type": "object",
+          "properties": {
+            "lastname": {
+              "type": "string"
+            },
+            "firstname": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "Manager",
+                "Educator"
+              ],
+              "default": "Client"
+            },
+            "emailAddress": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "lastname",
+            "firstname",
+            "emailAddress",
+            "password"
+          ]
+        },
         "UpdateEstablishmentDto": {
           "type": "object",
           "properties": {
@@ -3431,7 +3469,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-07-22T11:33:58.869Z"
+              "default": "2023-08-01T19:06:06.079Z"
             },
             "__v": {
               "type": "number"
