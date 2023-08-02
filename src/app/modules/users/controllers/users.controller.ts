@@ -127,7 +127,11 @@ export class UsersController {
     @Query('establishmentId') establishmentId?: string,
     @Query('role') role?: RoleType,
   ): Promise<User[]> {
-    return await this.usersService.find(establishmentId, role);
+    if (establishmentId && role === RoleType.CLIENT) {
+      return this.usersService.findClientsByEstablishment(establishmentId);
+    } else {
+      return await this.usersService.find(establishmentId, role);
+    }
   }
 
   @UseGuards(AccessTokenGuard, RolesGuard)

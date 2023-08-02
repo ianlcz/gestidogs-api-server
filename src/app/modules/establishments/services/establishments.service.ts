@@ -186,6 +186,7 @@ export class EstablishmentsService {
           .populate([
             { path: 'owner', model: 'User', select: '-password' },
             { path: 'employees', model: 'User', select: '-password' },
+            { path: 'clients', model: 'User', select: '-password' },
           ]);
   }
 
@@ -196,6 +197,7 @@ export class EstablishmentsService {
         .populate([
           { path: 'owner', model: 'User', select: '-password' },
           { path: 'employees', model: 'User', select: '-password' },
+          { path: 'clients', model: 'User', select: '-password' },
         ]);
 
       if (!establishment) {
@@ -242,6 +244,7 @@ export class EstablishmentsService {
         .populate([
           { path: 'owner', model: 'User', select: '-password' },
           { path: 'employees', model: 'User', select: '-password' },
+          { path: 'clients', model: 'User', select: '-password' },
         ]);
 
       if (!establishmentToModify) {
@@ -280,6 +283,7 @@ export class EstablishmentsService {
         .populate([
           { path: 'owner', model: 'User', select: '-password' },
           { path: 'employees', model: 'User', select: '-password' },
+          { path: 'clients', model: 'User', select: '-password' },
         ]);
 
       if (!establishmentToDelete) {
