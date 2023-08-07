@@ -60,18 +60,12 @@ export class DogsController {
     return await this.dogsService.create(createDogDto);
   }
 
-  @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
-  @UseGuards(AccessTokenGuard, RolesGuard)
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Find dogs' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of dogs',
     type: [Dog],
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'Unauthorized because only **Administrators** and **Managers** can find dogs',
   })
   @ApiQuery({
     name: 'ownerId',
