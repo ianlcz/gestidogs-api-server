@@ -41,9 +41,15 @@ export class HolidaysService {
     }
   }
 
-  async find(employeeId?: string): Promise<Holiday[]> {
+  async find(
+    employeeId?: string,
+    establishmentId?: string,
+  ): Promise<Holiday[]> {
     return await this.holidayModel
-      .find({ ...(employeeId && { employee: employeeId }) })
+      .find({
+        ...(employeeId && { employee: employeeId }),
+        ...(establishmentId && { establishment: establishmentId }),
+      })
       .populate({
         path: 'employee',
         model: 'User',
