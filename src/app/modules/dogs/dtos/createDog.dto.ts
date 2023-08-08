@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsNotEmpty } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
@@ -9,10 +9,12 @@ import { GenderType } from '../../../common/enums/gender.enum';
 export class CreateDogDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
+  @IsMongoId()
   owner: User;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
+  @IsMongoId()
   establishment: Establishment;
 
   @ApiProperty({ type: String, required: true })

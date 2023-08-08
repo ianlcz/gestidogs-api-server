@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import {
+  IsArray,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -61,9 +62,18 @@ export class CreateUserDto {
   @ApiPropertyOptional({ type: String })
   stripeId?: string;
 
+  @IsArray()
+  @IsOptional()
   establishments?: Establishment[];
+
+  @IsArray()
+  @IsOptional()
   activities?: Activity[];
+
+  @IsArray()
+  @IsOptional()
   dogs?: Dog[];
+
   registeredAt: Date;
   lastConnectionAt: Date;
   refreshToken: string;

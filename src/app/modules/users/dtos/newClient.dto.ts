@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import {
+  IsArray,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -44,9 +45,18 @@ export class NewClientDto {
   @MinLength(8)
   password: string;
 
+  @IsArray()
+  @IsOptional()
   establishments?: Establishment[];
+
+  @IsArray()
+  @IsOptional()
   activities?: Activity[];
+
+  @IsArray()
+  @IsOptional()
   dogs?: Dog[];
+
   registeredAt: Date;
   lastConnectionAt: Date;
   refreshToken: string;
