@@ -3,12 +3,15 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { User } from '../../users/schemas/user.schema';
 import { GenderType } from '../../../common/enums/gender.enum';
+import { IsMongoId } from 'class-validator';
 
 export class UpdateDogDto {
   @ApiProperty({ type: String })
+  @IsMongoId()
   owner: User;
 
   @ApiProperty({ type: String })
+  @IsMongoId()
   establishment: Establishment;
 
   @ApiPropertyOptional({ type: String })

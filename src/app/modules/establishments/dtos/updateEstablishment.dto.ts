@@ -1,11 +1,12 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsArray, IsOptional, IsPhoneNumber } from 'class-validator';
+import { IsArray, IsMongoId, IsOptional, IsPhoneNumber } from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 
 export class UpdateEstablishmentDto {
   @ApiPropertyOptional({ type: String })
+  @IsMongoId()
   owner: User;
 
   @ApiPropertyOptional({ type: String })

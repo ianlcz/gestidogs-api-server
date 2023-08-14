@@ -4,12 +4,15 @@ import { StatusSessionType } from '../../../common/enums/statusSession.enum';
 
 import { User } from '../../users/schemas/user.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
+import { IsMongoId } from 'class-validator';
 
 export class UpdateSessionDto {
   @ApiPropertyOptional({ type: String })
+  @IsMongoId()
   educator: User;
 
   @ApiPropertyOptional({ type: String })
+  @IsMongoId()
   activity: Activity;
 
   @ApiPropertyOptional({
@@ -27,5 +30,6 @@ export class UpdateSessionDto {
   @ApiPropertyOptional({ type: Date })
   beginDate: Date;
 
+  @ApiPropertyOptional({ type: Date })
   endDate: Date;
 }

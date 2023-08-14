@@ -1,9 +1,11 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Establishment } from '../../establishments/schemas/establishment.schema';
+import { IsMongoId } from 'class-validator';
 
 export class UpdateActivityDto {
   @ApiPropertyOptional({ type: String })
+  @IsMongoId()
   establishment: Establishment;
 
   @ApiPropertyOptional({ type: String })

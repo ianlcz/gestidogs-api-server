@@ -1,12 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsNotEmpty } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 export class CreateActivityDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
+  @IsMongoId()
   establishment: Establishment;
 
   @ApiProperty({ type: String, required: true })

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsNotEmpty } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
@@ -10,14 +10,17 @@ import { Establishment } from '../../establishments/schemas/establishment.schema
 
 export class CreateSessionDto {
   @ApiProperty({ type: String, required: true })
+  @IsMongoId()
   @IsNotEmpty()
   educator: User;
 
   @ApiProperty({ type: String, required: true })
+  @IsMongoId()
   @IsNotEmpty()
   activity: Activity;
 
   @ApiProperty({ type: String, required: true })
+  @IsMongoId()
   @IsNotEmpty()
   establishment: Establishment;
 
@@ -34,5 +37,7 @@ export class CreateSessionDto {
   @IsNotEmpty()
   beginDate: Date;
 
+  @ApiProperty({ type: Date, required: true })
+  @IsNotEmpty()
   endDate: Date;
 }

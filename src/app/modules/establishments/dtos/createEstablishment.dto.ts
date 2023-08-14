@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,
   IsEmail,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
@@ -13,6 +14,7 @@ import { User } from '../../users/schemas/user.schema';
 export class CreateEstablishmentDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
+  @IsMongoId()
   owner: User;
 
   @ApiProperty({ type: String, required: true })

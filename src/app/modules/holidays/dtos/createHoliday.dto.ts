@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsNotEmpty } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 import { StatusHolidayType } from '../../../common/enums/statusHoliday.enum';
@@ -8,6 +8,7 @@ import { StatusHolidayType } from '../../../common/enums/statusHoliday.enum';
 export class CreateHolidayDto {
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
+  @IsMongoId()
   employee: User;
 
   @ApiProperty({ type: Date, required: true })
