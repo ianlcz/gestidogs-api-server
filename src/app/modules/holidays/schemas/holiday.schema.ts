@@ -5,6 +5,7 @@ import { HydratedDocument, Types } from 'mongoose';
 
 import { User } from '../../users/schemas/user.schema';
 import { StatusHolidayType } from '../../../common/enums/statusHoliday.enum';
+import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 export type HolidayDocument = HydratedDocument<Holiday>;
 @Schema()
@@ -15,6 +16,10 @@ export class Holiday {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   @ApiProperty({ type: User, required: true })
   employee: User;
+
+  @Prop({ type: Types.ObjectId, ref: 'Establishment' })
+  @ApiProperty({ type: Establishment })
+  establishment: Establishment;
 
   @Prop({ type: Date, required: true })
   @ApiProperty({ type: Date, required: true })

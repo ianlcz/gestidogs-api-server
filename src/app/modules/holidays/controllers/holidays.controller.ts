@@ -74,9 +74,17 @@ export class HolidaysController {
     type: String,
     required: false,
   })
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: false,
+  })
   @Get()
-  async find(@Query('employeeId') employeeId?: string): Promise<Holiday[]> {
-    return await this.holidaysService.find(employeeId);
+  async find(
+    @Query('employeeId') employeeId?: string,
+    @Query('establishmentId') establishmentId?: string,
+  ): Promise<Holiday[]> {
+    return await this.holidaysService.find(employeeId, establishmentId);
   }
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER, RoleType.EDUCATOR)
