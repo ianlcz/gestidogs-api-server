@@ -5,6 +5,7 @@ import { IsMongoId, IsNotEmpty } from 'class-validator';
 import { User } from '../../users/schemas/user.schema';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { GenderType } from '../../../common/enums/gender.enum';
+import { Session } from '../../sessions/schemas/session.schema';
 
 export class CreateDogDto {
   @ApiProperty({ type: String, required: true })
@@ -16,6 +17,10 @@ export class CreateDogDto {
   @IsNotEmpty()
   @IsMongoId()
   establishment: Establishment;
+
+  @ApiProperty({ type: [String], default: [] })
+  @IsNotEmpty()
+  sessions: [Session];
 
   @ApiProperty({ type: String, required: true })
   nationalId: string;

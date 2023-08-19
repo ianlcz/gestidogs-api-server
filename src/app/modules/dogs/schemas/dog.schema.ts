@@ -6,6 +6,7 @@ import { HydratedDocument, Types } from 'mongoose';
 import { User } from '../../users/schemas/user.schema';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { GenderType } from '../../../common/enums/gender.enum';
+import { Session } from '../../sessions/schemas/session.schema';
 
 export type DogDocument = HydratedDocument<Dog>;
 
@@ -21,6 +22,13 @@ export class Dog {
   @Prop({ type: Types.ObjectId, ref: 'Establishment', required: true })
   @ApiProperty({ type: Establishment, required: true })
   establishment: Establishment;
+
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: 'Session' }],
+    default: [],
+  })
+  @ApiProperty({ type: [Session], default: [] })
+  sessions?: [Session];
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })

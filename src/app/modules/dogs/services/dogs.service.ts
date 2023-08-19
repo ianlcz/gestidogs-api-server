@@ -65,7 +65,7 @@ export class DogsService {
       ]);
   }
 
-  async findOne(dogId: string, user: any): Promise<Dog> {
+  async findOne(dogId: string, user?: any): Promise<Dog> {
     try {
       const dog = await this.dogModel.findById(dogId).populate([
         {
