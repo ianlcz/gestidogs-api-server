@@ -241,6 +241,47 @@ window.onload = function() {
           ]
         }
       },
+      "/v0/sessions/daily/{dogId}": {
+        "get": {
+          "operationId": "SessionsController_findByDogAndDate",
+          "summary": "Find daily sessions by dog",
+          "parameters": [
+            {
+              "name": "dogId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "date",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The found daily sessions"
+            },
+            "400": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "sessions"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
       "/v0/sessions/{sessionId}": {
         "get": {
           "operationId": "SessionsController_findOne",
@@ -1334,9 +1375,6 @@ window.onload = function() {
                   }
                 }
               }
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find dogs"
             }
           },
           "tags": [
@@ -1968,7 +2006,7 @@ window.onload = function() {
       "/v0/payments/{userId}": {
         "post": {
           "operationId": "PaymentsController_createPaymentSheet",
-          "summary": "Make a payment sheet",
+          "summary": "Make a payment sheet for a user",
           "parameters": [
             {
               "name": "userId",
@@ -1992,9 +2030,6 @@ window.onload = function() {
           "responses": {
             "201": {
               "description": "Payment sheet successfully done"
-            },
-            "401": {
-              "description": "Unauthorized because only **Clients** can do a payment sheet"
             }
           },
           "tags": [
@@ -2346,6 +2381,14 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
+            },
+            {
+              "name": "establishmentId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
             }
           ],
           "responses": {
@@ -2566,6 +2609,10 @@ window.onload = function() {
             "beginDate": {
               "format": "date-time",
               "type": "string"
+            },
+            "endDate": {
+              "format": "date-time",
+              "type": "string"
             }
           },
           "required": [
@@ -2574,7 +2621,8 @@ window.onload = function() {
             "establishment",
             "status",
             "maximumCapacity",
-            "beginDate"
+            "beginDate",
+            "endDate"
           ]
         },
         "Establishment": {
@@ -2853,6 +2901,10 @@ window.onload = function() {
               "type": "string"
             },
             "beginDate": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "endDate": {
               "format": "date-time",
               "type": "string"
             }
@@ -3135,6 +3187,13 @@ window.onload = function() {
             "establishment": {
               "type": "string"
             },
+            "sessions": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
             "nationalId": {
               "type": "string"
             },
@@ -3168,6 +3227,7 @@ window.onload = function() {
           "required": [
             "owner",
             "establishment",
+            "sessions",
             "nationalId",
             "name",
             "breed",
@@ -3186,6 +3246,13 @@ window.onload = function() {
             },
             "establishment": {
               "$ref": "#/components/schemas/Establishment"
+            },
+            "sessions": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Session"
+              }
             },
             "nationalId": {
               "type": "string"
@@ -3228,6 +3295,7 @@ window.onload = function() {
             "_id",
             "owner",
             "establishment",
+            "sessions",
             "nationalId",
             "name",
             "breed",
@@ -3246,6 +3314,13 @@ window.onload = function() {
             },
             "nationalId": {
               "type": "string"
+            },
+            "sessions": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "name": {
               "type": "string"
@@ -3469,7 +3544,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-08-01T19:06:06.079Z"
+              "default": "2023-08-19T16:45:18.967Z"
             },
             "__v": {
               "type": "number"
@@ -3498,6 +3573,9 @@ window.onload = function() {
             "employee": {
               "type": "string"
             },
+            "establishment": {
+              "type": "string"
+            },
             "beginDate": {
               "format": "date-time",
               "type": "string"
@@ -3518,6 +3596,7 @@ window.onload = function() {
           },
           "required": [
             "employee",
+            "establishment",
             "beginDate",
             "endDate",
             "status"
@@ -3531,6 +3610,9 @@ window.onload = function() {
             },
             "employee": {
               "$ref": "#/components/schemas/User"
+            },
+            "establishment": {
+              "$ref": "#/components/schemas/Establishment"
             },
             "beginDate": {
               "format": "date-time",
@@ -3560,6 +3642,7 @@ window.onload = function() {
           "required": [
             "_id",
             "employee",
+            "establishment",
             "beginDate",
             "endDate",
             "status"
@@ -3569,6 +3652,9 @@ window.onload = function() {
           "type": "object",
           "properties": {
             "employee": {
+              "type": "string"
+            },
+            "establishment": {
               "type": "string"
             },
             "beginDate": {

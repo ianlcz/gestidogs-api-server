@@ -17,6 +17,7 @@ import { CreateSessionDto } from '../dtos/createSession.dto';
 import { Session, SessionDocument } from '../schemas/session.schema';
 import { ActivitiesService } from '../../activities/services/activities.service';
 import { WriteReportDto } from '../dtos/writeReport.dto';
+import { DogsService } from '../../dogs/services/dogs.service';
 
 @Injectable()
 export class SessionsService {
@@ -25,6 +26,7 @@ export class SessionsService {
     private readonly sessionModel: Model<SessionDocument>,
     private readonly activitiesService: ActivitiesService,
     private readonly reservationsService: ReservationsService,
+    private readonly dogsService: DogsService,
   ) {}
 
   async create(createSessionDto: CreateSessionDto): Promise<Session> {
@@ -195,6 +197,26 @@ export class SessionsService {
       ]);
 
     return { today: todaySessions, next: nextSessions };
+  }
+
+  async findByDogAndDate(dogId: string, date: Date): Promise<Session[]> {
+    const { sessions }: { sessions?: [Session] } =
+      await this.dogsService.findOne(dogId);
+    const tomorrow = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1,
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds(),
+    );
+
+    return sessions.filter(
+      (session) =>
+        session.beginDate >= new Date(date) &&
+        session.endDate < new Date(tomorrow),
+    );
   }
 
   async findOne(sessionId: string): Promise<Session> {

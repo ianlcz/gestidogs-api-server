@@ -4,6 +4,7 @@ import { Establishment } from '../../establishments/schemas/establishment.schema
 import { User } from '../../users/schemas/user.schema';
 import { GenderType } from '../../../common/enums/gender.enum';
 import { IsMongoId } from 'class-validator';
+import { Session } from '../../sessions/schemas/session.schema';
 
 export class UpdateDogDto {
   @ApiProperty({ type: String })
@@ -16,6 +17,9 @@ export class UpdateDogDto {
 
   @ApiPropertyOptional({ type: String })
   nationalId: string;
+
+  @ApiPropertyOptional({ type: [String], default: [] })
+  sessions: [Session];
 
   @ApiPropertyOptional({ type: String })
   name: string;

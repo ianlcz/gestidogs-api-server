@@ -191,6 +191,31 @@ export class SessionsController {
   }
 
   @UseGuards(AccessTokenGuard, RolesGuard)
+  @ApiOperation({ summary: 'Find daily sessions by dog' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The found daily sessions',
+  })
+  @ApiBadRequestResponse()
+  @ApiQuery({
+    name: 'date',
+    type: Date,
+    required: true,
+  })
+  @ApiQuery({
+    name: 'dogId',
+    type: String,
+    required: true,
+  })
+  @Get('daily/:dogId')
+  async findByDogAndDate(
+    @Param('dogId') dogId: string,
+    @Param('date') date: Date,
+  ): Promise<Session[]> {
+    return await this.sessionsService.findByDogAndDate(dogId, date);
+  }
+
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @ApiOperation({ summary: 'Find a session' })
   @ApiResponse({
     status: HttpStatus.OK,
