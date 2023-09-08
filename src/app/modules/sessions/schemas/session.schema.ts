@@ -53,8 +53,8 @@ export class Session {
   @ApiProperty({ type: Date, required: true })
   beginDate: Date;
 
-  @Prop({ type: Date, required: true })
-  @ApiProperty({ type: Date, required: true })
+  @Prop({ type: Date })
+  @ApiProperty({ type: Date })
   endDate: Date;
 
   @Prop({ type: Number })

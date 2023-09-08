@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { HydratedDocument, Types } from 'mongoose';
 import { Dog } from '../../dogs/schemas/dog.schema';
-import { Session } from '../../sessions/schemas/session.schema';
+import { Activity } from '../../activities/schemas/activity.schema';
 
 export type ReservationDocument = HydratedDocument<Reservation>;
 
@@ -11,9 +11,9 @@ export class Reservation {
   @ApiProperty({ type: String })
   _id: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Session', required: true })
-  @ApiProperty({ type: Session, required: true })
-  session: Session;
+  @Prop({ type: Types.ObjectId, ref: 'Activity', required: true })
+  @ApiProperty({ type: Activity, required: true })
+  activity: Activity;
 
   @Prop({ type: Types.ObjectId, ref: 'Dog', required: true })
   @ApiProperty({ type: Dog, required: true })
