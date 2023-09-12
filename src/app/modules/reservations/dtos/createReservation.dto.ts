@@ -1,19 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsMongoId, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 import { Dog } from '../../dogs/schemas/dog.schema';
-import { Session } from '../../sessions/schemas/session.schema';
 
 export class CreateReservationDto {
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: Date, required: true })
   @IsNotEmpty()
-  @IsMongoId()
-  session: Session;
+  slot: Date;
 
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: () => [String], required: true })
   @IsNotEmpty()
-  @IsMongoId()
-  dog: Dog;
+  dogs: Dog[];
 
   @ApiPropertyOptional({ type: Boolean, default: false })
   isApproved: boolean;

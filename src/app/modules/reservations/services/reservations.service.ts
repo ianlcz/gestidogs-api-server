@@ -33,14 +33,6 @@ export class ReservationsService {
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
     try {
-      // Get maximun capacity of the session
-      const { maximumCapacity } = await this.sessionsService.findOne(
-        createReservationDto.session.toString(),
-      );
-
-      // By default, Reservation is approved only when Session maximum capacity is 1
-      createReservationDto.isApproved = maximumCapacity === 1;
-
       // Instanciate Reservation Model with createReservationDto
       const reservationToCreate = new this.reservationModel(
         createReservationDto,
@@ -49,15 +41,8 @@ export class ReservationsService {
       // Save Reservation data on MongoDB and return them
       return (await reservationToCreate.save()).populate([
         {
-          path: 'session',
-          model: 'Session',
-          populate: [
-            {
-              path: 'activity',
-              model: 'Activity',
-            },
-            { path: 'educator', model: 'User' },
-          ],
+          path: 'activity',
+          model: 'Activity',
         },
         {
           path: 'dog',
@@ -97,15 +82,8 @@ export class ReservationsService {
       .find({ ...(sessionId && { session: sessionId }) })
       .populate([
         {
-          path: 'session',
-          model: 'Session',
-          populate: [
-            {
-              path: 'activity',
-              model: 'Activity',
-            },
-            { path: 'educator', model: 'User' },
-          ],
+          path: 'activity',
+          model: 'Activity',
         },
         {
           path: 'dog',
