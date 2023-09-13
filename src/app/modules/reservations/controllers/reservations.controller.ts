@@ -13,6 +13,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -90,8 +91,11 @@ export class ReservationsController {
     required: false,
   })
   @Get()
-  async find(@Query('sessionId') sessionId?: string): Promise<Reservation[]> {
-    return await this.reservationsService.find(sessionId);
+  async find(
+    @Query('sessionId') sessionId?: string,
+    @Query('establishmentId') establishmentId?: string,
+  ): Promise<Reservation[]> {
+    return await this.reservationsService.find(sessionId, establishmentId);
   }
 
   @UseGuards(AccessTokenGuard, RolesGuard)
@@ -111,6 +115,34 @@ export class ReservationsController {
     @Param('reservationId') reservationId: string,
   ): Promise<Reservation> {
     return await this.reservationsService.findOne(reservationId);
+  }
+
+  @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @ApiOperation({ summary: 'Approved a reservation' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Reservation approved',
+    type: String,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description:
+      'Unauthorized because only **Administrators** and **Managers** can find reservations',
+  })
+  @ApiForbiddenResponse()
+  @ApiBadRequestResponse()
+  @Post(':reservationId/approved')
+  async approvedReservation(
+    @Param('reservationId') reservationId: string,
+    @Query('educatorId') educatorId: string,
+    @Query('slot') slot: Date,
+  ): Promise<string> {
+    return await this.reservationsService.approvedReservation(
+      reservationId,
+      educatorId,
+      slot,
+    );
   }
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER, RoleType.EDUCATOR)

@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   forwardRef,
   HttpException,
   HttpStatus,
@@ -19,12 +20,16 @@ import {
   Reservation,
   ReservationDocument,
 } from '../schemas/reservation.schema';
+import { StatusSessionType } from 'src/app/common/enums/statusSession.enum';
+import { UsersService } from '../../users/services/users.service';
 
 @Injectable()
 export class ReservationsService {
   constructor(
     @InjectModel(Reservation.name)
     private reservationModel: Model<ReservationDocument>,
+    @Inject(forwardRef(() => UsersService))
+    private readonly usersService: UsersService,
     @Inject(forwardRef(() => SessionsService))
     private readonly sessionsService: SessionsService,
   ) {}
@@ -38,12 +43,16 @@ export class ReservationsService {
         createReservationDto,
       );
 
+      reservationToCreate.establishment =
+        createReservationDto.activity.establishment;
+
       // Save Reservation data on MongoDB and return them
       return (await reservationToCreate.save()).populate([
         {
           path: 'activity',
           model: 'Activity',
         },
+        { path: 'session', model: 'Session' },
         {
           path: 'dog',
           model: 'Dog',
@@ -77,14 +86,21 @@ export class ReservationsService {
     }
   }
 
-  async find(sessionId?: string): Promise<Reservation[]> {
+  async find(
+    sessionId?: string,
+    establishmentId?: string,
+  ): Promise<Reservation[]> {
     return await this.reservationModel
-      .find({ ...(sessionId && { session: sessionId }) })
+      .find({
+        ...(sessionId && { session: sessionId }),
+        ...(establishmentId && { establishment: establishmentId }),
+      })
       .populate([
         {
           path: 'activity',
           model: 'Activity',
         },
+        { path: 'session', model: 'Session' },
         {
           path: 'dog',
           model: 'Dog',
@@ -112,16 +128,10 @@ export class ReservationsService {
         .findById(reservationId)
         .populate([
           {
-            path: 'session',
-            model: 'Session',
-            populate: [
-              {
-                path: 'activity',
-                model: 'Activity',
-              },
-              { path: 'educator', model: 'User' },
-            ],
+            path: 'activity',
+            model: 'Activity',
           },
+          { path: 'session', model: 'Session' },
           {
             path: 'dog',
             model: 'Dog',
@@ -169,6 +179,63 @@ export class ReservationsService {
     }
   }
 
+  async approvedReservation(
+    reservationId: string,
+    educatorId: string,
+    slot: Date,
+  ): Promise<string> {
+    try {
+      const reservation = await this.reservationModel.findOne({
+        id: reservationId,
+      });
+
+      const session = await this.sessionsService.create({
+        educator: await this.usersService.findOne(educatorId),
+        activity: reservation.activity,
+        establishment: reservation.establishment,
+        status: StatusSessionType.ONLINE,
+        beginDate: slot,
+        endDate: new Date(
+          new Date(slot).getTime() + reservation.activity.duration * 60 * 1000,
+        ),
+        maximumCapacity: reservation.dogs.length,
+      });
+
+      await this.reservationModel.findOneAndUpdate(
+        { id: reservationId },
+        {
+          status: StatusSessionType.ONLINE,
+          isApproved: true,
+          session: session._id,
+        },
+      );
+
+      response.status(201);
+      response.statusMessage = 'Reservation approved';
+
+      return response.statusMessage;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else if (error instanceof ForbiddenException) {
+        console.log('Approved denied');
+        throw error;
+      } else {
+        console.error('An error occurred:', error);
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error,
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error,
+          },
+        );
+      }
+    }
+  }
+
   async updateOne(
     reservationId: string,
     reservationChanges: object,
@@ -184,16 +251,10 @@ export class ReservationsService {
         )
         .populate([
           {
-            path: 'session',
-            model: 'Session',
-            populate: [
-              {
-                path: 'activity',
-                model: 'Activity',
-              },
-              { path: 'educator', model: 'User' },
-            ],
+            path: 'activity',
+            model: 'Activity',
           },
+          { path: 'session', model: 'Session' },
           {
             path: 'dog',
             model: 'Dog',
@@ -249,16 +310,10 @@ export class ReservationsService {
         })
         .populate([
           {
-            path: 'session',
-            model: 'Session',
-            populate: [
-              {
-                path: 'activity',
-                model: 'Activity',
-              },
-              { path: 'educator', model: 'User' },
-            ],
+            path: 'activity',
+            model: 'Activity',
           },
+          { path: 'session', model: 'Session' },
           {
             path: 'dog',
             model: 'Dog',

@@ -1835,6 +1835,14 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
+            },
+            {
+              "name": "establishmentId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
             }
           ],
           "responses": {
@@ -1895,6 +1903,66 @@ window.onload = function() {
             },
             "404": {
               "description": "Reservation not found"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        },
+        "post": {
+          "operationId": "ReservationsController_approvedReservation",
+          "summary": "Approved a reservation",
+          "parameters": [
+            {
+              "name": "reservationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "educatorId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "slot",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Reservation approved",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations"
+            },
+            "403": {
+              "description": ""
             }
           },
           "tags": [
@@ -3416,11 +3484,17 @@ window.onload = function() {
         "CreateReservationDto": {
           "type": "object",
           "properties": {
-            "session": {
-              "type": "string"
+            "activity": {
+              "$ref": "#/components/schemas/Activity"
             },
-            "dog": {
-              "type": "string"
+            "session": {
+              "$ref": "#/components/schemas/Session"
+            },
+            "dogs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "isApproved": {
               "type": "boolean",
@@ -3428,8 +3502,9 @@ window.onload = function() {
             }
           },
           "required": [
+            "activity",
             "session",
-            "dog"
+            "dogs"
           ]
         },
         "Reservation": {
@@ -3438,11 +3513,34 @@ window.onload = function() {
             "_id": {
               "type": "string"
             },
+            "activity": {
+              "$ref": "#/components/schemas/Activity"
+            },
             "session": {
               "$ref": "#/components/schemas/Session"
             },
-            "dog": {
-              "$ref": "#/components/schemas/Dog"
+            "establishment": {
+              "$ref": "#/components/schemas/Establishment"
+            },
+            "dogs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Dog"
+              }
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "Canceled",
+                "Online",
+                "Pending",
+                "Postponed"
+              ],
+              "examples": [
+                "Pending",
+                "Online"
+              ],
+              "default": "Pending"
             },
             "isApproved": {
               "type": "boolean",
@@ -3454,14 +3552,17 @@ window.onload = function() {
           },
           "required": [
             "_id",
+            "activity",
             "session",
-            "dog"
+            "establishment",
+            "dogs",
+            "status"
           ]
         },
         "UpdateReservationDto": {
           "type": "object",
           "properties": {
-            "session": {
+            "activity": {
               "type": "string"
             },
             "dog": {
@@ -3473,7 +3574,7 @@ window.onload = function() {
             }
           },
           "required": [
-            "session",
+            "activity",
             "dog"
           ]
         },
@@ -3544,7 +3645,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-08-19T16:45:18.967Z"
+              "default": "2023-09-13T12:59:18.860Z"
             },
             "__v": {
               "type": "number"
