@@ -31,7 +31,7 @@ export class CreateEstablishmentDto {
   @ApiProperty({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
-  phoneNumber?: string;
+  phoneNumber: string;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()

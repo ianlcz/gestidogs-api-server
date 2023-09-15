@@ -28,7 +28,7 @@ export class Dog {
     default: [],
   })
   @ApiProperty({ type: [Session], default: [] })
-  sessions?: [Session];
+  sessions: [Session];
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })

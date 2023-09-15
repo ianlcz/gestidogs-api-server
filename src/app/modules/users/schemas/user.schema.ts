@@ -58,7 +58,7 @@ export class User {
 
   @Prop({ type: Date })
   @ApiProperty({ type: Date })
-  birthDate?: Date;
+  birthDate: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Establishment' }], default: [] })
   @ApiProperty({ type: () => [Establishment], default: [] })
@@ -70,7 +70,7 @@ export class User {
 
   @Prop({ type: String, required: false })
   @ApiProperty({ type: String, required: false })
-  stripeId?: string;
+  stripeId: string;
 
   @Prop({ type: Date, default: new Date() })
   @ApiProperty({ type: Date })

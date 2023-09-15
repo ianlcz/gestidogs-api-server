@@ -31,5 +31,5 @@ export class CreateHolidayDto {
   })
   status: StatusHolidayType;
 
-  isApproved?: boolean;
+  isApproved: boolean;
 }

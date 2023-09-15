@@ -44,7 +44,7 @@ export class Holiday {
 
   @Prop({ type: Boolean, default: false })
   @ApiProperty({ type: Boolean, default: false })
-  isApproved?: boolean;
+  isApproved: boolean;
 
   @Prop({ type: Number })
   @ApiProperty({ type: Number })

@@ -38,7 +38,7 @@ export class NewClientDto {
   @ApiProperty({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
-  phoneNumber?: string;
+  phoneNumber: string;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
@@ -47,15 +47,15 @@ export class NewClientDto {
 
   @IsArray()
   @IsOptional()
-  establishments?: Establishment[];
+  establishments: Establishment[];
 
   @IsArray()
   @IsOptional()
-  activities?: Activity[];
+  activities: Activity[];
 
   @IsArray()
   @IsOptional()
-  dogs?: Dog[];
+  dogs: Dog[];
 
   registeredAt: Date;
   lastConnectionAt: Date;
