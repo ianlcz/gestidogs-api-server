@@ -19,7 +19,6 @@ export class CreateDogDto {
   establishment: Establishment;
 
   @ApiProperty({ type: [String], default: [] })
-  @IsNotEmpty()
   sessions: [Session];
 
   @ApiProperty({ type: String, required: true })
