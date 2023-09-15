@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import {
   IsArray,
@@ -24,7 +24,7 @@ export class NewClientDto {
   @IsNotEmpty()
   firstname: string;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     enum: [RoleType.MANAGER, RoleType.EDUCATOR],
     default: RoleType.CLIENT,
   })
@@ -35,7 +35,7 @@ export class NewClientDto {
   @IsEmail()
   emailAddress: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
   phoneNumber?: string;

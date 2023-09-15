@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -39,22 +39,22 @@ export class Dog {
   name: string;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   imageUrl: string;
 
   @Prop({ type: String, enum: GenderType })
-  @ApiPropertyOptional({
+  @ApiProperty({
     enum: GenderType,
     examples: [GenderType.MALE, GenderType.FEMALE],
   })
-  gender?: GenderType;
+  gender: GenderType;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
   breed: string;
 
   @Prop()
-  @ApiPropertyOptional({ type: Date })
+  @ApiProperty({ type: Date })
   birthDate: Date;
 
   @Prop({ type: Number, required: true })
@@ -66,7 +66,7 @@ export class Dog {
   height: number;
 
   @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   __v?: number;
 }
 

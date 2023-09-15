@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { IsMongoId, IsNotEmpty } from 'class-validator';
 
@@ -29,14 +29,14 @@ export class CreateDogDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   imageUrl: string;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     enum: GenderType,
     examples: [GenderType.MALE, GenderType.FEMALE],
   })
-  gender?: GenderType;
+  gender: GenderType;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()

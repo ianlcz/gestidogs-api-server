@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { User } from '../../users/schemas/user.schema';
@@ -15,32 +15,32 @@ export class UpdateDogDto {
   @IsMongoId()
   establishment: Establishment;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   nationalId: string;
 
-  @ApiPropertyOptional({ type: [String], default: [] })
+  @ApiProperty({ type: [String], default: [] })
   sessions: [Session];
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   name: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   imageUrl: string;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     enum: GenderType,
     examples: [GenderType.MALE, GenderType.FEMALE],
   })
-  gender?: GenderType;
+  gender: GenderType;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   breed: string;
 
   birthDate: Date;
 
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   weight: number;
 
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   height: number;
 }

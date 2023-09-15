@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import {
   IsArray,
@@ -24,7 +24,7 @@ export class NewEmployeeDto {
   @IsNotEmpty()
   firstname: string;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     type: String,
   })
   avatarUrl?: string;
@@ -40,7 +40,7 @@ export class NewEmployeeDto {
   @IsEmail()
   emailAddress: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
   phoneNumber?: string;
@@ -50,10 +50,10 @@ export class NewEmployeeDto {
   @MinLength(8)
   password: string;
 
-  @ApiPropertyOptional({ type: Date })
+  @ApiProperty({ type: Date })
   birthDate?: Date;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   stripeId?: string;
 
   @IsArray()

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -24,7 +24,7 @@ export class User {
   firstname: string;
 
   @Prop()
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   avatarUrl: string;
 
   @Prop({
@@ -50,26 +50,26 @@ export class User {
   emailAddress: string;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   phoneNumber: string;
 
   @Prop({ type: String, required: true })
   password: string;
 
   @Prop({ type: Date })
-  @ApiPropertyOptional({ type: Date })
+  @ApiProperty({ type: Date })
   birthDate?: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Establishment' }], default: [] })
-  @ApiPropertyOptional({ type: () => [Establishment], default: [] })
+  @ApiProperty({ type: () => [Establishment], default: [] })
   establishments: Establishment[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Activity' }], default: [] })
-  @ApiPropertyOptional({ type: [Activity], default: [] })
+  @ApiProperty({ type: [Activity], default: [] })
   activities: Activity[];
 
   @Prop({ type: String, required: false })
-  @ApiPropertyOptional({ type: String, required: false })
+  @ApiProperty({ type: String, required: false })
   stripeId?: string;
 
   @Prop({ type: Date, default: new Date() })
@@ -77,14 +77,14 @@ export class User {
   registeredAt: Date;
 
   @Prop()
-  @ApiPropertyOptional({ type: Date })
+  @ApiProperty({ type: Date })
   lastConnectionAt: Date;
 
   @Prop()
   refreshToken: string;
 
   @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   __v?: number;
 }
 

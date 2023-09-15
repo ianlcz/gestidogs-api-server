@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import {
   IsArray,
@@ -21,14 +21,14 @@ export class CreateEstablishmentDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   description: string;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
   address: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
   phoneNumber?: string;
@@ -38,7 +38,7 @@ export class CreateEstablishmentDto {
   @IsEmail()
   emailAddress: string;
 
-  @ApiPropertyOptional({ type: 'array' })
+  @ApiProperty({ type: 'array' })
   employees: User[];
 
   @ApiProperty({

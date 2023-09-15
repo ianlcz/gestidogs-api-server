@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { IsMongoId, IsNotEmpty } from 'class-validator';
 
@@ -10,7 +10,7 @@ export class CreateObservationDto {
   @IsMongoId()
   dog: Dog;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   description: string;
 
   createdAt: Date;

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -17,7 +17,7 @@ export class Observation {
   dog: Dog;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   description: string;
 
   @Prop({ type: Date, required: true, default: new Date() })
@@ -25,7 +25,7 @@ export class Observation {
   createdAt: Date;
 
   @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   __v?: number;
 }
 

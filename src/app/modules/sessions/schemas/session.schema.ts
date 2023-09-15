@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -46,7 +46,7 @@ export class Session {
   maximumCapacity: number;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   report: string;
 
   @Prop({ type: Date, required: true })
@@ -58,7 +58,7 @@ export class Session {
   endDate: Date;
 
   @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   __v?: number;
 }
 

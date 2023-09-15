@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -21,7 +21,7 @@ export class Establishment {
   name: string;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   description: string;
 
   @Prop({ type: String, required: true })
@@ -29,19 +29,19 @@ export class Establishment {
   address: string;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   phoneNumber: string;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   emailAddress: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  @ApiPropertyOptional({ type: () => [User] })
+  @ApiProperty({ type: () => [User] })
   employees: User[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  @ApiPropertyOptional({ type: () => [User] })
+  @ApiProperty({ type: () => [User] })
   clients: User[];
 
   @Prop({
@@ -62,7 +62,7 @@ export class Establishment {
   schedules: [{ startTime: string; endTime: string }][];
 
   @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   __v?: number;
 }
 

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -21,11 +21,11 @@ export class Activity {
   title: string;
 
   @Prop({ type: String })
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   description: string;
 
   @Prop()
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   imageUrl: string;
 
   @Prop({ type: String, unique: true, required: true })
@@ -41,7 +41,7 @@ export class Activity {
   price: number;
 
   @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   __v?: number;
 }
 

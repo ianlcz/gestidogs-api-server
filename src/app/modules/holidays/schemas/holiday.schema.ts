@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -43,11 +43,11 @@ export class Holiday {
   status: StatusHolidayType;
 
   @Prop({ type: Boolean, default: false })
-  @ApiPropertyOptional({ type: Boolean, default: false })
+  @ApiProperty({ type: Boolean, default: false })
   isApproved?: boolean;
 
   @Prop({ type: Number })
-  @ApiPropertyOptional({ type: Number })
+  @ApiProperty({ type: Number })
   __v?: number;
 }
 

@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { IsMongoId, IsNotEmpty } from 'class-validator';
 
@@ -14,10 +14,10 @@ export class CreateActivityDto {
   @IsNotEmpty()
   title: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   description: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiProperty({ type: String })
   imageUrl: string;
 
   @ApiProperty({ type: String, required: true })

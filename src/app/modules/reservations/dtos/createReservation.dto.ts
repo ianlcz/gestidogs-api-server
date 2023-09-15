@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 import { Dog } from '../../dogs/schemas/dog.schema';
@@ -19,6 +19,6 @@ export class CreateReservationDto {
   @IsNotEmpty()
   dogs: Dog[];
 
-  @ApiPropertyOptional({ type: Boolean, default: false })
+  @ApiProperty({ type: Boolean, default: false })
   isApproved: boolean;
 }
