@@ -21,7 +21,8 @@ export class CreateDogDto {
   @ApiProperty({ type: [String], default: [] })
   sessions: [Session];
 
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: String })
+  @IsNotEmpty()
   nationalId: string;
 
   @ApiProperty({ type: String, required: true })
