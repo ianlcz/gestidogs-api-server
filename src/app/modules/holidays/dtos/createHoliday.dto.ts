@@ -12,7 +12,9 @@ export class CreateHolidayDto {
   @IsMongoId()
   employee: User;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, required: true })
+  @IsNotEmpty()
+  @IsMongoId()
   establishment: Establishment;
 
   @ApiProperty({ type: Date, required: true })

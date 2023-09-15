@@ -44,9 +44,11 @@ export class CreateDogDto {
 
   birthDate: Date;
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: Number, required: true })
+  @IsNotEmpty()
   weight: number;
 
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: Number, required: true })
+  @IsNotEmpty()
   height: number;
 }

@@ -57,12 +57,12 @@ export class Dog {
   @ApiPropertyOptional({ type: Date })
   birthDate: Date;
 
-  @Prop({ type: Number })
-  @ApiProperty({ type: Number })
+  @Prop({ type: Number, required: true })
+  @ApiProperty({ type: Number, required: true })
   weight: number;
 
-  @Prop({ type: Number })
-  @ApiProperty({ type: Number })
+  @Prop({ type: Number, required: true })
+  @ApiProperty({ type: Number, required: true })
   height: number;
 
   @Prop({ type: Number })
