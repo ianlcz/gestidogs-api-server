@@ -6,23 +6,23 @@ import { IsMongoId } from 'class-validator';
 export class UpdateActivityDto {
   @ApiProperty({ type: String })
   @IsMongoId()
-  establishment: Establishment;
+  establishment?: Establishment;
 
   @ApiProperty({ type: String })
-  title: string;
+  title?: string;
 
   @ApiProperty({ type: String })
-  description: string;
+  description?: string;
 
   @ApiProperty({ type: String })
-  imageUrl: string;
+  imageUrl?: string;
 
   @ApiProperty({ type: String })
-  color: string;
+  color?: string;
 
   @ApiProperty({ type: Number })
-  duration: number;
+  duration?: number;
 
   @ApiProperty({ type: Number })
-  price: number;
+  price?: number;
 }

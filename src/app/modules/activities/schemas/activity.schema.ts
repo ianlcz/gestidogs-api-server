@@ -24,7 +24,7 @@ export class Activity {
   @ApiProperty({ type: String })
   description: string;
 
-  @Prop()
+  @Prop({ type: String })
   @ApiProperty({ type: String })
   imageUrl: string;
 

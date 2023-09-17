@@ -1914,66 +1914,6 @@ window.onload = function() {
             }
           ]
         },
-        "post": {
-          "operationId": "ReservationsController_approvedReservation",
-          "summary": "Approved a reservation",
-          "parameters": [
-            {
-              "name": "reservationId",
-              "required": true,
-              "in": "path",
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "educatorId",
-              "required": true,
-              "in": "query",
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "slot",
-              "required": true,
-              "in": "query",
-              "schema": {
-                "format": "date-time",
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "Reservation approved",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "string"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": ""
-            },
-            "401": {
-              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations"
-            },
-            "403": {
-              "description": ""
-            }
-          },
-          "tags": [
-            "reservations"
-          ],
-          "security": [
-            {
-              "BearerToken": []
-            }
-          ]
-        },
         "put": {
           "operationId": "ReservationsController_updateOne",
           "summary": "Update a reservation",
@@ -2059,6 +1999,68 @@ window.onload = function() {
             },
             "404": {
               "description": "Reservation to delete not found"
+            }
+          },
+          "tags": [
+            "reservations"
+          ],
+          "security": [
+            {
+              "BearerToken": []
+            }
+          ]
+        }
+      },
+      "/v0/reservations/{reservationId}/approved": {
+        "post": {
+          "operationId": "ReservationsController_approvedReservation",
+          "summary": "Approved a reservation",
+          "parameters": [
+            {
+              "name": "reservationId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "educatorId",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "slot",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "format": "date-time",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Reservation approved",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": ""
+            },
+            "401": {
+              "description": "Unauthorized because only **Administrators** and **Managers** can find reservations"
+            },
+            "403": {
+              "description": ""
             }
           },
           "tags": [
@@ -2752,8 +2754,14 @@ window.onload = function() {
             "_id",
             "owner",
             "name",
+            "description",
             "address",
-            "schedules"
+            "phoneNumber",
+            "emailAddress",
+            "employees",
+            "clients",
+            "schedules",
+            "__v"
           ]
         },
         "Activity": {
@@ -2791,9 +2799,12 @@ window.onload = function() {
             "_id",
             "establishment",
             "title",
+            "description",
+            "imageUrl",
             "color",
             "duration",
-            "price"
+            "price",
+            "__v"
           ]
         },
         "User": {
@@ -2871,9 +2882,16 @@ window.onload = function() {
             "_id",
             "lastname",
             "firstname",
+            "avatarUrl",
             "role",
             "emailAddress",
-            "registeredAt"
+            "phoneNumber",
+            "birthDate",
+            "establishments",
+            "activities",
+            "registeredAt",
+            "lastConnectionAt",
+            "__v"
           ]
         },
         "Session": {
@@ -2927,8 +2945,10 @@ window.onload = function() {
             "establishment",
             "status",
             "maximumCapacity",
+            "report",
             "beginDate",
-            "endDate"
+            "endDate",
+            "__v"
           ]
         },
         "WriteReportDto": {
@@ -2976,7 +2996,16 @@ window.onload = function() {
               "format": "date-time",
               "type": "string"
             }
-          }
+          },
+          "required": [
+            "educator",
+            "activity",
+            "status",
+            "maximumCapacity",
+            "report",
+            "beginDate",
+            "endDate"
+          ]
         },
         "CreateUserDto": {
           "type": "object",
@@ -3028,6 +3057,7 @@ window.onload = function() {
             "firstname",
             "role",
             "emailAddress",
+            "phoneNumber",
             "password"
           ]
         },
@@ -3075,7 +3105,10 @@ window.onload = function() {
             "lastname",
             "firstname",
             "emailAddress",
-            "password"
+            "phoneNumber",
+            "password",
+            "avatarUrl",
+            "stripeId"
           ]
         },
         "CreateEstablishmentDto": {
@@ -3121,8 +3154,11 @@ window.onload = function() {
           "required": [
             "owner",
             "name",
+            "description",
             "address",
+            "phoneNumber",
             "emailAddress",
+            "employees",
             "schedules"
           ]
         },
@@ -3166,9 +3202,13 @@ window.onload = function() {
           "required": [
             "lastname",
             "firstname",
+            "avatarUrl",
             "role",
             "emailAddress",
-            "password"
+            "phoneNumber",
+            "password",
+            "birthDate",
+            "stripeId"
           ]
         },
         "NewClientDto": {
@@ -3201,7 +3241,9 @@ window.onload = function() {
           "required": [
             "lastname",
             "firstname",
+            "role",
             "emailAddress",
+            "phoneNumber",
             "password"
           ]
         },
@@ -3244,7 +3286,17 @@ window.onload = function() {
               },
               "default": []
             }
-          }
+          },
+          "required": [
+            "owner",
+            "name",
+            "description",
+            "address",
+            "phoneNumber",
+            "emailAddress",
+            "employees",
+            "schedules"
+          ]
         },
         "CreateDogDto": {
           "type": "object",
@@ -3298,6 +3350,8 @@ window.onload = function() {
             "sessions",
             "nationalId",
             "name",
+            "imageUrl",
+            "gender",
             "breed",
             "weight",
             "height"
@@ -3366,9 +3420,13 @@ window.onload = function() {
             "sessions",
             "nationalId",
             "name",
+            "imageUrl",
+            "gender",
             "breed",
+            "birthDate",
             "weight",
-            "height"
+            "height",
+            "__v"
           ]
         },
         "UpdateDogDto": {
@@ -3419,7 +3477,15 @@ window.onload = function() {
           },
           "required": [
             "owner",
-            "establishment"
+            "establishment",
+            "nationalId",
+            "sessions",
+            "name",
+            "imageUrl",
+            "gender",
+            "breed",
+            "weight",
+            "height"
           ]
         },
         "CreateActivityDto": {
@@ -3450,6 +3516,8 @@ window.onload = function() {
           "required": [
             "establishment",
             "title",
+            "description",
+            "imageUrl",
             "color",
             "duration",
             "price"
@@ -3479,7 +3547,16 @@ window.onload = function() {
             "price": {
               "type": "number"
             }
-          }
+          },
+          "required": [
+            "establishment",
+            "title",
+            "description",
+            "imageUrl",
+            "color",
+            "duration",
+            "price"
+          ]
         },
         "CreateReservationDto": {
           "type": "object",
@@ -3504,7 +3581,8 @@ window.onload = function() {
           "required": [
             "activity",
             "session",
-            "dogs"
+            "dogs",
+            "isApproved"
           ]
         },
         "Reservation": {
@@ -3556,7 +3634,9 @@ window.onload = function() {
             "session",
             "establishment",
             "dogs",
-            "status"
+            "status",
+            "isApproved",
+            "__v"
           ]
         },
         "UpdateReservationDto": {
@@ -3575,7 +3655,8 @@ window.onload = function() {
           },
           "required": [
             "activity",
-            "dog"
+            "dog",
+            "isApproved"
           ]
         },
         "PaymentDto": {
@@ -3627,7 +3708,8 @@ window.onload = function() {
             }
           },
           "required": [
-            "dog"
+            "dog",
+            "description"
           ]
         },
         "Observation": {
@@ -3645,7 +3727,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-09-13T12:59:18.860Z"
+              "default": "2023-09-17T13:17:55.507Z"
             },
             "__v": {
               "type": "number"
@@ -3654,7 +3736,9 @@ window.onload = function() {
           "required": [
             "_id",
             "dog",
-            "createdAt"
+            "description",
+            "createdAt",
+            "__v"
           ]
         },
         "UpdateObservationDto": {
@@ -3666,7 +3750,11 @@ window.onload = function() {
             "description": {
               "type": "string"
             }
-          }
+          },
+          "required": [
+            "dog",
+            "description"
+          ]
         },
         "CreateHolidayDto": {
           "type": "object",
@@ -3746,7 +3834,9 @@ window.onload = function() {
             "establishment",
             "beginDate",
             "endDate",
-            "status"
+            "status",
+            "isApproved",
+            "__v"
           ]
         },
         "UpdateHolidayDto": {
@@ -3779,7 +3869,15 @@ window.onload = function() {
               "type": "boolean",
               "default": false
             }
-          }
+          },
+          "required": [
+            "employee",
+            "establishment",
+            "beginDate",
+            "endDate",
+            "status",
+            "isApproved"
+          ]
         }
       }
     }

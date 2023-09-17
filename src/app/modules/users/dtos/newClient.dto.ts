@@ -24,6 +24,8 @@ export class NewClientDto {
   @IsNotEmpty()
   firstname: string;
 
+  avatarUrl: string;
+
   @ApiProperty({
     enum: [RoleType.MANAGER, RoleType.EDUCATOR],
     default: RoleType.CLIENT,

@@ -26,8 +26,9 @@ export class CreateUserDto {
 
   @ApiProperty({
     type: String,
+    required: false,
   })
-  avatarUrl: string;
+  avatarUrl?: string;
 
   @ApiProperty({
     enum: RoleType,
@@ -56,11 +57,11 @@ export class CreateUserDto {
   @MinLength(8)
   password: string;
 
-  @ApiProperty({ type: Date })
-  birthDate: Date;
+  @ApiProperty({ type: Date, required: false })
+  birthDate?: Date;
 
-  @ApiProperty({ type: String })
-  stripeId: string;
+  @ApiProperty({ type: String, required: false })
+  stripeId?: string;
 
   @IsArray()
   @IsOptional()

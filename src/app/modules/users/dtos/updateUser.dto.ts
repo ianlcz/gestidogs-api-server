@@ -14,38 +14,38 @@ import { Establishment } from '../../establishments/schemas/establishment.schema
 export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
-  lastname: string;
+  lastname?: string;
 
   @ApiProperty()
   @IsOptional()
-  firstname: string;
+  firstname?: string;
 
   @ApiProperty()
   @IsOptional()
   @IsEmail()
-  emailAddress: string;
+  emailAddress?: string;
 
   @ApiProperty({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @ApiProperty()
   @IsOptional()
   @MinLength(8)
-  password: string;
+  password?: string;
 
   @ApiProperty()
-  avatarUrl: string;
+  avatarUrl?: string;
 
   @ApiProperty({ type: String })
-  stripeId: string;
+  stripeId?: string;
 
   @IsArray()
   @IsOptional()
-  establishments: Establishment[];
+  establishments?: Establishment[];
 
   @IsArray()
   @IsOptional()
-  activities: Activity[];
+  activities?: Activity[];
 }
