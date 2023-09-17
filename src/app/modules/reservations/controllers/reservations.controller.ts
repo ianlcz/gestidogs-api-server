@@ -90,12 +90,27 @@ export class ReservationsController {
     type: String,
     required: false,
   })
+  @ApiQuery({
+    name: 'establishmentId',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'status',
+    type: String,
+    required: false,
+  })
   @Get()
   async find(
     @Query('sessionId') sessionId?: string,
     @Query('establishmentId') establishmentId?: string,
+    @Query('status') status?: string,
   ): Promise<Reservation[]> {
-    return await this.reservationsService.find(sessionId, establishmentId);
+    return await this.reservationsService.find(
+      sessionId,
+      establishmentId,
+      status,
+    );
   }
 
   @UseGuards(AccessTokenGuard, RolesGuard)

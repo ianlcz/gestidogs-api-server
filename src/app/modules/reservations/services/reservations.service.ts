@@ -89,11 +89,13 @@ export class ReservationsService {
   async find(
     sessionId?: string,
     establishmentId?: string,
+    status?: string,
   ): Promise<Reservation[]> {
     return await this.reservationModel
       .find({
         ...(sessionId && { session: sessionId }),
         ...(establishmentId && { establishment: establishmentId }),
+        ...(status && { status }),
       })
       .populate([
         {
