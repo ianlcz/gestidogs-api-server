@@ -182,7 +182,7 @@ export class EstablishmentsService {
     return await this.establishmentModel
       .find({
         ...(ownerId && { owner: ownerId }),
-        ...(clientId && { owner: clientId }),
+        ...(clientId && { clients: clientId }),
       })
       .populate([
         { path: 'owner', model: 'User', select: '-password' },

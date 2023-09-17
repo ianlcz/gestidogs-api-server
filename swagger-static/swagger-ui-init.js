@@ -1838,7 +1838,15 @@ window.onload = function() {
             },
             {
               "name": "establishmentId",
-              "required": true,
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "status",
+              "required": false,
               "in": "query",
               "schema": {
                 "type": "string"
@@ -3727,7 +3735,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-09-17T13:21:39.103Z"
+              "default": "2023-09-17T15:19:13.060Z"
             },
             "__v": {
               "type": "number"
