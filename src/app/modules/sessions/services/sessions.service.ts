@@ -147,6 +147,8 @@ export class SessionsService {
     date: Date,
     establishmentId?: string,
   ): Promise<{ today: Session[]; next: Session[] }> {
+    date = new Date(date);
+
     const tomorrow = new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -163,12 +165,12 @@ export class SessionsService {
         $and: [
           {
             beginDate: {
-              $gte: new Date(date),
+              $gte: date,
             },
           },
           {
             endDate: {
-              $lt: new Date(tomorrow),
+              $lt: tomorrow,
             },
           },
         ],
@@ -202,6 +204,9 @@ export class SessionsService {
   async findByDogAndDate(dogId: string, date: Date): Promise<Session[]> {
     const { sessions }: { sessions?: [Session] } =
       await this.dogsService.findOne(dogId);
+
+    date = new Date(date);
+
     const tomorrow = new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -213,9 +218,7 @@ export class SessionsService {
     );
 
     return sessions.filter(
-      (session) =>
-        session.beginDate >= new Date(date) &&
-        session.endDate < new Date(tomorrow),
+      (session) => session.beginDate >= date && session.endDate < tomorrow,
     );
   }
 
