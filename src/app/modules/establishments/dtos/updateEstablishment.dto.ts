@@ -1,35 +1,41 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IsArray, IsMongoId, IsOptional, IsPhoneNumber } from 'class-validator';
 
 import { User } from '../../users/schemas/user.schema';
 
 export class UpdateEstablishmentDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  owner: User;
+  @IsOptional()
+  owner?: User;
 
-  @ApiProperty({ type: String })
-  name: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  name?: string;
 
-  @ApiProperty({ type: String })
-  description: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  description?: string;
 
-  @ApiProperty({ type: String })
-  address: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  address?: string;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsOptional()
   @IsPhoneNumber('FR')
-  phoneNumber: string;
+  phoneNumber?: string;
 
-  @ApiProperty({ type: String })
-  emailAddress: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  emailAddress?: string;
 
-  @ApiProperty({ type: 'array' })
-  employees: User[];
+  @ApiPropertyOptional({ type: 'array' })
+  @IsOptional()
+  employees?: User[];
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'array',
     items: {
       type: 'array',
@@ -40,6 +46,7 @@ export class UpdateEstablishmentDto {
     },
     default: [],
   })
+  @IsOptional()
   @IsArray()
-  schedules: [{ startTime: string; endTime: string }][];
+  schedules?: [{ startTime?: string; endTime?: string }][];
 }

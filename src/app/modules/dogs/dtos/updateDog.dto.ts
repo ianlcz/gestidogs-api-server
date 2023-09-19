@@ -1,46 +1,55 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { User } from '../../users/schemas/user.schema';
 import { GenderType } from '../../../common/enums/gender.enum';
-import { IsMongoId } from 'class-validator';
+import { IsMongoId, IsOptional } from 'class-validator';
 import { Session } from '../../sessions/schemas/session.schema';
 
 export class UpdateDogDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  owner: User;
+  @IsOptional()
+  owner?: User;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  establishment: Establishment;
+  @IsOptional()
+  establishment?: Establishment;
 
-  @ApiProperty({ type: String })
-  nationalId: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  nationalId?: string;
 
-  @ApiProperty({ type: [String], default: [] })
-  sessions: [Session];
+  @ApiPropertyOptional({ type: [String], default: [] })
+  @IsOptional()
+  sessions?: [Session];
 
-  @ApiProperty({ type: String })
-  name: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  name?: string;
 
-  @ApiProperty({ type: String })
-  imageUrl: string;
+  @ApiPropertyOptional({ type: String })
+  imageUrl?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     enum: GenderType,
     examples: [GenderType.MALE, GenderType.FEMALE],
   })
-  gender: GenderType;
+  @IsOptional()
+  gender?: GenderType;
 
-  @ApiProperty({ type: String })
-  breed: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  breed?: string;
 
-  birthDate: Date;
+  birthDate?: Date;
 
-  @ApiProperty({ type: Number })
-  weight: number;
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  weight?: number;
 
-  @ApiProperty({ type: Number })
-  height: number;
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  height?: number;
 }

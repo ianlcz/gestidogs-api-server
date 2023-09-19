@@ -1,18 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Dog } from '../../dogs/schemas/dog.schema';
-import { IsMongoId } from 'class-validator';
+import { IsMongoId, IsOptional } from 'class-validator';
 import { Activity } from '../../activities/schemas/activity.schema';
 
 export class UpdateReservationDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  activity: Activity;
+  @IsOptional()
+  activity?: Activity;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  dog: Dog;
+  @IsOptional()
+  dog?: Dog;
 
-  @ApiProperty({ type: Boolean, default: false })
-  isApproved: boolean;
+  @ApiPropertyOptional({ type: Boolean, default: false })
+  @IsOptional()
+  isApproved?: boolean;
 }

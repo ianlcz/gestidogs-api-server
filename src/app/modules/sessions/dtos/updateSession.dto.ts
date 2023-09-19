@@ -1,35 +1,42 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { StatusSessionType } from '../../../common/enums/statusSession.enum';
 
 import { User } from '../../users/schemas/user.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
-import { IsMongoId } from 'class-validator';
+import { IsMongoId, IsOptional } from 'class-validator';
 
 export class UpdateSessionDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  educator: User;
+  @IsOptional()
+  educator?: User;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  activity: Activity;
+  @IsOptional()
+  activity?: Activity;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     enum: StatusSessionType,
     default: StatusSessionType.PENDING,
   })
-  status: StatusSessionType;
+  @IsOptional()
+  status?: StatusSessionType;
 
-  @ApiProperty({ type: Number, default: 1 })
-  maximumCapacity: number;
+  @ApiPropertyOptional({ type: Number, default: 1 })
+  @IsOptional()
+  maximumCapacity?: number;
 
-  @ApiProperty({ type: String })
-  report: string;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  report?: string;
 
-  @ApiProperty({ type: Date })
-  beginDate: Date;
+  @ApiPropertyOptional({ type: Date })
+  @IsOptional()
+  beginDate?: Date;
 
-  @ApiProperty({ type: Date })
-  endDate: Date;
+  @ApiPropertyOptional({ type: Date })
+  @IsOptional()
+  endDate?: Date;
 }

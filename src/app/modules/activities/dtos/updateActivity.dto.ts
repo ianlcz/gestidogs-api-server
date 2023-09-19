@@ -1,28 +1,35 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Establishment } from '../../establishments/schemas/establishment.schema';
-import { IsMongoId } from 'class-validator';
+import { IsMongoId, IsOptional } from 'class-validator';
 
 export class UpdateActivityDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
+  @IsOptional()
   establishment?: Establishment;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
   title?: string;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
   description?: string;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
   imageUrl?: string;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
   color?: string;
 
-  @ApiProperty({ type: Number })
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
   duration?: number;
 
-  @ApiProperty({ type: Number })
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
   price?: number;
 }

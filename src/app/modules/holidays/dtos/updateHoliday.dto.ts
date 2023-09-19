@@ -1,30 +1,36 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { User } from '../../users/schemas/user.schema';
 import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { StatusHolidayType } from '../../../common/enums/statusHoliday.enum';
-import { IsMongoId } from 'class-validator';
+import { IsMongoId, IsOptional } from 'class-validator';
 
 export class UpdateHolidayDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsMongoId()
-  employee: User;
+  @IsOptional()
+  employee?: User;
 
-  @ApiProperty({ type: String })
-  establishment: Establishment;
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  establishment?: Establishment;
 
-  @ApiProperty({ type: Date })
-  beginDate: Date;
+  @ApiPropertyOptional({ type: Date })
+  @IsOptional()
+  beginDate?: Date;
 
-  @ApiProperty({ type: Date })
-  endDate: Date;
+  @ApiPropertyOptional({ type: Date })
+  @IsOptional()
+  endDate?: Date;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     enum: StatusHolidayType,
     default: StatusHolidayType.PENDING,
   })
-  status: StatusHolidayType;
+  @IsOptional()
+  status?: StatusHolidayType;
 
-  @ApiProperty({ type: Boolean, default: false })
-  isApproved: boolean;
+  @ApiPropertyOptional({ type: Boolean, default: false })
+  @IsOptional()
+  isApproved?: boolean;
 }
