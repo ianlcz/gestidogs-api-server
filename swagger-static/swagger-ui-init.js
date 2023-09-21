@@ -2790,9 +2790,6 @@ window.onload = function() {
             "imageUrl": {
               "type": "string"
             },
-            "color": {
-              "type": "string"
-            },
             "duration": {
               "type": "number"
             },
@@ -2809,7 +2806,6 @@ window.onload = function() {
             "title",
             "description",
             "imageUrl",
-            "color",
             "duration",
             "price",
             "__v"
@@ -3480,9 +3476,6 @@ window.onload = function() {
             "imageUrl": {
               "type": "string"
             },
-            "color": {
-              "type": "string"
-            },
             "duration": {
               "type": "number"
             },
@@ -3495,7 +3488,6 @@ window.onload = function() {
             "title",
             "description",
             "imageUrl",
-            "color",
             "duration",
             "price"
           ]
@@ -3513,9 +3505,6 @@ window.onload = function() {
               "type": "string"
             },
             "imageUrl": {
-              "type": "string"
-            },
-            "color": {
               "type": "string"
             },
             "duration": {
@@ -3690,7 +3679,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-09-21T12:57:07.367Z"
+              "default": "2023-09-21T15:54:31.443Z"
             },
             "__v": {
               "type": "number"

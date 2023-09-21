@@ -28,10 +28,6 @@ export class Activity {
   @ApiProperty({ type: String })
   imageUrl: string;
 
-  @Prop({ type: String, unique: true, required: true })
-  @ApiProperty({ type: String, required: true })
-  color: string;
-
   @Prop({ type: Number, required: true })
   @ApiProperty({ type: Number, required: true })
   duration: number;

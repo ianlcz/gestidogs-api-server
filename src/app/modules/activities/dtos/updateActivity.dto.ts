@@ -21,10 +21,6 @@ export class UpdateActivityDto {
   @IsOptional()
   imageUrl?: string;
 
-  @ApiPropertyOptional({ type: String })
-  @IsOptional()
-  color?: string;
-
   @ApiPropertyOptional({ type: Number })
   @IsOptional()
   duration?: number;
