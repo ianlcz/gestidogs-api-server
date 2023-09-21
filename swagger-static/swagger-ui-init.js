@@ -3004,16 +3004,7 @@ window.onload = function() {
               "format": "date-time",
               "type": "string"
             }
-          },
-          "required": [
-            "educator",
-            "activity",
-            "status",
-            "maximumCapacity",
-            "report",
-            "beginDate",
-            "endDate"
-          ]
+          }
         },
         "CreateUserDto": {
           "type": "object",
@@ -3294,17 +3285,7 @@ window.onload = function() {
               },
               "default": []
             }
-          },
-          "required": [
-            "owner",
-            "name",
-            "description",
-            "address",
-            "phoneNumber",
-            "emailAddress",
-            "employees",
-            "schedules"
-          ]
+          }
         },
         "CreateDogDto": {
           "type": "object",
@@ -3482,19 +3463,7 @@ window.onload = function() {
             "height": {
               "type": "number"
             }
-          },
-          "required": [
-            "owner",
-            "establishment",
-            "nationalId",
-            "sessions",
-            "name",
-            "imageUrl",
-            "gender",
-            "breed",
-            "weight",
-            "height"
-          ]
+          }
         },
         "CreateActivityDto": {
           "type": "object",
@@ -3555,16 +3524,7 @@ window.onload = function() {
             "price": {
               "type": "number"
             }
-          },
-          "required": [
-            "establishment",
-            "title",
-            "description",
-            "imageUrl",
-            "color",
-            "duration",
-            "price"
-          ]
+          }
         },
         "CreateReservationDto": {
           "type": "object",
@@ -3660,12 +3620,7 @@ window.onload = function() {
               "type": "boolean",
               "default": false
             }
-          },
-          "required": [
-            "activity",
-            "dog",
-            "isApproved"
-          ]
+          }
         },
         "PaymentDto": {
           "type": "object",
@@ -3735,7 +3690,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-09-19T09:18:25.971Z"
+              "default": "2023-09-21T12:57:07.367Z"
             },
             "__v": {
               "type": "number"
@@ -3758,11 +3713,7 @@ window.onload = function() {
             "description": {
               "type": "string"
             }
-          },
-          "required": [
-            "dog",
-            "description"
-          ]
+          }
         },
         "CreateHolidayDto": {
           "type": "object",
@@ -3877,15 +3828,7 @@ window.onload = function() {
               "type": "boolean",
               "default": false
             }
-          },
-          "required": [
-            "employee",
-            "establishment",
-            "beginDate",
-            "endDate",
-            "status",
-            "isApproved"
-          ]
+          }
         }
       }
     }

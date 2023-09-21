@@ -27,7 +27,6 @@ import { UpdateUserDto } from '../dtos/updateUser.dto';
 
 import { RoleType } from '../../../common/enums/role.enum';
 import { Dog } from '../../dogs/schemas/dog.schema';
-import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 @Injectable()
 export class UsersService {
@@ -497,15 +496,7 @@ export class UsersService {
         throw new NotFoundException('User not found');
       }
 
-      if (user.role === RoleType.MANAGER) {
-        // Get User logged establishments
-        const establishments: Establishment[] =
-          await this.establishmentsService.find(user._id.toString());
-
-        return { ...user, establishments };
-      } else {
-        return user;
-      }
+      return user;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw error;
