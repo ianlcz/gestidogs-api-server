@@ -6,7 +6,6 @@ import { HydratedDocument, Types } from 'mongoose';
 import { Dog } from '../../dogs/schemas/dog.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
 import { StatusSessionType } from 'src/app/common/enums/statusSession.enum';
-import { Establishment } from '../../establishments/schemas/establishment.schema';
 import { Session } from '../../sessions/schemas/session.schema';
 
 export type ReservationDocument = HydratedDocument<Reservation>;
@@ -23,10 +22,6 @@ export class Reservation {
   @Prop({ type: Types.ObjectId, ref: 'Session' })
   @ApiProperty({ type: Session })
   session: Session;
-
-  @Prop({ type: Types.ObjectId, ref: 'Establishment', required: true })
-  @ApiProperty({ type: Establishment, required: true })
-  establishment: Establishment;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Dog' }], required: true })
   @ApiProperty({ type: () => [Dog], required: true })

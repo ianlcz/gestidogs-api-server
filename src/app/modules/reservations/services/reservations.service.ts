@@ -193,7 +193,7 @@ export class ReservationsService {
       const session = await this.sessionsService.create({
         educator: await this.usersService.findOne(educatorId),
         activity: reservation.activity,
-        establishment: reservation.establishment,
+        establishment: reservation.activity.establishment,
         status: StatusSessionType.ONLINE,
         beginDate: slot,
         endDate: new Date(
