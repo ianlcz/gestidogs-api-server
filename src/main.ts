@@ -42,7 +42,13 @@ async function bootstrap() {
     .build();
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.useGlobalPipes(new ValidationPipe({}));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidUnknownValues: false,
+    }),
+  );
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, {

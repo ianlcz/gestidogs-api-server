@@ -1,9 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 import { Dog } from '../../dogs/schemas/dog.schema';
 import { Activity } from '../../activities/schemas/activity.schema';
 import { Session } from '../../sessions/schemas/session.schema';
+import { Establishment } from '../../establishments/schemas/establishment.schema';
 
 export class CreateReservationDto {
   @ApiProperty({ type: String, required: true })
@@ -11,9 +12,13 @@ export class CreateReservationDto {
   @IsNotEmpty()
   activity: Activity;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, required: true })
   @IsMongoId()
-  session: Session;
+  @IsNotEmpty()
+  establishment: Establishment;
+
+  @ApiPropertyOptional({ type: String })
+  session?: Session;
 
   @ApiProperty({ type: () => [String], required: true })
   @IsNotEmpty()

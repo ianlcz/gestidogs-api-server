@@ -3519,10 +3519,13 @@ window.onload = function() {
           "type": "object",
           "properties": {
             "activity": {
-              "$ref": "#/components/schemas/Activity"
+              "type": "string"
+            },
+            "establishment": {
+              "type": "string"
             },
             "session": {
-              "$ref": "#/components/schemas/Session"
+              "type": "string"
             },
             "dogs": {
               "type": "array",
@@ -3537,7 +3540,7 @@ window.onload = function() {
           },
           "required": [
             "activity",
-            "session",
+            "establishment",
             "dogs",
             "isApproved"
           ]
@@ -3600,6 +3603,9 @@ window.onload = function() {
           "type": "object",
           "properties": {
             "activity": {
+              "type": "string"
+            },
+            "establishment": {
               "type": "string"
             },
             "dog": {
@@ -3679,7 +3685,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-09-21T15:54:31.443Z"
+              "default": "2023-09-22T14:19:27.568Z"
             },
             "__v": {
               "type": "number"

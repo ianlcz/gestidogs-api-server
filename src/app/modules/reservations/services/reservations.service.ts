@@ -43,9 +43,6 @@ export class ReservationsService {
         createReservationDto,
       );
 
-      reservationToCreate.establishment =
-        createReservationDto.activity.establishment;
-
       // Save Reservation data on MongoDB and return them
       return (await reservationToCreate.save()).populate([
         {
@@ -54,7 +51,7 @@ export class ReservationsService {
         },
         { path: 'session', model: 'Session' },
         {
-          path: 'dog',
+          path: 'dogs',
           model: 'Dog',
           populate: [
             {
@@ -104,7 +101,7 @@ export class ReservationsService {
         },
         { path: 'session', model: 'Session' },
         {
-          path: 'dog',
+          path: 'dogs',
           model: 'Dog',
           populate: [
             {
@@ -134,8 +131,10 @@ export class ReservationsService {
             model: 'Activity',
           },
           { path: 'session', model: 'Session' },
+          { path: 'establishment', model: 'Establishment' },
           {
-            path: 'dog',
+            path: 'dogs',
+
             model: 'Dog',
             populate: [
               {
@@ -257,8 +256,10 @@ export class ReservationsService {
             model: 'Activity',
           },
           { path: 'session', model: 'Session' },
+          { path: 'establishment', model: 'Establishment' },
           {
-            path: 'dog',
+            path: 'dogs',
+
             model: 'Dog',
             populate: [
               {
@@ -316,8 +317,10 @@ export class ReservationsService {
             model: 'Activity',
           },
           { path: 'session', model: 'Session' },
+          { path: 'establishment', model: 'Establishment' },
           {
-            path: 'dog',
+            path: 'dogs',
+
             model: 'Dog',
             populate: [
               {
