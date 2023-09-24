@@ -22,6 +22,8 @@ import {
 } from '../schemas/reservation.schema';
 import { StatusSessionType } from 'src/app/common/enums/statusSession.enum';
 import { UsersService } from '../../users/services/users.service';
+import { ActivitiesService } from '../../activities/services/activities.service';
+import { EstablishmentsService } from '../../establishments/services/establishments.service';
 
 @Injectable()
 export class ReservationsService {
@@ -30,6 +32,10 @@ export class ReservationsService {
     private reservationModel: Model<ReservationDocument>,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
+    @Inject(forwardRef(() => ActivitiesService))
+    private readonly activitiesService: ActivitiesService,
+    @Inject(forwardRef(() => EstablishmentsService))
+    private readonly establishmentsService: EstablishmentsService,
     @Inject(forwardRef(() => SessionsService))
     private readonly sessionsService: SessionsService,
   ) {}
@@ -91,7 +97,9 @@ export class ReservationsService {
     return await this.reservationModel
       .find({
         ...(sessionId && { session: sessionId }),
-        ...(establishmentId && { establishment: establishmentId }),
+        ...(establishmentId && {
+          activity: { establishment: establishmentId },
+        }),
         ...(status && { status }),
       })
       .populate([
@@ -131,7 +139,6 @@ export class ReservationsService {
             model: 'Activity',
           },
           { path: 'session', model: 'Session' },
-          { path: 'establishment', model: 'Establishment' },
           {
             path: 'dogs',
 
@@ -186,14 +193,20 @@ export class ReservationsService {
     slot: Date,
   ): Promise<string> {
     try {
-      const reservation = await this.reservationModel.findOne({
-        id: reservationId,
-      });
+      const reservation = await this.reservationModel
+        .findById(reservationId)
+        .populate([
+          {
+            path: 'activity',
+            model: 'Activity',
+            populate: { path: 'establishment', model: 'Establishment' },
+          },
+        ]);
 
-      const session = await this.sessionsService.create({
+      await this.sessionsService.create({
         educator: await this.usersService.findOne(educatorId),
-        activity: reservation.activity,
-        establishment: reservation.activity.establishment,
+        activity: reservation.activity._id.toString(),
+        establishment: reservation.activity.establishment._id.toString(),
         status: StatusSessionType.ONLINE,
         beginDate: slot,
         endDate: new Date(
@@ -202,14 +215,7 @@ export class ReservationsService {
         maximumCapacity: reservation.dogs.length,
       });
 
-      await this.reservationModel.findOneAndUpdate(
-        { id: reservationId },
-        {
-          status: StatusSessionType.ONLINE,
-          isApproved: true,
-          session: session._id,
-        },
-      );
+      await this.reservationModel.deleteOne({ _id: reservationId });
 
       response.status(201);
       response.statusMessage = 'Reservation approved';
@@ -256,7 +262,6 @@ export class ReservationsService {
             model: 'Activity',
           },
           { path: 'session', model: 'Session' },
-          { path: 'establishment', model: 'Establishment' },
           {
             path: 'dogs',
 
@@ -317,7 +322,6 @@ export class ReservationsService {
             model: 'Activity',
           },
           { path: 'session', model: 'Session' },
-          { path: 'establishment', model: 'Establishment' },
           {
             path: 'dogs',
 

@@ -17,12 +17,12 @@ export class CreateSessionDto {
   @ApiProperty({ type: String, required: true })
   @IsMongoId()
   @IsNotEmpty()
-  activity: Activity;
+  activity: Activity | string;
 
   @ApiProperty({ type: String, required: true })
   @IsMongoId()
   @IsNotEmpty()
-  establishment: Establishment;
+  establishment: Establishment | string;
 
   @ApiProperty({
     enum: StatusSessionType,

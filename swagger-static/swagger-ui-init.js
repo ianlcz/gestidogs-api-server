@@ -3521,9 +3521,6 @@ window.onload = function() {
             "activity": {
               "type": "string"
             },
-            "establishment": {
-              "type": "string"
-            },
             "session": {
               "type": "string"
             },
@@ -3540,7 +3537,6 @@ window.onload = function() {
           },
           "required": [
             "activity",
-            "establishment",
             "dogs",
             "isApproved"
           ]
@@ -3556,9 +3552,6 @@ window.onload = function() {
             },
             "session": {
               "$ref": "#/components/schemas/Session"
-            },
-            "establishment": {
-              "$ref": "#/components/schemas/Establishment"
             },
             "dogs": {
               "type": "array",
@@ -3592,7 +3585,6 @@ window.onload = function() {
             "_id",
             "activity",
             "session",
-            "establishment",
             "dogs",
             "status",
             "isApproved",
@@ -3603,9 +3595,6 @@ window.onload = function() {
           "type": "object",
           "properties": {
             "activity": {
-              "type": "string"
-            },
-            "establishment": {
               "type": "string"
             },
             "dog": {
@@ -3685,7 +3674,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-09-22T14:19:27.568Z"
+              "default": "2023-09-24T10:07:07.928Z"
             },
             "__v": {
               "type": "number"
