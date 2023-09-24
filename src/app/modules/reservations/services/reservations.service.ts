@@ -100,9 +100,7 @@ export class ReservationsService {
     return await this.reservationModel
       .find({
         ...(sessionId && { session: sessionId }),
-        ...(establishmentId && {
-          activity: { establishment: establishmentId },
-        }),
+        ...(establishmentId && { establishment: establishmentId }),
         ...(status && { status }),
       })
       .populate([
