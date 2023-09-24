@@ -22,8 +22,6 @@ import {
 } from '../schemas/reservation.schema';
 import { StatusSessionType } from 'src/app/common/enums/statusSession.enum';
 import { UsersService } from '../../users/services/users.service';
-import { ActivitiesService } from '../../activities/services/activities.service';
-import { EstablishmentsService } from '../../establishments/services/establishments.service';
 
 @Injectable()
 export class ReservationsService {
@@ -32,10 +30,6 @@ export class ReservationsService {
     private reservationModel: Model<ReservationDocument>,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
-    @Inject(forwardRef(() => ActivitiesService))
-    private readonly activitiesService: ActivitiesService,
-    @Inject(forwardRef(() => EstablishmentsService))
-    private readonly establishmentsService: EstablishmentsService,
     @Inject(forwardRef(() => SessionsService))
     private readonly sessionsService: SessionsService,
   ) {}
@@ -49,12 +43,16 @@ export class ReservationsService {
         createReservationDto,
       );
 
+      reservationToCreate.establishment =
+        reservationToCreate.activity.establishment;
+
       // Save Reservation data on MongoDB and return them
       return (await reservationToCreate.save()).populate([
         {
           path: 'activity',
           model: 'Activity',
         },
+        { path: 'establishment', model: 'Establishment' },
         { path: 'session', model: 'Session' },
         {
           path: 'dogs',
@@ -107,6 +105,7 @@ export class ReservationsService {
           path: 'activity',
           model: 'Activity',
         },
+        { path: 'establishment', model: 'Establishment' },
         { path: 'session', model: 'Session' },
         {
           path: 'dogs',
@@ -138,6 +137,7 @@ export class ReservationsService {
             path: 'activity',
             model: 'Activity',
           },
+          { path: 'establishment', model: 'Establishment' },
           { path: 'session', model: 'Session' },
           {
             path: 'dogs',
@@ -261,6 +261,7 @@ export class ReservationsService {
             path: 'activity',
             model: 'Activity',
           },
+          { path: 'establishment', model: 'Establishment' },
           { path: 'session', model: 'Session' },
           {
             path: 'dogs',
@@ -321,6 +322,7 @@ export class ReservationsService {
             path: 'activity',
             model: 'Activity',
           },
+          { path: 'establishment', model: 'Establishment' },
           { path: 'session', model: 'Session' },
           {
             path: 'dogs',
