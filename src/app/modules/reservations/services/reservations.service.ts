@@ -43,7 +43,7 @@ export class ReservationsService {
         createReservationDto,
       );
 
-      reservationToCreate.establishment =
+      reservationToCreate['establishment'] =
         reservationToCreate.activity.establishment;
 
       // Save Reservation data on MongoDB and return them
