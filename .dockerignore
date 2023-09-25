@@ -1,0 +1,8 @@
+**/node_modules/
+**/.gitignore
+.vscode/
+docs/
+.env.example
+.git
+README.md
+vercel.json

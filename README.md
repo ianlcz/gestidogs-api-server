@@ -1,12 +1,24 @@
-# Gestidogs - API Server
+# GestiDogs API Server
+
+The objective of this project is the development of a **RESTful API** to facilitate the management of dog centers.
+
+It was built using [NestJS](https://nestjs.com) framework, which allows building efficient, reliable and scalable server-side applications.
 
 ## Development Team
 
 - **Bordeaux Ynov Campus IT department :**
+
   - [Mathieu CHAMBAUD](https://github.com/FrekiManagarm) - Master2 Expert in Web Development
   - [Dorian FRANÇAIS](https://github.com/DorianFRANCAIS) - Master2 Expert in Web Development
-  - [Corentin GARNIER](https://github.com/CorentinGarnier) - Master2 Expert in Web Development
   - [Yann LE COZ](https://github.com/ianlcz) - Master2 Expert in Web Development
+
+## Built with
+
+- [Mongoose](https://mongoosejs.com/) - An ORM for [MongoDB](https://www.mongodb.com/) object modeling for [Node.js](https://nodejs.org/en/).
+- [NestJS](https://nestjs.com) - A progressive [Node.js](https://nodejs.org/en/) framework.
+- [Stripe](https://stripe.com/fr) - An online payment processing platform.
+- [Vercel](https://vercel.com/) - A hosting service to deploy easily any frontend app.
+- [Visual Studio Code](https://code.visualstudio.com/) - Code editor.
 
 ## Installation
 
@@ -22,6 +34,23 @@ First of all, if you have just cloned the repository you have to install the pro
 
 ## Usage
 
+### How to generate a JWT secret ?
+
+On Linux and Mac, type this command `openssl rand -hex 32` or go to https://generate-secret.now.sh/32.
+
+### Write the .env files
+
+You must copy the `.env.example` file in the root folder of the application and replace `<GESTIDOGS_MONGO_URI>`, `<GESTIDOGS_JWT_ACCESS_SECRET>`, `<GESTIDOGS_JWT_REFRESH_SECRET>` and `<STRIPE_SECRET_API_KEY>` with your own :
+
+```
+GESTIDOGS_MONGO_URI=<GESTIDOGS_MONGO_URI>
+
+JWT_ACCESS_SECRET=<GESTIDOGS_JWT_ACCESS_SECRET>
+JWT_REFRESH_SECRET=<GESTIDOGS_JWT_REFRESH_SECRET>
+
+STRIPE_API_KEY=<STRIPE_SECRET_API_KEY>
+```
+
 ### Running
 
 ```bash
@@ -30,10 +59,9 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
+
+Then you can go to your browser at http://localhost:8080/docs to see the Swagger documentation of the GestiDogs API Server.
 
 ### Testing
 
@@ -47,6 +75,10 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Docker
+
+You can launch the API with Docker by following the [Docker commands](./docs/docker.md) documentation.
 
 ## License
 
