@@ -1,20 +1,34 @@
-import { ValidationPipe } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+
+import * as packageJSON from '../package.json';
+
 import { useContainer } from 'class-validator';
 import { createWriteStream } from 'fs';
 import { get } from 'http';
-import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
+import { AppModule } from './app/app.module';
+
 async function bootstrap() {
-  const app: NestExpressApplication = await NestFactory.create(AppModule);
+  const app: NestExpressApplication = await NestFactory.create(AppModule, {
+    cors: true,
+  });
+  app.setGlobalPrefix(`v${packageJSON.version.split('.')[0]}`, {
+    exclude: [{ path: '/', method: RequestMethod.ALL }],
+  });
+
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  });
 
   const config = new DocumentBuilder()
-    .setTitle('GestiDogs')
+    .setTitle('GestiDogs API Server')
     .setDescription('Backend of a dog training center management application')
-    .setVersion('1.0.0')
+    .setVersion(packageJSON.version)
     .addBearerAuth(
       {
         description: 'Default JWT Authorization',
@@ -28,15 +42,19 @@ async function bootstrap() {
     .build();
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.enableCors();
   app.useGlobalPipes(
-    new ValidationPipe({ transform: true, forbidUnknownValues: false }),
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidUnknownValues: false,
+    }),
   );
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, {
     customSiteTitle: 'GestiDogs API Documentation',
     customfavIcon: '../favicon.png',
+    customCssUrl: '../swagger-dark-mode.css',
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: 'method',

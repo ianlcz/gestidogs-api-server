@@ -61,7 +61,7 @@ $ npm run start
 $ npm run start:dev
 ```
 
-Then you can go to your browser at http://localhost:8080/docs to see the Swagger documentation of the GestiDogs API.
+Then you can go to your browser at http://localhost:8080/docs to see the Swagger documentation of the GestiDogs API Server.
 
 ### Testing
 
