@@ -1,3 +1,16 @@
+.swagger-ui .markdown code,
+.swagger-ui .renderedMarkdown code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  white-space: break-spaces;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+  font-weight: 400;
+  background: rgba(110, 118, 129, 0.2);
+  color: #3b4151;
+}
+
 @media (prefers-color-scheme: dark) {
   a {
     color: #8c8cfa;
@@ -1449,9 +1462,9 @@
   }
 
   .swagger-ui .markdown code,
-  .swagger-ui .renderedmarkdown code {
-    background: rgba(0, 0, 0, 0.05);
-    color: #c299e6;
+  .swagger-ui .renderedMarkdown code {
+    background: rgba(110, 118, 129, 0.4);
+    color: #b5bac9;
   }
 
   .swagger-ui .model-toggle:after {

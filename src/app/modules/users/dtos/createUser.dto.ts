@@ -40,7 +40,7 @@ export class CreateUserDto {
     ],
     default: RoleType.CLIENT,
   })
-  role: RoleType;
+  role?: RoleType;
 
   @ApiProperty({ type: String, required: true })
   @IsNotEmpty()

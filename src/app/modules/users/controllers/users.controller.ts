@@ -43,14 +43,17 @@ import { UsersService } from '../services/users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiOperation({ summary: 'Register a user' })
+  @ApiOperation({
+    summary: 'Register a user',
+    description:
+      "Create a new user account within GestiDogs application. It allows users to register and gain access to the application's features and resources.",
+  })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'User successfully registered',
   })
   @ApiResponse({
     status: HttpStatus.UNPROCESSABLE_ENTITY,
-    description: 'Unprocessable Entity',
   })
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto): Promise<{
@@ -64,7 +67,11 @@ export class UsersController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Login a user' })
+  @ApiOperation({
+    summary: 'Login a user',
+    description:
+      "Authenticate a user and obtain an access token for subsequent API requests. It handles the login process by verifying the user's credentials.",
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully logged',
@@ -75,15 +82,28 @@ export class UsersController {
     return await this.usersService.login(authLoginDto);
   }
 
-  @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Logout a user' })
+  @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User successfully logged out',
+  })
+  @ApiOperation({
+    summary: 'Logout a user',
+    description:
+      "Log out a currently authenticated user. It invalidates the user's access token, effectively terminating their session.",
+  })
   @Post('logout')
   logout(@Req() req: Request) {
     this.usersService.logout(req.user['sub']);
   }
 
-  @UseGuards(RefreshTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Refresh a user' })
+  @UseGuards(RefreshTokenGuard)
+  @ApiOperation({
+    summary: 'Refresh a user',
+    description:
+      'Refresh an access token for an authenticated user. This route is typically used when an access token is about to expire or has expired, and the user needs to obtain a new valid access token to continue accessing protected resources.',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Refresh User',
@@ -95,8 +115,12 @@ export class UsersController {
     return this.usersService.refreshTokens(userId, refreshToken);
   }
 
-  @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Get user logged informations' })
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({
+    summary: 'Get user logged informations',
+    description:
+      'Retrieve information about the currently authenticated user. It allows users to access their own user profile or retrieve relevant data associated with their account.',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The logged user',
@@ -109,9 +133,24 @@ export class UsersController {
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
   @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Find users' })
-  @ApiQuery({ name: 'establishmentId', type: String, required: false })
-  @ApiQuery({ name: 'role', enum: RoleType, required: false })
+  @ApiOperation({
+    summary: 'Find users',
+    description:
+      'Retrieve a list of users from the GestiDogs application. It allows administrator and manager users to view and retrieve information about all users in the application.',
+  })
+  @ApiQuery({
+    name: 'establishmentId',
+    description: 'Unique id of an establishment',
+    example: '64046ee9b75c105a1d7e7fe3',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'role',
+    description: 'Role of logged-in user',
+    enum: RoleType,
+    required: false,
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of users',
@@ -134,8 +173,20 @@ export class UsersController {
     }
   }
 
-  @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Find a user' })
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({
+    summary: 'Find a user',
+    description:
+      'Retrieve information about a specific user. It allows users to fetch the details of a particular user by specifying their unique `userId` parameter in the route.',
+  })
+  @ApiQuery({
+    name: 'userId',
+    description:
+      'Unique user id that corresponds to the user you want to retrieve information',
+    example: '63cc452807b1d06248d742e0',
+    type: String,
+    required: true,
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully found',
@@ -170,8 +221,20 @@ export class UsersController {
     return await this.usersService.findClientsByEstablishment(establishmentId);
   }
 
-  @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Update user informations' })
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({
+    summary: 'Update user informations',
+    description:
+      "Edit information for a specific user. It allows users to modify the details or attributes of a particular user's account by specifying their unique `userId` parameter in the route.",
+  })
+  @ApiQuery({
+    name: 'userId',
+    description:
+      'Unique user id that corresponds to the user you want to edit information',
+    example: '63cc452807b1d06248d742e0',
+    type: String,
+    required: true,
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The modified user',
@@ -193,7 +256,19 @@ export class UsersController {
 
   @Roles(RoleType.ADMINISTRATOR)
   @UseGuards(AccessTokenGuard, RolesGuard)
-  @ApiOperation({ summary: 'Delete a user' })
+  @ApiOperation({
+    summary: 'Delete a user',
+    description:
+      "Delete a specific user from the GestiDogs application. It allows only administrator users to remove a particular user's account and associated data by specifying their unique `userId` parameter in the route.",
+  })
+  @ApiQuery({
+    name: 'userId',
+    description:
+      'Unique user id that corresponds to the user you want to delete from the application',
+    example: '63cc452807b1d06248d742e0',
+    type: String,
+    required: true,
+  })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: 'The deleted user',
