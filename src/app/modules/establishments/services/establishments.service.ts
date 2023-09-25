@@ -67,17 +67,17 @@ export class EstablishmentsService {
   ): Promise<User[]> {
     try {
       // Get establishment employees
-      const { employees }: { employees: User[] } =
+      const establishement: Establishment =
         await this.establishmentModel.findById(establishmentId);
 
-      if (employees && employees.length === 0) {
+      if (establishement.employees && establishement.employees.length === 0) {
         throw new NotFoundException(
           `Employees of establishment '${establishmentId}' not found`,
         );
       }
 
-      // Set default password when it's not defined by Manager
-      if (!newEmployeeDto.password) newEmployeeDto.password = 'GestiDogs23';
+      newEmployeeDto.role = RoleType.EDUCATOR;
+      newEmployeeDto.establishments = [establishement];
 
       // Create new employee
       const newEmployee: User = (
@@ -86,7 +86,7 @@ export class EstablishmentsService {
 
       newEmployee.password = undefined;
 
-      const newEmployees: User[] = [...employees, newEmployee];
+      const newEmployees: User[] = [...establishement.employees, newEmployee];
 
       await this.establishmentModel.findOneAndUpdate(
         { _id: establishmentId },
