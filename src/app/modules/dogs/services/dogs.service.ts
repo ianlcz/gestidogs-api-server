@@ -54,6 +54,7 @@ export class DogsService {
           path: 'owner',
           model: 'User',
         },
+        { path: 'sessions', model: 'Session' },
         {
           path: 'establishment',
           model: 'Establishment',
@@ -71,6 +72,15 @@ export class DogsService {
         {
           path: 'owner',
           model: 'User',
+        },
+        {
+          path: 'sessions',
+          model: 'Session',
+          populate: [
+            { path: 'educator', model: 'User' },
+            { path: 'activity', model: 'Activity' },
+            { path: 'establishment', model: 'Establishment' },
+          ],
         },
         {
           path: 'establishment',
@@ -120,6 +130,7 @@ export class DogsService {
           path: 'owner',
           model: 'User',
         },
+        { path: 'sessions', model: 'Session' },
         {
           path: 'establishment',
           model: 'Establishment',

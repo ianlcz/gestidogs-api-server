@@ -202,16 +202,11 @@ export class SessionsController {
     type: Date,
     required: true,
   })
-  @ApiQuery({
-    name: 'dogId',
-    type: String,
-    required: true,
-  })
   @Get('daily/:dogId')
   async findByDogAndDate(
     @Param('dogId') dogId: string,
-    @Param('date') date: Date,
-  ): Promise<Session[]> {
+    @Query('date') date: Date,
+  ) {
     return await this.sessionsService.findByDogAndDate(dogId, date);
   }
 
