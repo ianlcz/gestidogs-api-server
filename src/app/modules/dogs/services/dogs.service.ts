@@ -123,7 +123,7 @@ export class DogsService {
     }
   }
 
-  async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {
+  async updateOne(dogId: string, dogChanges: object): Promise<Dog> {
     try {
       const dog: Dog = await this.dogModel.findById(dogId).populate([
         {
@@ -143,10 +143,6 @@ export class DogsService {
 
       if (!dog) {
         throw new NotFoundException('Dog not found');
-      }
-
-      if (user.role === RoleType.CLIENT && user._id !== dog.owner._id) {
-        throw new UnauthorizedException();
       }
 
       const dogToModify: Dog = await this.dogModel

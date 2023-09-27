@@ -23,6 +23,7 @@ import {
 import { StatusSessionType } from 'src/app/common/enums/statusSession.enum';
 import { UsersService } from '../../users/services/users.service';
 import { ActivitiesService } from '../../activities/services/activities.service';
+import { DogsService } from '../../dogs/services/dogs.service';
 
 @Injectable()
 export class ReservationsService {
@@ -35,6 +36,8 @@ export class ReservationsService {
     private readonly activitiesService: ActivitiesService,
     @Inject(forwardRef(() => SessionsService))
     private readonly sessionsService: SessionsService,
+    @Inject(forwardRef(() => DogsService))
+    private readonly dogsService: DogsService,
   ) {}
 
   async create(
@@ -202,11 +205,12 @@ export class ReservationsService {
           {
             path: 'activity',
             model: 'Activity',
-            populate: { path: 'establishment', model: 'Establishment' },
+            populate: [{ path: 'establishment', model: 'Establishment' }],
           },
+          { path: 'dogs', model: 'Dog' },
         ]);
 
-      await this.sessionsService.create({
+      const session = await this.sessionsService.create({
         educator: await this.usersService.findOne(educatorId),
         activity: reservation.activity._id.toString(),
         establishment: reservation.activity.establishment._id.toString(),
@@ -217,6 +221,13 @@ export class ReservationsService {
         ),
         maximumCapacity: reservation.dogs.length,
       });
+
+      reservation.dogs.map(
+        async (dog) =>
+          await this.dogsService.updateOne(dog._id.toString(), {
+            sessions: [...dog.sessions, session],
+          }),
+      );
 
       await this.reservationModel.deleteOne({ _id: reservationId });
 

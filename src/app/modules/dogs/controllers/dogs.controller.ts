@@ -126,9 +126,8 @@ export class DogsController {
   async updateOne(
     @Param('dogId') dogId: string,
     @Body() updateDogDto: UpdateDogDto,
-    @Req() req: Request,
   ): Promise<Dog> {
-    return await this.dogsService.updateOne(dogId, updateDogDto, req.user);
+    return await this.dogsService.updateOne(dogId, updateDogDto);
   }
 
   @Roles(RoleType.ADMINISTRATOR, RoleType.MANAGER)
