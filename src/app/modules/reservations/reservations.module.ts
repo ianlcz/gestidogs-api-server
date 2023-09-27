@@ -7,6 +7,7 @@ import { ReservationsController } from './controllers/reservations.controller';
 import { SessionsModule } from '../sessions/sessions.module';
 import { UsersModule } from '../users/users.module';
 import { ActivitiesModule } from '../activities/activities.module';
+import { DogsModule } from '../dogs/dogs.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ActivitiesModule } from '../activities/activities.module';
     ]),
     forwardRef(() => SessionsModule),
     forwardRef(() => ActivitiesModule),
+    forwardRef(() => DogsModule),
     forwardRef(() => UsersModule),
   ],
   providers: [ReservationsService],

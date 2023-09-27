@@ -249,7 +249,7 @@ window.onload = function() {
             {
               "name": "dogId",
               "required": true,
-              "in": "query",
+              "in": "path",
               "schema": {
                 "type": "string"
               }
@@ -3703,7 +3703,7 @@ window.onload = function() {
             "createdAt": {
               "format": "date-time",
               "type": "string",
-              "default": "2023-09-25T17:40:21.468Z"
+              "default": "2023-09-27T08:56:17.873Z"
             },
             "__v": {
               "type": "number"

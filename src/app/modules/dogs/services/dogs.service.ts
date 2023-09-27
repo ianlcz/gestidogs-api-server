@@ -54,6 +54,7 @@ export class DogsService {
           path: 'owner',
           model: 'User',
         },
+        { path: 'sessions', model: 'Session' },
         {
           path: 'establishment',
           model: 'Establishment',
@@ -71,6 +72,15 @@ export class DogsService {
         {
           path: 'owner',
           model: 'User',
+        },
+        {
+          path: 'sessions',
+          model: 'Session',
+          populate: [
+            { path: 'educator', model: 'User' },
+            { path: 'activity', model: 'Activity' },
+            { path: 'establishment', model: 'Establishment' },
+          ],
         },
         {
           path: 'establishment',
@@ -113,13 +123,14 @@ export class DogsService {
     }
   }
 
-  async updateOne(dogId: string, dogChanges: object, user: any): Promise<Dog> {
+  async updateOne(dogId: string, dogChanges: object): Promise<Dog> {
     try {
       const dog: Dog = await this.dogModel.findById(dogId).populate([
         {
           path: 'owner',
           model: 'User',
         },
+        { path: 'sessions', model: 'Session' },
         {
           path: 'establishment',
           model: 'Establishment',
@@ -132,10 +143,6 @@ export class DogsService {
 
       if (!dog) {
         throw new NotFoundException('Dog not found');
-      }
-
-      if (user.role === RoleType.CLIENT && user._id !== dog.owner._id) {
-        throw new UnauthorizedException();
       }
 
       const dogToModify: Dog = await this.dogModel
