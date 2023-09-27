@@ -1,6 +1,6 @@
 {
   "name": "gestidogs-api-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backend of a dog training center management application",
   "author": "Yann LE COZ",
   "private": true,
